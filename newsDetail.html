@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amo Group</title>
+    <link rel="icon" href="./assets/images/fav.png" />
+    <!-- Font awsome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Swiper Css -->
+    <link rel="stylesheet" href="./assets/css/swiper-bundle.min.css" />
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
+    />
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <!-- Link Swiper's CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+
+    <style>
+      .swiper {
+        width: 100%;
+        height: 100%;
+      }
+
+      .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-[url('./assets/images/bg-2.jpeg')] bg-cover h-full bg-no-repeat before:w-full before:h-full before:fixed before:z-[-1] z-0 before:bg-[#033641cc]"
+  >
+    <div id="pre-loader">
+      <div id="loader-logo"></div>
+      <div id="loader-circle"></div>
+      <div class="loader-section section-left"></div>
+      <div class="loader-section section-right"></div>
+    </div>
+    <!-- Header Start -->
+    <header id="header">
+      <div class="container">
+        <div class="row">
+          <div class="h-left">
+            <a href="index.html" class="logo">
+              <img src="./assets/images/logo.svg" alt="" />
+            </a>
+          </div>
+          <div class="h-average">
+            <nav>
+              <ul>
+                <li class="relative group pr-3 pr-3">
+                  <span
+                    class="title !text-[#fff] shrink-0 block !min-w-max hover:!font-bold hover:mx-1 duration-200"
+                  >
+                    About us
+                    <i
+                      class="fa-solid fa-chevron-down opacity-0 invinsible group-hover:opacity-100 group-hover:visible -translate-y-4 group-hover:-translate-y-2 duration-200"
+                    ></i>
+                  </span>
+                  <ul
+                    class="absolute duration-200 !bg-[#EDEDED] !w-max text-white group-hover:bg-orange-500 top-full left-0 bg-red-500"
+                  >
+                    <li
+                      class="hover:bg-[#DFDFDF] rounded-lg overflow-hidden duration-200"
+                    >
+                      <a
+                        class="!text-black flex w-full h-full px-4 py-2 flex items-center justify-between"
+                        href="about.html"
+                      >
+                        About us
+                        <i
+                          class="fa-solid fa-angle-right opacity-0 invisible duration-200"
+                        ></i>
+                      </a>
+                    </li>
+                    <li
+                      class="hover:bg-[#DFDFDF] rounded-lg overflow-hidden duration-200"
+                    >
+                      <a
+                        class="!text-black flex w-full h-full px-4 py-2 flex items-center justify-between"
+                        href="history.html"
+                      >
+                        History
+                        <i
+                          class="fa-solid fa-angle-right opacity-0 invisible duration-200"
+                        ></i>
+                      </a>
+                    </li>
+                    <li
+                      class="hover:bg-[#DFDFDF] rounded-lg overflow-hidden duration-200"
+                    >
+                      <a
+                        class="!text-black flex w-full h-full px-4 py-2 flex items-center justify-between"
+                        href="founderMessage.html"
+                      >
+                        Founder message
+                        <i
+                          class="fa-solid fa-angle-right opacity-0 invisible duration-200"
+                        ></i>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a
+                    class="text-white flex shrink-0 block !min-w-max hover:!font-bold hover:mx-1 duration-200"
+                    href="./companies.html"
+                  >
+                    Companies
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="./news.html"
+                    class="!text-[#fff] shrink-0 block !min-w-max hover:!font-bold hover:mx-1 duration-200"
+                  >
+                    Media Center</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./career.html"
+                    class="!text-[#fff] hover:!font-bold shrink-0 block !min-w-max hover:mx-1 duration-200"
+                  >
+                    Career
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="!text-[#fff] hover:!font-bold shrink-0 block !min-w-max hover:mx-1 duration-200"
+                    href="./contactUs.html"
+                    >Contact Us
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div class="h-right">
+            <select
+              name="langage"
+              class="!appearance-none !border-0 outline-none p-1 cursor-pointer !opacity-100 !text-[#fff]"
+              id="lamguage"
+            >
+              <option value="en">EN</option>
+              <option value="en">RU</option>
+              <option value="en">AZ</option>
+            </select>
+            <svg
+              class="search"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                class="!text-[#fff]"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              />
+            </svg>
+            <div class="mobil-menu-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Header End -->
+
+    <!-- Main Start -->
+    <main>
+      <!-- Mobil Menu Start -->
+      <section class="mobil-menu">
+        <ul>
+          <li class="relative">
+            <button class="getOthers">
+              About us <i class="fa-solid fa-chevron-right icon-arrow"></i>
+            </button>
+            <ul
+              class="absolute duration-200 !bg-[#EDEDED] !w-max text-white group-hover:bg-orange-500 top-full left-0 bg-red-500 others"
+            >
+              <li
+                class="hover:bg-[#DFDFDF] rounded-lg overflow-hidden duration-200 px-4"
+              >
+                <a
+                  class="!text-black flex w-full h-full px-4 py-2 flex items-center justify-between"
+                  href="about.html"
+                >
+                  About us
+                  <i
+                    class="fa-solid fa-angle-right opacity-0 invisible duration-200"
+                  ></i>
+                </a>
+              </li>
+              <li
+                class="hover:bg-[#DFDFDF] rounded-lg overflow-hidden duration-200 px-4"
+              >
+                <a
+                  class="!text-black flex w-full h-full px-4 py-2 flex items-center justify-between"
+                  href="history.html"
+                >
+                  History
+                  <i
+                    class="fa-solid fa-angle-right opacity-0 invisible duration-200"
+                  ></i>
+                </a>
+              </li>
+              <li
+                class="hover:bg-[#DFDFDF] rounded-lg overflow-hidden duration-200 px-4"
+              >
+                <a
+                  class="!text-black flex w-full h-full px-4 py-2 flex items-center justify-between"
+                  href="founderMessage.html"
+                >
+                  Founder message
+                  <i
+                    class="fa-solid fa-angle-right opacity-0 invisible duration-200"
+                  ></i>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href=""> Companies </a>
+          </li>
+          <li><a href="./news.html"> Media Center </a></li>
+          <li><a href="./career.html"> Career </a></li>
+          <li><a href="./contactUs.html">Contact Us </a></li>
+        </ul>
+        <div class="close-btn-for-mobile">
+          <svg
+            style="color: #fff !important"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="#000"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </div>
+      </section>
+      <!-- Mobil Menu End -->
+
+      <!-- Search Start -->
+      <section class="search-area">
+        <span> Search </span>
+        <form action="">
+          <input type="text" placeholder="Search..." />
+        </form>
+        <div class="close-btn">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="#fff"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+      </section>
+      <!-- Search End -->
+
+      <!-- News Detail Start -->
+      <section class="container mt-8">
+        <div class="mt-12 md:mt-16">
+          <h4
+            class="max-md:before:!w-[180px] text-[46px] max-sm:before:!w-[130px] before:w-[300px] before:h-[2px] before:bg-[#fff] before:absolute relative before:left-[110%] before:top-1/2 w-max !text-white !font-semibold max-sm:!text-[30px] max-sm:before:!w-[45px] max-sm:before:left-[105%]"
+          >
+            Media Center
+          </h4>
+        </div>
+        <div class="flex items-center justify-between max-lg:flex-col">
+          <div class="lg:w-[40%] max-lg:mt-8">
+            <img
+              src="./assets/images/media.png"
+              class="w-full h-full object-cover lg:translate-y-[50px]"
+              alt=""
+            />
+          </div>
+          <div class="lg:w-[58%] text-white">
+            <h3 class="text-[46px] max-sm:text-[30px]">Text messaging</h3>
+            <p class="text-[16px]">
+              Text messaging, or texting, is the act of composing and sending
+              electronic messages, typically consisting of alphabetic and
+              numeric characters, between two or more users of mobile
+              phones, desktops/laptops, or another type of compatible computer.
+              Text messages may be sent over a cellular network or may also be
+              sent via satellite or Internet connection. The term originally
+              referred to messages sent using the Short Message Service (SMS) on
+              mobile devices. It has grown beyond alphanumeric text to include
+              multimedia messages using the Multimedia Messaging Service (MMS)
+              and Rich Communication Services (RCS), which can contain digital
+              images, videos, and sound content, as well as ideograms known
+              as emoji (happy faces, sad faces, and other icons), and on
+              various instant messaging apps. Text messaging has been an
+              extremely popular medium of communication since the turn of the
+              century and has also influenced changes in society.[1][2][3][4]
+            </p>
+          </div>
+        </div>
+
+        <div class="my-14 text-white text-[32px]">
+          <h1>Other news</h1>
+
+          <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <div>
+                  <div>
+                    <img src="./assets/images/media-2.png" alt="" />
+                  </div>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
+                    aliquam
+                  </p>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div>
+                  <div>
+                    <img src="./assets/images/media-2.png" alt="" />
+                  </div>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
+                    aliquam
+                  </p>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div>
+                  <div>
+                    <img src="./assets/images/media-2.png" alt="" />
+                  </div>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
+                    aliquam
+                  </p>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div>
+                  <div>
+                    <img src="./assets/images/media-2.png" alt="" />
+                  </div>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
+                    aliquam
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-pagination"></div>
+          </div>
+        </div>
+      </section>
+      <!-- News Detail End -->
+    </main>
+    <!-- Main End -->
+
+    <!-- Footer Start -->
+    <footer class="footer mt-8">
+      <div
+        class="flex container items-center justify-between w-full max-sm:flex-col max-sm:gap-4"
+      >
+        <div
+          class="flex md:items-center gap-10 text-white max-sm:flex-col max-sm:gap-2 w-full"
+        >
+          <p>© <span class="year"></span> AMO Corporate group</p>
+          <a href="https://www.esam-innovations.com" target="_blank">
+            ESAM innovations
+          </a>
+        </div>
+        <div class="flex items-center gap-2 text-white w-full sm:justify-end">
+          <span class="cursor-pointer hover:text-red-300 duration-200"
+            >Follow us</span
+          >
+          <a href=""
+            ><i
+              class="fa-brands fa-instagram text-[20px] hover:text-red-300 duration-200"
+            ></i
+          ></a>
+          <a href=""
+            ><i
+              class="fa-brands fa-linkedin text-[20px] hover:text-red-300 duration-200"
+            ></i
+          ></a>
+          <a href=""
+            ><i
+              class="fa-brands fa-twitter text-[20px] hover:text-red-300 duration-200"
+            ></i
+          ></a>
+        </div>
+      </div>
+    </footer>
+    <!-- Footer End -->
+
+    <!-- App Js file -->
+    <script src="./assets/js/app.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script>
+      var swiper = new Swiper(".mySwiper", {
+        slidesPerView: 4,
+        spaceBetween: 30,
+        loop: true,
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+        breakpoints: {
+          320: {
+            slidesPerView: 1,
+            spaceBetween: 20,
+          },
+
+          480: {
+            slidesPerView: 3,
+            spaceBetween: 30,
+          },
+
+          640: {
+            slidesPerView: 4,
+            spaceBetween: 40,
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

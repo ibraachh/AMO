@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amo Group</title>
+    <link rel="icon" href="./assets/images/fav.png" />
+    <!-- Font awsome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Swiper Css -->
+    <link rel="stylesheet" href="./assets/css/swiper-bundle.min.css" />
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="./assets/css/style.css" />
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body>
+    <div id="pre-loader">
+      <div id="loader-logo"></div>
+      <div id="loader-circle"></div>
+      <div class="loader-section section-left"></div>
+      <div class="loader-section section-right"></div>
+    </div>
+    <!-- Header Start -->
+    <header id="header">
+      <div class="container">
+        <div class="row">
+          <div class="h-left">
+            <a href="index.html" class="logo">
+              <img src="./assets/images/logo.svg" alt="" />
+            </a>
+          </div>
+          <div class="h-average">
+            <nav>
+              <ul>
+                <li class="relative group pr-3 pr-3">
+                  <span
+                    class="title !text-[#fff] shrink-0 block !min-w-max hover:!font-bold hover:mx-1 duration-200"
+                  >
+                    About us
+                    <i
+                      class="fa-solid fa-chevron-down opacity-0 invinsible group-hover:opacity-100 group-hover:visible -translate-y-4 group-hover:-translate-y-2 duration-200"
+                    ></i>
+                  </span>
+                  <ul
+                    class="absolute duration-200 !bg-[#EDEDED] !w-max text-white group-hover:bg-orange-500 top-full left-0 bg-red-500"
+                  >
+                    <li
+                      class="hover:bg-[#DFDFDF] rounded-lg overflow-hidden duration-200"
+                    >
+                      <a
+                        class="!text-black flex w-full h-full px-4 py-2 flex items-center justify-between"
+                        href="about.html"
+                      >
+                        About us
+                        <i
+                          class="fa-solid fa-angle-right opacity-0 invisible duration-200"
+                        ></i>
+                      </a>
+                    </li>
+                    <li
+                      class="hover:bg-[#DFDFDF] rounded-lg overflow-hidden duration-200"
+                    >
+                      <a
+                        class="!text-black flex w-full h-full px-4 py-2 flex items-center justify-between"
+                        href="history.html"
+                      >
+                        History
+                        <i
+                          class="fa-solid fa-angle-right opacity-0 invisible duration-200"
+                        ></i>
+                      </a>
+                    </li>
+                    <li
+                      class="hover:bg-[#DFDFDF] rounded-lg overflow-hidden duration-200"
+                    >
+                      <a
+                        class="!text-black flex w-full h-full px-4 py-2 flex items-center justify-between"
+                        href="founderMessage.html"
+                      >
+                        Founder message
+                        <i
+                          class="fa-solid fa-angle-right opacity-0 invisible duration-200"
+                        ></i>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a
+                    class="text-white flex shrink-0 block !min-w-max hover:!font-bold hover:mx-1 duration-200"
+                    href="./companies.html"
+                  >
+                    Companies
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="./news.html"
+                    class="!text-[#fff] shrink-0 block !min-w-max hover:!font-bold hover:mx-1 duration-200"
+                  >
+                    Media Center</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./career.html"
+                    class="!text-[#fff] hover:!font-bold shrink-0 block !min-w-max hover:mx-1 duration-200"
+                  >
+                    Career
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="!text-[#fff] hover:!font-bold shrink-0 block !min-w-max hover:mx-1 duration-200"
+                    href="./contactUs.html"
+                    >Contact Us
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div class="h-right">
+            <select
+              name="langage"
+              class="!appearance-none !border-0 outline-none p-1 cursor-pointer !opacity-100 !text-[#fff]"
+              id="lamguage"
+            >
+              <option value="en">EN</option>
+              <option value="en">RU</option>
+              <option value="en">AZ</option>
+            </select>
+            <svg
+              class="search"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                class="!text-[#fff]"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              />
+            </svg>
+            <div class="mobil-menu-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Header End -->
+
+    <!-- Main Start -->
+    <main>
+      <!-- Mobil Menu Start -->
+      <section class="mobil-menu">
+        <ul>
+          <li class="relative">
+            <button class="getOthers">
+              About us <i class="fa-solid fa-chevron-right icon-arrow"></i>
+            </button>
+            <ul
+              class="absolute duration-200 !bg-[#EDEDED] !w-max text-white group-hover:bg-orange-500 top-full left-0 bg-red-500 others"
+            >
+              <li
+                class="hover:bg-[#DFDFDF] rounded-lg overflow-hidden duration-200 px-4"
+              >
+                <a
+                  class="!text-black flex w-full h-full px-4 py-2 flex items-center justify-between"
+                  href="about.html"
+                >
+                  About us
+                  <i
+                    class="fa-solid fa-angle-right opacity-0 invisible duration-200"
+                  ></i>
+                </a>
+              </li>
+              <li
+                class="hover:bg-[#DFDFDF] rounded-lg overflow-hidden duration-200 px-4"
+              >
+                <a
+                  class="!text-black flex w-full h-full px-4 py-2 flex items-center justify-between"
+                  href="history.html"
+                >
+                  History
+                  <i
+                    class="fa-solid fa-angle-right opacity-0 invisible duration-200"
+                  ></i>
+                </a>
+              </li>
+              <li
+                class="hover:bg-[#DFDFDF] rounded-lg overflow-hidden duration-200 px-4"
+              >
+                <a
+                  class="!text-black flex w-full h-full px-4 py-2 flex items-center justify-between"
+                  href="founderMessage.html"
+                >
+                  Founder message
+                  <i
+                    class="fa-solid fa-angle-right opacity-0 invisible duration-200"
+                  ></i>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href=""> Companies </a>
+          </li>
+          <li><a href="./news.html"> Media Center </a></li>
+          <li><a href="./career.html"> Career </a></li>
+          <li><a href="./contactUs.html">Contact Us </a></li>
+        </ul>
+        <div class="close-btn-for-mobile">
+          <svg
+            style="color: #fff !important"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="#000"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </div>
+      </section>
+      <!-- Mobil Menu End -->
+
+      <!-- Search Start -->
+      <section class="search-area">
+        <span> Search </span>
+        <form action="">
+          <input type="text" placeholder="Search..." />
+        </form>
+        <div class="close-btn">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="#fff"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+      </section>
+      <!-- Search End -->
+
+      <!-- Slider Area Start -->
+      <section class="swiper-container">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div
+              class="slide-img bg-[url('./assets/images/hero-bg.png')] flex items-center"
+            >
+              <!-- <img src="./assets/images/hero-bg.png" alt="" /> -->
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="slide-img">
+              <video
+                class="slide-video !select-none"
+                autoplay
+                muted
+                loop
+                playsinline
+              >
+                <source src="./assets/video/videSlide.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="container max-md:mx-auto h-full flex flex-col justify-center max-md:max-w-[85%] text-white fixed z-[20] select-none"
+        >
+          <div
+            class="flex flex-col h-full justify-between mb-8 mt-[180px] max-md:mt-[120px] max-sm:mt-[100px]"
+          >
+            <div class="flex flex-col gap-6">
+              <div
+                class="title text-[68px] max-xl:text-[42px] max-sm:text-[32px]"
+              >
+                <h3>
+                  We are AMO <br />
+                  Corporate Group
+                </h3>
+              </div>
+              <div>
+                <p
+                  class="text-[20px] max-xl:text-[18px] max-sm:text-[14px] md:max-w-[60%]"
+                >
+                  "AMO CORPORATE GROUP" is a group of corporate companies
+                  operating since 1995 in the fields of production of
+                  agricultural products, their import and export, delivery
+                  through the Horeca system and international transport.
+                </p>
+                <div
+                  class="link mt-8 flex relative before:w-[43%] before:absolute before:left-0 before:top-1/2 before:h-[2px] before:bg-white items-center justify-center max-sm:before:w-[30%]"
+                >
+                  <a href="./amoGroup.html"> Learn more </a>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="flex items-center justify-between w-full max-sm:flex-col max-sm:gap-4"
+            >
+              <div
+                class="flex md:items-center gap-10 text-white max-sm:flex-col max-sm:gap-2 w-full"
+              >
+                <p>© <span class="year"></span> AMO Corporate group</p>
+                <a href="https://www.esam-innovations.com" target="_blank">
+                  ESAM innovations
+                </a>
+              </div>
+              <div
+                class="flex items-center gap-2 text-white w-full sm:justify-end"
+              >
+                <span class="cursor-pointer hover:text-red-300 duration-200"
+                  >Follow us</span
+                >
+                <a href=""
+                  ><i
+                    class="fa-brands fa-instagram text-[20px] hover:text-red-300 duration-200"
+                  ></i
+                ></a>
+                <a href=""
+                  ><i
+                    class="fa-brands fa-linkedin text-[20px] hover:text-red-300 duration-200"
+                  ></i
+                ></a>
+                <a href=""
+                  ><i
+                    class="fa-brands fa-twitter text-[20px] hover:text-red-300 duration-200"
+                  ></i
+                ></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="swiper-pagination"></div> -->
+      </section>
+      <!-- Slider Area End -->
+    </main>
+    <!-- Main End -->
+
+    <!-- Footer Start -->
+    <footer class="footer">
+      <div class="container">
+        <div class="row max-sm:flex-col max-sm:items-start max-sm:!gap-5">
+          <div class="f-left !text-[#F5F5F5] !text-[16px]">
+            <p class="flex gap-6">
+              © <span class="year"></span> AMO Corporate group
+              <a href="https://www.esam-innovations.com" target="_blank"
+                >ESAM innovations</a
+              >
+            </p>
+          </div>
+          <div class="f-right !text-[#F5F5F5]">
+            <p class="!opacity-100">Follow us</p>
+            <ul class="sosial-icons">
+              <li>
+                <a href="#">
+                  <svg
+                    class="!fill-[#fff]"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512"
+                  >
+                    <path
+                      d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <svg
+                    class="!fill-[#fff]"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 320 512"
+                  >
+                    <path
+                      d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <svg
+                    class="!fill-[#fff]"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512"
+                  >
+                    <path
+                      d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"
+                    />
+                  </svg>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Footer End -->
+
+    <!-- Swiper js file -->
+    <script src="./assets/js/swiper-bundle.min.js"></script>
+    <!-- App Js file -->
+    <script src="./assets/js/app.js"></script>
+    <script>
+      // Swiper for home page
+      var mySwiper = new Swiper(".swiper-container", {
+        direction: "vertical",
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+      });
+    </script>
+  </body>
+</html>
