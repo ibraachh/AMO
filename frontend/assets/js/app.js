@@ -11,12 +11,20 @@ close_btn.addEventListener("click", () => {
 });
 
 const others = document.querySelector(".others");
+const othersSecond = document.querySelector(".othersSecond");
 const getOthers = document.querySelector(".getOthers");
+const getOthersSecond = document.querySelector(".getOthersSecond");
 const iconArrow = document.querySelector(".icon-arrow");
+const iconArrowSecond = document.querySelector(".icon-arrows");
 
 getOthers.addEventListener("click", () => {
   others.classList.toggle("active");
   iconArrow.classList.toggle("active");
+});
+
+getOthersSecond.addEventListener("click", () => {
+  othersSecond.classList.toggle("active");
+  iconArrowSecond.classList.toggle("active");
 });
 
 const close_btn_for_mobile = document.querySelector(".close-btn-for-mobile");

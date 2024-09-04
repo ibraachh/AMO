@@ -552,7 +552,8 @@ main .mobil-menu .close-btn-for-mobile svg {
   color: #fff;
 }
 
-main .mobil-menu ul li .others {
+main .mobil-menu ul li .others,
+main .mobil-menu ul li .othersSecond {
   visibility: hidden;
   opacity: 0;
   margin-top: 30px;
@@ -564,10 +565,12 @@ main .mobil-menu ul li .others {
   position: absolute;
   top: 100%;
 }
-main .mobil-menu ul li .others.active {
+main .mobil-menu ul li .others.active,
+main .mobil-menu ul li .othersSecond.active {
   visibility: visible;
   opacity: 1;
   margin-top: 10px;
+  z-index: 5;
 }
 main .mobil-menu ul li a {
   font-family: "Open Sans", sans-serif;
