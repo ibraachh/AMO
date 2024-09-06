@@ -9,7 +9,6 @@ import { useParallax } from './use-carousel-parallax';
 import { useCarouselArrows } from './use-carousel-arrows';
 import { useCarouselProgress } from './use-carousel-progress';
 import { useCarouselAutoPlay } from './use-carousel-auto-play';
-import { useCarouselAutoScroll } from './use-carousel-auto-scroll';
 
 import type { CarouselOptions, UseCarouselReturn } from '../types';
 
@@ -29,7 +28,6 @@ export const useCarousel = (
 
   const _autoplay = useCarouselAutoPlay(mainApi);
 
-  const _autoScroll = useCarouselAutoScroll(mainApi);
 
   const _progress = useCarouselProgress(mainApi);
 
@@ -44,17 +42,12 @@ export const useCarousel = (
         onClickNext: () => _autoplay.onClickAutoplay(onClickNext),
       };
     }
-    if (pluginNames?.includes('autoScroll')) {
-      return {
-        onClickPrev: () => _autoScroll.onClickAutoplay(onClickPrev),
-        onClickNext: () => _autoScroll.onClickAutoplay(onClickNext),
-      };
-    }
+
     return {
       onClickPrev,
       onClickNext,
     };
-  }, [_autoScroll, _autoplay, onClickNext, onClickPrev, pluginNames]);
+  }, [ _autoplay, onClickNext, onClickPrev, pluginNames]);
 
   return {
     options: {
@@ -78,7 +71,6 @@ export const useCarousel = (
     // progress
     progress: _progress,
     // autoplay
-    autoplay: _autoplay,
-    autoScroll: _autoScroll,
+    autoplay: _autoplay
   };
 };

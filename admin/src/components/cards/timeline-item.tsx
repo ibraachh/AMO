@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 
 import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
-import { ITimeLine } from './timeline-card-list';
+import type { ITimeLine } from './timeline-card-list';
 
 // ----------------------------------------------------------------------
 

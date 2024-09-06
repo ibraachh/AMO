@@ -45,7 +45,8 @@ export const paths = {
     root: ROOTS.DASHBOARD,
     home: `${ROOTS.DASHBOARD}/home`,
     about: {
-      root: `${ROOTS.DASHBOARD}/about/root`,
+      root: `${ROOTS.DASHBOARD}/about`,
+      main: `${ROOTS.DASHBOARD}/about/main`,
       cardEdit:(id:string)=> `${ROOTS.DASHBOARD}/about/card-edit/${id}`,
       secondCardEdit:(id:string)=> `${ROOTS.DASHBOARD}/about/second-card-edit/${id}`,
       history: `${ROOTS.DASHBOARD}/about/history`,
@@ -53,5 +54,29 @@ export const paths = {
       timeLineCardCreate: `${ROOTS.DASHBOARD}/about/history/timeline-card-create`,
       founderMessage: `${ROOTS.DASHBOARD}/about/founder-message`,
     },
+    companies:{
+      root: `${ROOTS.DASHBOARD}/companies`,
+      editCard:(id:string)=>`${ROOTS.DASHBOARD}/companies/edit-card/${id}`,
+      editGrowCard:(id:string)=>`${ROOTS.DASHBOARD}/companies/edit-grow-card/${id}`,
+      editAmodoCard:(id:string)=>`${ROOTS.DASHBOARD}/companies/edit-amodo-card/${id}`,
+      createCard:`${ROOTS.DASHBOARD}/companies/create-card`,
+      amoTransportEdit:(id:string)=>`${ROOTS.DASHBOARD}/companies/amo-transport-edit/${id}`,
+    },
+    mediaCenter:{
+      root: `${ROOTS.DASHBOARD}/media-center`,
+      list:`${ROOTS.DASHBOARD}/media-center/list`,
+      create:`${ROOTS.DASHBOARD}/media-center/create`,
+      edit:(id:string)=>`${ROOTS.DASHBOARD}/media-center/edit/${id}`,
+    },
+    career:{
+      root: `${ROOTS.DASHBOARD}/career/list`,
+      create:`${ROOTS.DASHBOARD}/career/create`,
+      edit:(id:string)=>`${ROOTS.DASHBOARD}/career/edit/${id}`,
+    },
+    contact:{
+      root: `${ROOTS.DASHBOARD}/contact/list`,
+      edit:`${ROOTS.DASHBOARD}/contact/edit`,
+    },
+
   },
 };

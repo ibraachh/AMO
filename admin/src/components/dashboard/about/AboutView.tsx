@@ -1,11 +1,11 @@
+import { DashboardContent } from 'src/layouts/dashboard';
+import { paths } from 'src/routes/paths';
+import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
+import { Divider } from '@mui/material';
 import SectionTop from './SectionTop';
 import SectionCenter from './SectionCenter';
-import { Divider } from '@mui/material';
 import SectionBottom from './SectionBottom';
 import AboutMeta from './AboutMeta';
-import { DashboardContent } from 'src/layouts/dashboard';
-import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
-import { paths } from 'src/routes/paths';
 
 export default function AboutView() {
   return (

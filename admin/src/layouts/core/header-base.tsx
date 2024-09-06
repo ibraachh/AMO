@@ -1,12 +1,10 @@
 import type { NavSectionProps } from 'src/components/nav-section';
 
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
 
 import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
 
 import { Logo } from 'src/components/logo';
 
@@ -151,17 +149,6 @@ export function HeaderBase({
               }}
             >
               {/* -- Help link -- */}
-              {helpLink && (
-                <Link
-                  data-slot="help-link"
-                  href={paths.faqs}
-                  component={RouterLink}
-                  color="inherit"
-                  sx={{ typography: 'subtitle2' }}
-                >
-                  Need help?
-                </Link>
-              )}
 
               {/* -- Searchbar -- */}
               {/* {searchbar && <Searchbar data-slot="searchbar" data={data?.nav} />} */}

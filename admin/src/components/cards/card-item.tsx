@@ -1,14 +1,13 @@
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 
 import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
-import { ICard } from './card-list';
+import type { ICard } from './card-list';
 
 // ----------------------------------------------------------------------
 
@@ -24,6 +23,9 @@ export function CardItem({ item, onEdit, onDelete }: Props) {
   return (
     <>
       <Card>
+        <Stack sx={{ p: 3, pb: 1 }}>
+          <img src={item.icon} alt="" className='w-[50px] h-[50px]' />
+        </Stack>
         <IconButton onClick={popover.onOpen} sx={{ position: 'absolute', top: 8, right: 8 }}>
           <Iconify icon="eva:more-vertical-fill" />
         </IconButton>

@@ -4,7 +4,6 @@ import Alert from '@mui/material/Alert';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { Section } from './section';
 import { Main, Content } from './main';
 import { HeaderBase } from '../core/header-base';
 import { LayoutSection } from '../core/layout-section';
@@ -14,14 +13,9 @@ import { LayoutSection } from '../core/layout-section';
 export type AuthSplitLayoutProps = {
   sx?: SxProps<Theme>;
   children: React.ReactNode;
-  section?: {
-    title?: string;
-    imgUrl?: string;
-    subtitle?: string;
-  };
 };
 
-export function AuthSplitLayout({ sx, section, children }: AuthSplitLayoutProps) {
+export function AuthSplitLayout({ sx, children }: AuthSplitLayoutProps) {
   const mobileNavOpen = useBoolean();
 
   const layoutQuery: Breakpoint = 'md';
@@ -71,12 +65,6 @@ export function AuthSplitLayout({ sx, section, children }: AuthSplitLayoutProps)
       }}
     >
       <Main layoutQuery={layoutQuery}>
-        <Section
-          title={section?.title}
-          layoutQuery={layoutQuery}
-          imgUrl={section?.imgUrl}
-          subtitle={section?.subtitle}
-        />
         <Content layoutQuery={layoutQuery}>{children}</Content>
       </Main>
     </LayoutSection>
