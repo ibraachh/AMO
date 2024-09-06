@@ -17,9 +17,6 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
-import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hooks';
-
 import {
   _tags,
   PRODUCT_SIZE_OPTIONS,
@@ -63,8 +60,6 @@ type Props = {
 };
 
 export function ProductNewEditForm({ currentProduct }: Props) {
-  const router = useRouter();
-
   const [includeTaxes, setIncludeTaxes] = useState(false);
 
   const defaultValues = useMemo(

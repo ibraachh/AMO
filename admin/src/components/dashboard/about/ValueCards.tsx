@@ -1,4 +1,3 @@
-import { _jobs } from 'src/_mock';
 import { CardList } from 'src/components/cards/card-list';
 
 const data = [

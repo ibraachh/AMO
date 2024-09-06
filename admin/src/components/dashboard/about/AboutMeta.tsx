@@ -1,6 +1,6 @@
 import { z as zod } from 'zod';
 import { useForm } from 'react-hook-form';
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Card, Stack, Button, Typography, Chip } from '@mui/material';
@@ -8,11 +8,6 @@ import { Card, Stack, Button, Typography, Chip } from '@mui/material';
 import { Form, Field } from 'src/components/hook-form';
 
 import { toast } from 'sonner';
-import CustomTimeline from 'src/components/timeline/CustomTimeline';
-import { getLanguages } from 'src/utils/data';
-import { DashboardContent } from 'src/layouts/dashboard';
-import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
-import { paths } from 'src/routes/paths';
 import { _tags } from 'src/_mock';
 
 export type NewProductSchemaType = zod.infer<typeof NewProductSchema>;

@@ -26,6 +26,26 @@ const TimeLineCardCreate = lazy(() => import('src/pages/dashboard/history/TimeLi
 // Founder message
 const FounderMessage = lazy(() => import('src/pages/dashboard/founder-message/FounderMessage'));
 
+// Companies
+const Companies = lazy(() => import('src/pages/dashboard/companies/Companies'));
+const AmoTradeEdit = lazy(() => import('src/pages/dashboard/companies/AmoTradeEdit'));
+const AmoGrowEdit = lazy(() => import('src/pages/dashboard/companies/AmoGrowEdit'));
+const AmodoEdit = lazy(() => import('src/pages/dashboard/companies/AmodoEdit'));
+const TransportEdit = lazy(() => import('src/pages/dashboard/companies/TransportEdit'));
+
+// Career
+const Career = lazy(() => import('src/pages/dashboard/career/Career'));
+const CareerEdit = lazy(() => import('src/pages/dashboard/career/CareerEdit'));
+const CareerCreate = lazy(() => import('src/pages/dashboard/career/CareerCreate'));
+
+// Media Center
+const MediaCenter = lazy(() => import('src/pages/dashboard/media-center/MediaCenter'));
+const MediaCreate = lazy(() => import('src/pages/dashboard/media-center/MediaCreate'));
+const MediaEdit = lazy(() => import('src/pages/dashboard/media-center/MediaEdit'));
+
+// Contact
+const Contact = lazy(() => import('src/pages/dashboard/contact/Contact'));
+const ContactEditView = lazy(() => import('src/pages/dashboard/contact/ContactEdit'));
 // ----------------------------------------------------------------------
 
 const layoutContent = (
@@ -46,13 +66,61 @@ export const dashboardRoutes = [
       {
         path: 'about',
         children: [
-          { path: 'root', element: <About /> },
+          { path: 'main', element: <About /> },
           { path: 'card-edit/:id', element: <CardEdit /> },
           { path: 'second-card-edit/:id', element: <SecondCardEdit /> },
           { path: 'history', element: <History /> },
           { path: 'history/timeline-card-edit/:id', element: <TimeLineCardEdit /> },
           { path: 'history/timeline-card-create', element: <TimeLineCardCreate /> },
           { path: 'founder-message', element: <FounderMessage /> },
+        ],
+      },
+      {
+        path: 'companies',
+        children: [
+          {
+            index: true,
+            element: <Companies />,
+          },
+          {
+            path: 'edit-card/:id',
+            element: <AmoTradeEdit />,
+          },
+          {
+            path: 'edit-grow-card/:id',
+            element: <AmoGrowEdit />,
+          },
+          {
+            path: 'edit-amodo-card/:id',
+            element: <AmodoEdit />,
+          },
+          {
+            path: 'amo-transport-edit/:id',
+            element: <TransportEdit />,
+          },
+        ],
+      },
+      {
+        path: 'media-center',
+        children: [
+          { path: 'list', element: <MediaCenter />, index: true },
+          { path: 'create', element: <MediaCreate /> },
+          { path: 'edit/:id', element: <MediaEdit /> },
+        ],
+      },
+      {
+        path: 'career',
+        children: [
+          { path: 'list', element: <Career />, index: true },
+          { path: 'create', element: <CareerCreate /> },
+          { path: 'edit/:id', element: <CareerEdit /> },
+        ],
+      },
+      {
+        path: 'contact',
+        children: [
+          { path: 'list', element: <Contact /> },
+          { path: 'edit', element: <ContactEditView /> },
         ],
       },
     ],

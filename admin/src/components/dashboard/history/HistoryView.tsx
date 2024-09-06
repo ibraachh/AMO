@@ -1,9 +1,9 @@
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { paths } from 'src/routes/paths';
+import { Divider } from '@mui/material';
 import HeadingSection from './HeadingSection';
 import TimeLineCards from './TimeLineCards';
-import { Divider } from '@mui/material';
 import HistoryMeta from './HistoryMeta';
 
 export default function HistoryView() {
