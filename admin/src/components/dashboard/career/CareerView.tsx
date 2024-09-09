@@ -10,8 +10,8 @@ export default function CareerView() {
   return (
     <DashboardContent maxWidth="xl">
       <CustomBreadcrumbs
-        heading="Kariyer"
-        links={[{ name: 'Saytın aktivliyi', href: paths.dashboard.root }, { name: 'Kariyer' }]}
+        heading="Kariyera"
+        links={[{ name: 'Saytın aktivliyi', href: paths.dashboard.root }, { name: 'Kariyera' }]}
         action={
           <Button
             component={RouterLink}
