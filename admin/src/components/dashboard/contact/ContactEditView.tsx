@@ -194,7 +194,7 @@ export default function ContactEditView() {
             ))}
 
             <Button variant="outlined" onClick={() => setOpen(true)}>
-              + Sosial Media Əlavə Et
+              + Sosial Medya Əlavə Et
             </Button>
           </Stack>
           <div className="flex justify-end my-3 mt-8">
@@ -206,7 +206,7 @@ export default function ContactEditView() {
       </Card>
 
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Sosial Media Əlavə Et</DialogTitle>
+        <DialogTitle>Sosial Medya Əlavə Et</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus

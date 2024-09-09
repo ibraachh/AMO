@@ -239,10 +239,8 @@ export default function MediaCreateView() {
         //   ],
         //   coverImage: uploadedFileName,
         // };
-
         // Create news with the final data
         // const response = await useCreateNews(finalData);
-
         // if (response.data) {
         //   setProductData({
         //     title: '',
@@ -258,7 +256,6 @@ export default function MediaCreateView() {
         //     displayInHomePage: false,
         //     translations: [],
         //   });
-
         //   setImage(undefined);
         //   reset(defaultValues);
         //   setStep(0);
@@ -275,10 +272,10 @@ export default function MediaCreateView() {
   return (
     <DashboardContent maxWidth="xl">
       <CustomBreadcrumbs
-        heading="Media əlavə et"
+        heading="Medya əlavə et"
         links={[
           { name: 'Saytın aktivliyi', href: paths.dashboard.root },
-          { name: 'Media əlavə et' },
+          { name: 'Medya əlavə et' },
         ]}
       />
       <div className="flex mx-auto">
