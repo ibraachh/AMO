@@ -5,6 +5,8 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 @Builder
 @Data
 @Document(collection = "joinUsForms")
@@ -15,5 +17,6 @@ public class JoinUsForm {
     private String lastName;
     private String email;
     private String phoneNumber;
+    private Date date;
     private String file;
 }
