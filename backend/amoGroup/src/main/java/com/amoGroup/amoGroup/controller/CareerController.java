@@ -1,11 +1,14 @@
 package com.amoGroup.amoGroup.controller;
 
+
 import com.amoGroup.amoGroup.entities.About;
+import com.amoGroup.amoGroup.entities.Career;
 import com.amoGroup.amoGroup.patch.Patcher;
-import com.amoGroup.amoGroup.repositories.AboutRepository;
+import com.amoGroup.amoGroup.repositories.CareerRepository;
+import com.amoGroup.amoGroup.response.CareerResponse;
 import com.amoGroup.amoGroup.response.EntityResponse;
 import com.amoGroup.amoGroup.response.MessageResponse;
-import com.amoGroup.amoGroup.services.about.AboutService;
+import com.amoGroup.amoGroup.services.career.CareerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,29 +18,28 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = {"*"}, maxAge = 3600)
 @RestController
-@RequestMapping("/api/about")
-public class AboutController {
+@RequestMapping("/api/career")
+public class CareerController {
 
     @Autowired
-    AboutService aboutService;
-
-    @Autowired
-    AboutRepository aboutRepository;
+    CareerService careerService;
 
     @Autowired
     Patcher patcher;
 
+    @Autowired
+    CareerRepository careerRepository;
+
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
     @PostMapping("/create")
-    public ResponseEntity<About> create(@Valid @RequestBody About request) {
+    public ResponseEntity<Career> create(@Valid @RequestBody Career request) {
         try {
-            About about = aboutService.add(request);
-            return ResponseEntity.ok(about);
+            Career career = careerService.add(request);
+            return ResponseEntity.ok(career);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -48,10 +50,10 @@ public class AboutController {
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
     @PostMapping("/update")
-    public ResponseEntity<About> update(@Valid @RequestBody About request) {
+    public ResponseEntity<Career> update(@Valid @RequestBody Career request) {
         try {
-            About about = aboutService.update(request);
-            return ResponseEntity.ok(about);
+            Career career = careerService.update(request);
+            return ResponseEntity.ok(career);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -59,16 +61,15 @@ public class AboutController {
         }
     }
 
-
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
     @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
-    public ResponseEntity<About> patchUpdate(@PathVariable String id, @RequestBody About request) throws IllegalAccessException {
+    public ResponseEntity<Career> patch(@PathVariable String id, @RequestBody Career patch) {
         try {
-            About about = aboutRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("About with this id does not exist"));
-            patcher.patcher(about, request);
-            return ResponseEntity.ok(aboutService.update(about));
+            Career career = careerRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Career with this id does not exist"));
+            patcher.patcher(career, patch);
+            return ResponseEntity.ok(careerService.update(career));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -81,13 +82,13 @@ public class AboutController {
     @GetMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
         try {
-            boolean result = aboutService.delete(id);
+            boolean result = careerService.delete(id);
             if (result) {
-                return ResponseEntity.ok(new MessageResponse(HttpStatus.OK, "About entity is deleted successfully"));
+                return ResponseEntity.ok(new MessageResponse(HttpStatus.OK, "Career entity is deleted successfully"));
             }
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(new MessageResponse(HttpStatus.BAD_REQUEST, "About entity not found"));
+                    .body(new MessageResponse(HttpStatus.BAD_REQUEST, "Career entity not found"));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -96,9 +97,9 @@ public class AboutController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<EntityResponse> get(@RequestHeader(value = "Accept-Language", defaultValue = "az") String language, @PathVariable String id) {
+    public ResponseEntity<CareerResponse> get(@RequestHeader(value = "Accept-Language", defaultValue = "az") String language, @PathVariable String id) {
         try {
-            EntityResponse u = aboutService.getAbout(id, language)
+            CareerResponse u = careerService.getCareer(id, language)
                     .orElseThrow(() -> new RuntimeException("Entity not found with this id"));
             return ResponseEntity.ok(u);
         } catch (Exception e) {
@@ -109,9 +110,9 @@ public class AboutController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<EntityResponse>> list(@RequestHeader(value = "Accept-Language", defaultValue = "az") String language) {
+    public ResponseEntity<List<CareerResponse>> list(@RequestHeader(value = "Accept-Language", defaultValue = "az") String language) {
         try {
-            return ResponseEntity.ok(aboutService.getAbouts(language));
+            return ResponseEntity.ok(careerService.getCareers(language));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -122,9 +123,9 @@ public class AboutController {
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
     @GetMapping("/listAll")
-    public ResponseEntity<List<About>> listAllByType() {
+    public ResponseEntity<List<Career>> listAllByType() {
         try {
-            return ResponseEntity.ok(aboutService.getAllAbouts());
+            return ResponseEntity.ok(careerService.getAllCareers());
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -133,9 +134,9 @@ public class AboutController {
     }
 
     @GetMapping("/getAll/{id}")
-    public ResponseEntity<About> get(@PathVariable String id) {
+    public ResponseEntity<Career> get(@PathVariable String id) {
         try {
-            About u = aboutService.getAboutWithTranslations(id)
+            Career u = careerService.getCareerWithTranslations(id)
                     .orElseThrow(() -> new RuntimeException("Entity not found with this id"));
             return ResponseEntity.ok(u);
         } catch (Exception e) {
@@ -150,7 +151,7 @@ public class AboutController {
     @GetMapping("/count")
     public ResponseEntity<?> getCount() {
         try {
-            return ResponseEntity.ok(aboutService.count());
+            return ResponseEntity.ok(careerService.count());
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

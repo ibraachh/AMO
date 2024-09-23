@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,14 +34,19 @@ public class FileController {
     @PostMapping("/uploadFile")
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadFile(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam String fileName,
+            Authentication authentication
+    ) {
         try {
-            logger.info(file.getName());
+            fileName = System.currentTimeMillis() + "_" + fileName;
+            logger.info(fileName);
             logger.info(file.toString());
-            storageService.store(file, file.getName());
+            storageService.store(file, fileName);
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(new MessageResponse(HttpStatus.OK, file.getName()));
+                    .body(new MessageResponse(HttpStatus.OK, fileName));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
