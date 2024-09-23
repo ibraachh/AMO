@@ -39,6 +39,10 @@ public class LanguageController {
                     .code("en")
                     .name("English")
                     .build());
+            languageService.addLanguage(Language.builder()
+                    .code("ru")
+                    .name("Russian")
+                    .build());
         }
     }
 
