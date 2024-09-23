@@ -62,7 +62,7 @@ public class JoinUsFormController {
         try {
             JoinUsForm joinForm = repository.findById(id)
                     .orElseThrow(() -> new IllegalAccessException("Join Us Form not found"));
-            patcher.patcher(request, joinForm);
+            patcher.patcher(joinForm, request);
             return ResponseEntity.ok(joinUsService.update(joinForm));
         } catch (Exception e) {
             return ResponseEntity
