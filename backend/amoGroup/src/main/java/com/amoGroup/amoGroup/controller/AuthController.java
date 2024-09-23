@@ -51,7 +51,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(
+    public ResponseEntity<AuthenticationResponse> login(
             @Valid @RequestBody LoginRequest loginRequest,
             HttpServletRequest httpRequest
     ) {
@@ -61,7 +61,7 @@ public class AuthController {
         }
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new MessageResponse(HttpStatus.BAD_REQUEST, "Error: Login fail!"));
+                .build();
     }
 
     @PostMapping("/refresh-token")

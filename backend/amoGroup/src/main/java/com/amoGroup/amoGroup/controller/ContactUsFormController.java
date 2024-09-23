@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = {"*"}, maxAge = 3600)
 @RestController
 @RequestMapping("/api/contact-us")
@@ -29,35 +31,35 @@ public class ContactUsFormController {
     Patcher patcher;
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@Valid @RequestBody ContactUsForm request) {
+    public ResponseEntity<ContactUsForm> create(@Valid @RequestBody ContactUsForm request) {
         try {
             ContactUsForm contactForm = contactFormService.save(request);
             return ResponseEntity.ok(contactForm);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(new MessageResponse(HttpStatus.BAD_REQUEST, e.getMessage()));
+                    .build();
         }
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
     @PostMapping("/update")
-    public ResponseEntity<?> update(@Valid @RequestBody ContactUsForm request) {
+    public ResponseEntity<ContactUsForm> update(@Valid @RequestBody ContactUsForm request) {
         try {
             ContactUsForm contactForm = contactFormService.update(request);
             return ResponseEntity.ok(contactForm);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(new MessageResponse(HttpStatus.BAD_REQUEST, e.getMessage()));
+                    .build();
         }
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
     @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchUpdate(@PathVariable String id, @RequestBody ContactUsForm request) throws IllegalAccessException {
+    public ResponseEntity<ContactUsForm> patchUpdate(@PathVariable String id, @RequestBody ContactUsForm request) throws IllegalAccessException {
         try {
             ContactUsForm existing = repository.findById(id)
                     .orElseThrow(() -> new RuntimeException("There is no contact info with given id"));
@@ -67,7 +69,7 @@ public class ContactUsFormController {
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(new MessageResponse(HttpStatus.BAD_REQUEST, e.getMessage()));
+                    .build();
         }
     }
 
@@ -103,17 +105,21 @@ public class ContactUsFormController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "authentication")
     @GetMapping("/list")
-    public ResponseEntity<?> list() {
+    public ResponseEntity<List<ContactUsForm>> list() {
         try {
             return ResponseEntity.ok(contactFormService.list());
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(new MessageResponse(HttpStatus.BAD_REQUEST, e.getMessage()));
+                    .build();
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "authentication")
     @GetMapping("/count")
     public ResponseEntity<?> count() {
         try {
