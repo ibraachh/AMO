@@ -1,0 +1,4 @@
+package com.amoGroup.amoGroup.services.news;
+
+public class NewsServiceImpl {
+}
