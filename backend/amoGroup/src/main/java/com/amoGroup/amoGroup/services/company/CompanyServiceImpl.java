@@ -51,6 +51,8 @@ public class CompanyServiceImpl implements CompanyService {
             Company company = companyRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Company with this id does not exist"));
 
+            List<CompanyCard> cards = company.getCompanyCards();
+            companyCardRepository.deleteAll(cards);
             companyRepository.delete(company);
             return true;
         } catch (Exception e) {
