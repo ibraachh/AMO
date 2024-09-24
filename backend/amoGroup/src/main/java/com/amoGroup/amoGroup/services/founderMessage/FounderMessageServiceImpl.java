@@ -25,6 +25,9 @@ public class FounderMessageServiceImpl implements FounderMessageService {
     @Override
     public FounderMessage add(FounderMessage founderMessage) {
         validateTranslations(founderMessage);
+        if (!founderMessageRepository.findAll().isEmpty()) {
+            throw new RuntimeException("Founder message is already exists. Try to edit it");
+        }
         return founderMessageRepository.insert(founderMessage);
     }
 

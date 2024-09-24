@@ -1,12 +1,11 @@
 package com.amoGroup.amoGroup.controller;
 
-
-import com.amoGroup.amoGroup.entities.FounderMessage;
+import com.amoGroup.amoGroup.entities.History;
 import com.amoGroup.amoGroup.patch.Patcher;
-import com.amoGroup.amoGroup.repositories.FounderMessageRepository;
+import com.amoGroup.amoGroup.repositories.HistoryRepository;
 import com.amoGroup.amoGroup.response.EntityResponse;
 import com.amoGroup.amoGroup.response.MessageResponse;
-import com.amoGroup.amoGroup.services.founderMessage.FounderMessageService;
+import com.amoGroup.amoGroup.services.history.HistoryService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +18,14 @@ import java.util.List;
 
 @CrossOrigin(origins = {"*"}, maxAge = 3600)
 @RestController
-@RequestMapping("/api/founderMessage")
-public class FounderMessageController {
+@RequestMapping("/api/history")
+public class HistoryController {
 
     @Autowired
-    FounderMessageService founderMessageService;
+    HistoryService historyService;
 
     @Autowired
-    FounderMessageRepository founderMessageRepository;
+    HistoryRepository historyRepository;
 
     @Autowired
     Patcher patcher;
@@ -34,10 +33,10 @@ public class FounderMessageController {
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
     @PostMapping("/create")
-    public ResponseEntity<FounderMessage> create(@Valid @RequestBody FounderMessage request) {
+    public ResponseEntity<History> create(@Valid @RequestBody History request) {
         try {
-            FounderMessage founderMessage = founderMessageService.add(request);
-            return ResponseEntity.ok(founderMessage);
+            History history = historyService.add(request);
+            return ResponseEntity.ok(history);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -48,10 +47,10 @@ public class FounderMessageController {
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
     @PostMapping("/update")
-    public ResponseEntity<FounderMessage> update(@Valid @RequestBody FounderMessage request) {
+    public ResponseEntity<History> update(@Valid @RequestBody History request) {
         try {
-            FounderMessage founderMessage = founderMessageService.update(request);
-            return ResponseEntity.ok(founderMessage);
+            History history = historyService.update(request);
+            return ResponseEntity.ok(history);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -62,12 +61,12 @@ public class FounderMessageController {
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
     @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
-    public ResponseEntity<FounderMessage> patch(@PathVariable("id") String id, @RequestBody FounderMessage patch) {
+    public ResponseEntity<History> patch(@PathVariable("id") String id, @RequestBody History patch) {
         try {
-            FounderMessage founderMessage = founderMessageRepository.findById(id)
+            History history = historyRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Not found"));
-            patcher.patcher(founderMessage, patch);
-            return ResponseEntity.ok(founderMessageRepository.save(founderMessage));
+            patcher.patcher(history, patch);
+            return ResponseEntity.ok(historyRepository.save(history));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -80,9 +79,9 @@ public class FounderMessageController {
     @GetMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") String id) {
         try {
-            boolean result = founderMessageService.delete(id);
+            boolean result = historyService.delete(id);
             if (result) {
-                return ResponseEntity.ok(new MessageResponse(HttpStatus.OK, "Founder message is deleted successfully"));
+                return ResponseEntity.ok(new MessageResponse(HttpStatus.OK, "History entity is deleted successfully"));
             } else {
                 return ResponseEntity
                         .status(HttpStatus.BAD_REQUEST)
@@ -98,9 +97,9 @@ public class FounderMessageController {
     @GetMapping("/get/{id}")
     public ResponseEntity<EntityResponse> get(@RequestHeader(value = "Accept-Language", defaultValue = "az") String language, @PathVariable String id) {
         try {
-            EntityResponse founderMessage = founderMessageService.getFounderMessage(id, language)
+            EntityResponse history = historyService.getHistory(id, language)
                     .orElseThrow(() -> new RuntimeException("Not found"));
-            return ResponseEntity.ok(founderMessage);
+            return ResponseEntity.ok(history);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -111,7 +110,7 @@ public class FounderMessageController {
     @GetMapping("/list")
     public ResponseEntity<List<EntityResponse>> list(@RequestHeader(value = "Accept-Language", defaultValue = "az") String language) {
         try {
-            return ResponseEntity.ok(founderMessageService.getFounderMessages(language));
+            return ResponseEntity.ok(historyService.getHistories(language));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -122,9 +121,9 @@ public class FounderMessageController {
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
     @GetMapping("/listAll")
-    public ResponseEntity<List<FounderMessage>> listAllByType() {
+    public ResponseEntity<List<History>> listAllByType() {
         try {
-            return ResponseEntity.ok(founderMessageService.getAllFounderMessages());
+            return ResponseEntity.ok(historyService.getAllHistories());
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -133,9 +132,9 @@ public class FounderMessageController {
     }
 
     @GetMapping("/getWithTranslation/{id}")
-    public ResponseEntity<FounderMessage> get(@PathVariable String id) {
+    public ResponseEntity<History> get(@PathVariable String id) {
         try {
-            FounderMessage u = founderMessageService.getFounderMessageWithTranslations(id)
+            History u = historyService.getHistoryWithTranslations(id)
                     .orElseThrow(() -> new RuntimeException("Entity not found with this id"));
             return ResponseEntity.ok(u);
         } catch (Exception e) {
@@ -150,7 +149,7 @@ public class FounderMessageController {
     @GetMapping("/count")
     public ResponseEntity<?> getCount() {
         try {
-            return ResponseEntity.ok(founderMessageService.count());
+            return ResponseEntity.ok(historyService.count());
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
