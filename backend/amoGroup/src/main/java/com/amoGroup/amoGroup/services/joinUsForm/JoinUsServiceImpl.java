@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -27,18 +31,30 @@ public class JoinUsServiceImpl implements JoinUsService {
 
     @Override
     public JoinUsForm save(JoinUsForm joinUsForm) {
-        String emailContent = joinUsForm.getName() + " " + joinUsForm.getLastName() +
-                " yeni təlim müraciəti göndərib. " +
-                "Əlaqə nömrəsi: " + joinUsForm.getPhoneNumber() +
-                " Email: " + joinUsForm.getEmail() +
-//                TODO attach file to email
-                " Fayl: " + joinUsForm.getFile();
-        emailService.sendEmail(
-                from,
-                from,
-                "Yeni təlim müraciəti var",
-                emailContent
-        );
+        try {
+            Path uploadDir = Paths.get("uploads");
+            if (!Files.exists(uploadDir)) {
+                Files.createDirectories(uploadDir);
+            }
+
+            List<String> paths = new ArrayList<>();
+            Path path = Paths.get(uploadDir.toString(), joinUsForm.getFile());
+            paths.add(path.toString());
+
+            String emailContent = joinUsForm.getName() + " " + joinUsForm.getLastName() +
+                    " yeni təlim müraciəti göndərib. " +
+                    "Əlaqə nömrəsi: " + joinUsForm.getPhoneNumber() +
+                    " Email: " + joinUsForm.getEmail();
+            emailService.sendMailWithAttachment(
+                    from,
+                    from,
+                    "Yeni təlim müraciəti var",
+                    emailContent,
+                    paths
+            );
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
         joinUsForm.setDate(new Date());
         return joinUsFormRepository.save(joinUsForm);
     }

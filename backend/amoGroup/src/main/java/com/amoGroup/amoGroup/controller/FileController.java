@@ -32,8 +32,6 @@ public class FileController {
     private static final String COULD_NOT_DETERMINE_FILE_TYPE = "Could not determine file type.";
 
     @PostMapping("/uploadFile")
-    @PreAuthorize("hasRole('ADMIN')")
-    @SecurityRequirement(name = "authentication")
     public ResponseEntity<?> uploadFile(
             @RequestParam("file") MultipartFile file,
             @RequestParam String fileName,

@@ -2,6 +2,7 @@ package com.amoGroup.amoGroup.services.storage;
 
 import com.amoGroup.amoGroup.exceptions.StorageException;
 import com.amoGroup.amoGroup.properties.StorageProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.io.Resource;
@@ -26,6 +27,7 @@ import java.util.stream.Stream;
  */
 @Service
 @EnableConfigurationProperties(StorageProperties.class)
+@Slf4j
 public class FileSystemStorageService implements StorageService {
 
     private final Path rootLocation;
@@ -163,6 +165,28 @@ public class FileSystemStorageService implements StorageService {
             return resource.exists() && resource.isReadable();
         } catch (MalformedURLException ex) {
             return false;
+        }
+    }
+
+    @Override
+    public void deleteExistingImages(String fileName) throws IOException {
+        Path destinationFile = this.rootLocation.resolve(
+                        Paths.get(fileName))
+                .normalize().toAbsolutePath();
+        Path dir = Paths.get(destinationFile.toString()).getParent(); // Get the directory where the images will be stored
+        String baseFileName = Paths.get(destinationFile.toString()).getFileName().toString();
+
+
+        try (Stream<Path> files = Files.list(dir)) {
+            files.filter(file -> file.getFileName().toString().startsWith(baseFileName))
+                    .forEach(file -> {
+                        try {
+                            Files.delete(file);
+                            log.info("Deleted old image: " + file.toString());
+                        } catch (IOException e) {
+                            log.error("Failed to delete image: " + file.toString(), e);
+                        }
+                    });
         }
     }
 }

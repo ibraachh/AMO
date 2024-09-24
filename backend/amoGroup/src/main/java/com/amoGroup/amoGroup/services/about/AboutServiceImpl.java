@@ -5,6 +5,7 @@ import com.amoGroup.amoGroup.entities.translations.Translation;
 import com.amoGroup.amoGroup.repositories.AboutRepository;
 import com.amoGroup.amoGroup.repositories.LanguageRepository;
 import com.amoGroup.amoGroup.response.EntityResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class AboutServiceImpl implements AboutService {
 
     @Autowired
@@ -50,6 +52,7 @@ public class AboutServiceImpl implements AboutService {
             aboutRepository.delete(about);
             return true;
         } catch (Exception e) {
+            log.error(e.getMessage());
             return false;
         }
     }

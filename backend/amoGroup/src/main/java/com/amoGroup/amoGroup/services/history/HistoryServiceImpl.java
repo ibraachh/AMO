@@ -6,6 +6,7 @@ import com.amoGroup.amoGroup.entities.translations.Translation;
 import com.amoGroup.amoGroup.repositories.HistoryRepository;
 import com.amoGroup.amoGroup.repositories.LanguageRepository;
 import com.amoGroup.amoGroup.response.EntityResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class HistoryServiceImpl implements HistoryService {
 
     @Autowired
@@ -50,6 +52,7 @@ public class HistoryServiceImpl implements HistoryService {
             historyRepository.delete(history);
             return true;
         } catch (Exception e) {
+            log.error(e.getMessage());
             return false;
         }
     }

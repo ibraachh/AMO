@@ -1,10 +1,10 @@
 package com.amoGroup.amoGroup.controller;
 
-import com.amoGroup.amoGroup.entities.ContactUsForm;
+import com.amoGroup.amoGroup.entities.ContactForm;
 import com.amoGroup.amoGroup.patch.Patcher;
-import com.amoGroup.amoGroup.repositories.ContactUsFormRepository;
+import com.amoGroup.amoGroup.repositories.ContactFormRepository;
 import com.amoGroup.amoGroup.response.MessageResponse;
-import com.amoGroup.amoGroup.services.contactUsForm.ContactUsFormService;
+import com.amoGroup.amoGroup.services.contactUsForm.ContactFormService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +18,21 @@ import java.util.List;
 @CrossOrigin(origins = {"*"}, maxAge = 3600)
 @RestController
 @RequestMapping("/api/contact-us")
-public class ContactUsFormController {
-
-
-    @Autowired
-    ContactUsFormService contactFormService;
+public class ContactFormController {
 
     @Autowired
-    ContactUsFormRepository repository;
+    ContactFormService contactFormService;
+
+    @Autowired
+    ContactFormRepository repository;
 
     @Autowired
     Patcher patcher;
 
     @PostMapping("/create")
-    public ResponseEntity<ContactUsForm> create(@Valid @RequestBody ContactUsForm request) {
+    public ResponseEntity<ContactForm> create(@Valid @RequestBody ContactForm request) {
         try {
-            ContactUsForm contactForm = contactFormService.save(request);
+            ContactForm contactForm = contactFormService.save(request);
             return ResponseEntity.ok(contactForm);
         } catch (Exception e) {
             return ResponseEntity
@@ -45,9 +44,9 @@ public class ContactUsFormController {
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
     @PostMapping("/update")
-    public ResponseEntity<ContactUsForm> update(@Valid @RequestBody ContactUsForm request) {
+    public ResponseEntity<ContactForm> update(@Valid @RequestBody ContactForm request) {
         try {
-            ContactUsForm contactForm = contactFormService.update(request);
+            ContactForm contactForm = contactFormService.update(request);
             return ResponseEntity.ok(contactForm);
         } catch (Exception e) {
             return ResponseEntity
@@ -59,9 +58,9 @@ public class ContactUsFormController {
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
     @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
-    public ResponseEntity<ContactUsForm> patchUpdate(@PathVariable String id, @RequestBody ContactUsForm request) throws IllegalAccessException {
+    public ResponseEntity<ContactForm> patchUpdate(@PathVariable String id, @RequestBody ContactForm request) throws IllegalAccessException {
         try {
-            ContactUsForm existing = repository.findById(id)
+            ContactForm existing = repository.findById(id)
                     .orElseThrow(() -> new RuntimeException("There is no contact info with given id"));
             patcher.patcher(existing, request);
 
@@ -108,7 +107,7 @@ public class ContactUsFormController {
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
     @GetMapping("/list")
-    public ResponseEntity<List<ContactUsForm>> list() {
+    public ResponseEntity<List<ContactForm>> list() {
         try {
             return ResponseEntity.ok(contactFormService.list());
         } catch (Exception e) {

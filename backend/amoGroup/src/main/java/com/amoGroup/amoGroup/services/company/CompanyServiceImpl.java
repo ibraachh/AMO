@@ -9,12 +9,14 @@ import com.amoGroup.amoGroup.repositories.LanguageRepository;
 import com.amoGroup.amoGroup.response.CompanyCardResponse;
 import com.amoGroup.amoGroup.response.CompanyResponse;
 import com.amoGroup.amoGroup.services.companyCard.CompanyCardService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
+@Slf4j
 public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
@@ -56,6 +58,7 @@ public class CompanyServiceImpl implements CompanyService {
             companyRepository.delete(company);
             return true;
         } catch (Exception e) {
+            log.error(e.getMessage());
             return false;
         }
     }

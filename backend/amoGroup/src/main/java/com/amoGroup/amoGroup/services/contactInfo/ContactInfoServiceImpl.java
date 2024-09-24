@@ -2,6 +2,7 @@ package com.amoGroup.amoGroup.services.contactInfo;
 
 import com.amoGroup.amoGroup.entities.ContactInfo;
 import com.amoGroup.amoGroup.repositories.ContactInfoRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class ContactInfoServiceImpl implements ContactInfoService {
 
     @Autowired
@@ -41,6 +43,7 @@ public class ContactInfoServiceImpl implements ContactInfoService {
             contactInfoRepository.delete(contactInfo);
             return true;
         } catch (Exception e) {
+            log.error(e.getMessage());
             return false;
         }
     }
