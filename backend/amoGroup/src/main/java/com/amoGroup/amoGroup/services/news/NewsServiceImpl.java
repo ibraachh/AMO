@@ -5,6 +5,7 @@ import com.amoGroup.amoGroup.entities.translations.Translation;
 import com.amoGroup.amoGroup.repositories.LanguageRepository;
 import com.amoGroup.amoGroup.repositories.NewsRepository;
 import com.amoGroup.amoGroup.response.NewsResponse;
+import com.amoGroup.amoGroup.services.storage.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class NewsServiceImpl implements NewsService {
 
     @Autowired
     NewsRepository newsRepository;
+
+    @Autowired
+    StorageService storageService;
 
     @Override
     public News add(News news) {
@@ -44,6 +48,7 @@ public class NewsServiceImpl implements NewsService {
         try {
             News news = newsRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("News with this id does not exists"));
+            storageService.deleteExistingImages(news.getImage());
             newsRepository.delete(news);
             return true;
         } catch (Exception e) {

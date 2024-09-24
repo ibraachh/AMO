@@ -3,6 +3,7 @@ package com.amoGroup.amoGroup.services.joinUsForm;
 import com.amoGroup.amoGroup.entities.JoinUsForm;
 import com.amoGroup.amoGroup.repositories.JoinUsFormRepository;
 import com.amoGroup.amoGroup.services.email.EmailService;
+import com.amoGroup.amoGroup.services.storage.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +29,9 @@ public class JoinUsServiceImpl implements JoinUsService {
 
     @Autowired
     EmailService emailService;
+
+    @Autowired
+    StorageService storageService;
 
     @Override
     public JoinUsForm save(JoinUsForm joinUsForm) {
@@ -67,7 +71,10 @@ public class JoinUsServiceImpl implements JoinUsService {
     @Override
     public boolean delete(String id) {
         try {
-            joinUsFormRepository.deleteById(id);
+            JoinUsForm joinUsForm = joinUsFormRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("JoinUsForm with this id does not exists"));
+            storageService.deleteExistingImages(joinUsForm.getFile());
+            joinUsFormRepository.delete(joinUsForm);
             return true;
         } catch (Exception e) {
             log.error(e.getMessage());
