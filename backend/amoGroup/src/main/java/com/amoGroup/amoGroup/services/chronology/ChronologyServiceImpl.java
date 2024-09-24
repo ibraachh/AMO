@@ -25,9 +25,6 @@ public class ChronologyServiceImpl implements ChronologyService {
     @Override
     public Chronology add(Chronology chronology) {
         validateTranslations(chronology);
-        if (!chronologyRepository.findAll().isEmpty()) {
-            throw new RuntimeException("Chronology entity is already exists. Try to edit it");
-        }
         return chronologyRepository.insert(chronology);
     }
 

@@ -133,7 +133,7 @@ public class CareerController {
         }
     }
 
-    @GetMapping("/getAll/{id}")
+    @GetMapping("/getWithTranslation/{id}")
     public ResponseEntity<Career> get(@PathVariable String id) {
         try {
             Career u = careerService.getCareerWithTranslations(id)

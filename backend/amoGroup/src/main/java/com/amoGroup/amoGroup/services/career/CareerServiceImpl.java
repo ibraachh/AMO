@@ -25,9 +25,6 @@ public class CareerServiceImpl implements CareerService {
     @Override
     public Career add(Career career) {
         validateTranslations(career);
-        if (!careerRepository.findAll().isEmpty()) {
-            throw new RuntimeException("Career entity is already exists. Try to edit it");
-        }
         return careerRepository.insert(career);
     }
 

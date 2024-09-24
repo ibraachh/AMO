@@ -1,11 +1,12 @@
 package com.amoGroup.amoGroup.controller;
 
-import com.amoGroup.amoGroup.entities.Chronology;
+
+import com.amoGroup.amoGroup.entities.CompanyCard;
 import com.amoGroup.amoGroup.patch.Patcher;
-import com.amoGroup.amoGroup.repositories.ChronologyRepository;
-import com.amoGroup.amoGroup.response.EntityResponse;
+import com.amoGroup.amoGroup.repositories.CompanyCardRepository;
+import com.amoGroup.amoGroup.response.CompanyCardResponse;
 import com.amoGroup.amoGroup.response.MessageResponse;
-import com.amoGroup.amoGroup.services.chronology.ChronologyService;
+import com.amoGroup.amoGroup.services.companyCard.CompanyCardService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,29 +15,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @CrossOrigin(origins = {"*"}, maxAge = 3600)
 @RestController
-@RequestMapping("/api/chronology")
-public class ChronologyController {
+@RequestMapping("/api/companyCard")
+public class CompanyCardController {
 
     @Autowired
-    ChronologyService chronologyService;
+    CompanyCardService companyCardService;
+
+    @Autowired
+    CompanyCardRepository repository;
 
     @Autowired
     Patcher patcher;
 
-    @Autowired
-    ChronologyRepository chronologyRepository;
-
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
     @PostMapping("/create")
-    public ResponseEntity<Chronology> create(@Valid @RequestBody Chronology request) {
+    public ResponseEntity<CompanyCard> create(@Valid @RequestBody CompanyCard request) {
         try {
-            Chronology chronology = chronologyService.add(request);
-            return ResponseEntity.ok(chronology);
+            CompanyCard companyCard = companyCardService.add(request);
+            return ResponseEntity.ok(companyCard);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -47,10 +46,10 @@ public class ChronologyController {
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
     @PostMapping("/update")
-    public ResponseEntity<Chronology> update(@Valid @RequestBody Chronology request) {
+    public ResponseEntity<CompanyCard> update(@Valid @RequestBody CompanyCard request) {
         try {
-            Chronology chronology = chronologyService.update(request);
-            return ResponseEntity.ok(chronology);
+            CompanyCard companyCard = companyCardService.update(request);
+            return ResponseEntity.ok(companyCard);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -61,12 +60,12 @@ public class ChronologyController {
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
     @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
-    public ResponseEntity<Chronology> patch(@PathVariable String id, @RequestBody Chronology patch) {
+    public ResponseEntity<CompanyCard> patch(@PathVariable String id, @RequestBody CompanyCard patch) {
         try {
-            Chronology chronology = chronologyRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Chronology with this id does not exist"));
-            patcher.patcher(chronology, patch);
-            return ResponseEntity.ok(chronologyService.update(chronology));
+            CompanyCard companyCard = repository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("CompanyCard not found with given id"));
+            patcher.patcher(companyCard, patch);
+            return ResponseEntity.ok(repository.save(companyCard));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -79,26 +78,16 @@ public class ChronologyController {
     @GetMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
         try {
-            boolean result = chronologyService.delete(id);
+            boolean result = companyCardService.delete(id);
             if (result) {
-                return ResponseEntity.ok(new MessageResponse(HttpStatus.OK, "Chronology entity is deleted successfully"));
+                return ResponseEntity.ok(
+                        new MessageResponse(HttpStatus.OK, "Company deleted successfully")
+                );
+            } else {
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .build();
             }
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(new MessageResponse(HttpStatus.BAD_REQUEST, "Chronology entity not found"));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(new MessageResponse(HttpStatus.BAD_REQUEST, e.getMessage()));
-        }
-    }
-
-    @GetMapping("/get/{id}")
-    public ResponseEntity<EntityResponse> get(@RequestHeader(value = "Accept-Language", defaultValue = "az") String language, @PathVariable String id) {
-        try {
-            EntityResponse u = chronologyService.getChronology(id, language)
-                    .orElseThrow(() -> new RuntimeException("Entity not found with this id"));
-            return ResponseEntity.ok(u);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -106,10 +95,12 @@ public class ChronologyController {
         }
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<List<EntityResponse>> list(@RequestHeader(value = "Accept-Language", defaultValue = "az") String language) {
+    @GetMapping("/get/{id}")
+    public ResponseEntity<CompanyCardResponse> get(@RequestHeader(value = "Accept-Language", defaultValue = "az") String language, @PathVariable String id) {
         try {
-            return ResponseEntity.ok(chronologyService.getChronologies(language));
+            CompanyCardResponse companyCard = companyCardService.getCompanyCard(id, language)
+                    .orElseThrow(() -> new RuntimeException("CompanyCard not found with given id"));
+            return ResponseEntity.ok(companyCard);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -119,10 +110,10 @@ public class ChronologyController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "authentication")
-    @GetMapping("/listAll")
-    public ResponseEntity<List<Chronology>> listAllByType() {
+    @GetMapping("/getWithTranslation/{id}")
+    public ResponseEntity<?> getAll(@PathVariable String id) {
         try {
-            return ResponseEntity.ok(chronologyService.getAllChronologies());
+            return ResponseEntity.ok(companyCardService.getCompanyCardWithTranslations(id));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -130,12 +121,21 @@ public class ChronologyController {
         }
     }
 
-    @GetMapping("/getWithTranslation/{id}")
-    public ResponseEntity<Chronology> get(@PathVariable String id) {
+    @GetMapping("/list")
+    public ResponseEntity<?> list(@RequestHeader(value = "Accept-Language", defaultValue = "az") String language) {
         try {
-            Chronology u = chronologyService.getChronologyWithTranslations(id)
-                    .orElseThrow(() -> new RuntimeException("Entity not found with this id"));
-            return ResponseEntity.ok(u);
+            return ResponseEntity.ok(companyCardService.getCompanyCards(language));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .build();
+        }
+    }
+
+    @GetMapping("/listAll")
+    public ResponseEntity<?> listAll() {
+        try {
+            return ResponseEntity.ok(companyCardService.getAllCompanyCards());
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -148,12 +148,13 @@ public class ChronologyController {
     @GetMapping("/count")
     public ResponseEntity<?> getCount() {
         try {
-            return ResponseEntity.ok(chronologyService.count());
+            return ResponseEntity.ok(companyCardService.count());
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(new MessageResponse(HttpStatus.BAD_REQUEST, e.getMessage()));
         }
     }
+
 
 }

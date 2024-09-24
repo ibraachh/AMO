@@ -132,7 +132,7 @@ public class AboutController {
         }
     }
 
-    @GetMapping("/getAll/{id}")
+    @GetMapping("/getWithTranslation/{id}")
     public ResponseEntity<About> get(@PathVariable String id) {
         try {
             About u = aboutService.getAboutWithTranslations(id)
