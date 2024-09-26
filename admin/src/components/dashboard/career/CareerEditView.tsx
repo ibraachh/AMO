@@ -3,41 +3,29 @@ import { useForm } from 'react-hook-form';
 import { useMemo, useState, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Card, Stack, Button, Typography, Chip } from '@mui/material';
+import { Card, Stack, Button, Typography } from '@mui/material';
 
 import { Form, Field } from 'src/components/hook-form';
 
 import { toast } from 'sonner';
 import CustomTimeline from 'src/components/timeline/CustomTimeline';
 import { getLanguages } from 'src/utils/data';
-import { _tags } from 'src/_mock';
+import type { Translation } from 'src/utils/types';
 import { DashboardContent } from 'src/layouts/dashboard';
+import { useGetCareerById } from 'src/api/backendServies';
+import { useParams, useRouter } from 'src/routes/hooks';
+import { paths } from 'src/routes/paths';
 
 export type NewProductSchemaType = zod.infer<typeof NewProductSchema>;
 
 export const NewProductSchema = zod.object({
   title: zod.string().min(1, { message: 'Başlıq tələb olunur!' }),
   description: zod.string().min(1, { message: 'Açıqlama tələb olunur!' }),
-  expiredDate: zod.date().optional(),
-  tags: zod.array(zod.string()).optional(),
-  metaTitle: zod.string().optional(),
-  metaDescription: zod.string().optional(),
+  expiredDate: zod.string().optional(), // ISO string olarak ayarlandı
 });
 
-interface Translation {
-  language: string;
-  title: string;
-  description: string;
-}
-
 interface ProductData {
-  title: string;
-  description: string;
-  expiredDate?: Date;
-  tags: string[];
-  metaTitle?: string;
-  metaDescription?: string;
-  translation: Translation[];
+  translations: Translation[];
 }
 
 export interface Language {
@@ -47,29 +35,24 @@ export interface Language {
 }
 
 export default function CareerEditView() {
+  const { id } = useParams();
+  const { career } = useGetCareerById(id ?? '');
+  const { translations } = career || { translations: [] };
+  const router = useRouter();
   const [step, setStep] = useState(0);
-  const [productData, setProductData] = useState<ProductData>({
-    title: '',
-    description: '',
-    tags: [],
-    metaTitle: '',
-    metaDescription: '',
-    translation: [],
-  });
 
   const languages: Language[] = getLanguages;
 
-  const defaultValues = useMemo(
-    () => ({
-      title: '',
-      description: '',
-      expiredDate: undefined,
-      tags: [],
-      metaTitle: '',
-      metaDescription: '',
-    }),
-    []
-  );
+  const defaultValues = useMemo(() => {
+    const translation = translations.find((t) => t.languageCode === languages[step].code);
+    return {
+      title: translation?.title || '',
+      description: translation?.description || '',
+      expiredDate: translation?.expiredDate
+        ? new Date(translation.expiredDate).toISOString()
+        : undefined,
+    };
+  }, [translations, step, languages]);
 
   const methods = useForm<NewProductSchemaType>({
     resolver: zodResolver(NewProductSchema),
@@ -80,89 +63,46 @@ export default function CareerEditView() {
   const {
     reset,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = methods;
 
   useEffect(() => {
-    if (step === 0) {
-      reset({
-        title: productData.title,
-        description: productData.description,
-        expiredDate: productData.expiredDate,
-        tags: productData.tags,
-        metaTitle: productData.metaTitle,
-        metaDescription: productData.metaDescription,
-      });
-    } else {
-      const currentTranslation = productData.translation.find(
-        (trans) => trans.language === languages[step].code
-      );
-
-      if (currentTranslation) {
-        reset({
-          title: currentTranslation.title,
-          description: currentTranslation.description,
-          expiredDate: undefined,
-          tags: [],
-          metaTitle: '',
-          metaDescription: '',
-        });
-      }
-    }
-  }, [step, productData, languages, reset]);
+    reset(defaultValues);
+  }, [reset, defaultValues]);
 
   const onSubmit = handleSubmit(async (data) => {
-    try {
-      if (step === 0) {
-        setProductData((prevData) => ({
-          ...prevData,
-          title: data.title,
-          description: data.description,
-          expiredDate: data.expiredDate,
-          tags: data.tags ?? [], // provide a default value of an empty array if data.tags is undefined
-          metaTitle: data.metaTitle,
-          metaDescription: data.metaDescription,
-        }));
-      } else {
-        setProductData((prevData) => ({
-          ...prevData,
-          translation: [
-            ...prevData.translation.filter((trans) => trans.language !== languages[step].code),
-            {
-              language: languages[step].code,
-              title: data.title,
-              description: data.description,
-            },
-          ],
-        }));
-      }
+    const newTranslation = {
+      languageCode: languages[step].code,
+      title: data.title,
+      description: data.description,
+      expiredDate: data.expiredDate,
+    };
 
-      if (step === languages.length - 1) {
-        console.log('Final Product Data:', productData);
-        setProductData({
-          title: '',
-          description: '',
-          tags: [],
-          metaTitle: '',
-          metaDescription: '',
-          translation: [],
-        });
-        reset(defaultValues);
-        toast.success('Başlıq əlavə olundu');
-        setStep(0);
-      } else {
-        setStep((prev) => prev + 1);
-        reset({
-          title: '',
-          description: '',
-          expiredDate: undefined,
-          tags: [],
-          metaTitle: '',
-          metaDescription: '',
-        });
-      }
-    } catch (error) {
-      console.error(error);
+    const updatedProductData: ProductData = {
+      translations: [
+        ...translations.filter((t) => t.languageCode !== languages[step].code),
+        newTranslation,
+      ],
+    };
+
+    if (step < languages.length - 1) {
+      setStep((prev) => prev + 1);
+      const nextTranslation = translations.find((t) => t.languageCode === languages[step + 1].code);
+      reset({
+        title: nextTranslation?.title || '',
+        description: nextTranslation?.description || '',
+        expiredDate: nextTranslation?.expiredDate
+          ? new Date(nextTranslation.expiredDate).toISOString()
+          : undefined,
+      });
+    } else {
+      console.log(updatedProductData);
+      toast.success('Məlumatlar uğurla yeniləndi!');
+      setTimeout(() => {
+        router.push(paths.dashboard.career.root);
+        router.refresh();
+      }, 800);
     }
   });
 
@@ -190,48 +130,41 @@ export default function CareerEditView() {
               />
               <Stack spacing={1.5}>
                 <Typography variant="subtitle2">Bitmə tarixi</Typography>
-                <Field.DatePicker name="expiredDate" />
-              </Stack>
-              <Stack spacing={1.5}>
-                <Typography variant="subtitle2">Axtarış optimizasiyası</Typography>
-                <Field.Autocomplete
-                  name="tags"
-                  label="Tags"
-                  placeholder="+ Tags"
-                  multiple
-                  freeSolo
-                  disableCloseOnSelect
-                  options={_tags.map((option) => option)}
-                  getOptionLabel={(option) => option}
-                  renderOption={(props, option) => (
-                    <li {...props} key={option}>
-                      {option}
-                    </li>
-                  )}
-                  renderTags={(selected, getTagProps) =>
-                    selected.map((option, index) => (
-                      <Chip
-                        {...getTagProps({ index })}
-                        key={option}
-                        label={option}
-                        size="small"
-                        color="info"
-                        variant="soft"
-                      />
-                    ))
-                  }
+                <Field.DatePicker
+                  disabled={step !== 0}
+                  onChange={(date) => {
+                    if (date) {
+                      const isoString = date.toISOString();
+                      setValue('expiredDate', isoString);
+                    }
+                  }}
+                  name="expiredDate"
                 />
-                <Field.Text placeholder="Meta Title" name="metaTitle" />
-                <Field.Text placeholder="Meta Description" name="metaDescription" />
               </Stack>
+
               <div className={`flex ${step === 0 ? 'justify-end' : 'justify-between'} mt-3`}>
                 {step > 0 && (
                   <Button
                     type="button"
                     className="!bg-[#1C252E] !w-max !px-4 !py-3 gap-2 !text-white !rounded-xl"
                     onClick={() => {
+                      const previousLanguageCode = languages[step - 1].code;
+                      const previousTranslation = translations.find(
+                        (t) => t.languageCode === previousLanguageCode
+                      );
+                      if (previousTranslation) {
+                        setValue('title', previousTranslation.title);
+                        setValue('description', previousTranslation.description);
+                        setValue(
+                          'expiredDate',
+                          previousTranslation.expiredDate
+                            ? new Date(previousTranslation.expiredDate).toISOString()
+                            : undefined
+                        );
+                      } else {
+                        reset(defaultValues);
+                      }
                       setStep((prev) => prev - 1);
-                      reset();
                     }}
                   >
                     Geri

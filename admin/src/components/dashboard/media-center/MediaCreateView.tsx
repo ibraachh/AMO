@@ -15,7 +15,7 @@ import { getLanguages } from 'src/utils/data';
 import CustomTimeline from 'src/components/timeline/CustomTimeline';
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 import { paths } from 'src/routes/paths';
-import type { Language } from '../home/HomeView';
+import type { Language } from '../about/SectionTop';
 
 export type ITranslation = {
   title: string;

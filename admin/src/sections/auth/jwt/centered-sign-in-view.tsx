@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -17,7 +16,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import { AnimateLogo2 } from 'src/components/animate';
 import { Form, Field } from 'src/components/hook-form';
-import { Iconify, SocialIcon } from 'src/components/iconify';
+import { Iconify } from 'src/components/iconify';
 import { signInWithPassword } from 'src/auth/context/jwt';
 import { useAuthContext } from 'src/auth/hooks';
 import { useRouter } from 'src/routes/hooks';
@@ -29,14 +28,12 @@ import { Alert } from '@mui/material';
 export type SignInSchemaType = zod.infer<typeof SignInSchema>;
 
 export const SignInSchema = zod.object({
-  email: zod
-    .string()
-    .min(1, { message: 'Email is required!' })
-    .email({ message: 'Email must be a valid email address!' }),
+  username: zod.string().min(1, { message: 'username is required!' }),
+
   password: zod
     .string()
     .min(1, { message: 'Password is required!' })
-    .min(6, { message: 'Password must be at least 6 characters!' }),
+    .min(1, { message: 'Password must be at least 6 characters!' }),
 });
 
 // ----------------------------------------------------------------------
@@ -50,8 +47,8 @@ export function CenteredSignInView() {
 
   const router = useRouter();
   const defaultValues = {
-    email: 'demo@minimals.cc',
-    password: '@demo1',
+    username: 'admin',
+    password: '123456',
   };
 
   const methods = useForm<SignInSchemaType>({
@@ -66,7 +63,7 @@ export function CenteredSignInView() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await signInWithPassword({ email: data.email, password: data.password });
+      await signInWithPassword({ username: data.username, password: data.password });
       await checkUserSession?.();
 
       router.refresh();
@@ -97,17 +94,17 @@ export function CenteredSignInView() {
   const renderForm = (
     <Stack spacing={3}>
       <Field.Text
-        placeholder="Enter your username"
-        name="email"
-        label="Email address"
+        placeholder="İstifadəçi adınızı daxil edin"
+        name="username"
+        label="Istifadəçi adı"
         InputLabelProps={{ shrink: true }}
       />
 
       <Stack spacing={1.5}>
         <Field.Text
           name="password"
-          label="Password"
-          placeholder="6+ characters"
+          label="Şifrə"
+          placeholder="6+ xarakter daxil edin"
           type={password.value ? 'text' : 'password'}
           InputLabelProps={{ shrink: true }}
           InputProps={{
@@ -138,35 +135,6 @@ export function CenteredSignInView() {
     </Stack>
   );
 
-  const renderSignInWithSocials = (
-    <>
-      <Divider
-        sx={{
-          my: 3,
-          typography: 'overline',
-          color: 'text.disabled',
-          '&::before, :after': { borderTopStyle: 'dashed' },
-        }}
-      >
-        OR
-      </Divider>
-
-      <Stack direction="row" justifyContent="center" spacing={1}>
-        <IconButton>
-          <SocialIcon icon="google" width={22} />
-        </IconButton>
-
-        <IconButton>
-          <SocialIcon icon="github" width={22} />
-        </IconButton>
-
-        <IconButton>
-          <SocialIcon icon="twitter" width={22} />
-        </IconButton>
-      </Stack>
-    </>
-  );
-
   return (
     <div className="flex flex-col justify-center shadow-2xl p-6 rounded-2xl">
       {renderLogo}
@@ -176,8 +144,6 @@ export function CenteredSignInView() {
       <Form methods={methods} onSubmit={onSubmit}>
         {renderForm}
       </Form>
-
-      {renderSignInWithSocials}
     </div>
   );
 }

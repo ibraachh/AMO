@@ -1,5 +1,3 @@
-import type { IJobItem } from 'src/types/job';
-
 import { useCallback } from 'react';
 
 import Box from '@mui/material/Box';
@@ -8,15 +6,19 @@ import Pagination, { paginationClasses } from '@mui/material/Pagination';
 import { useRouter } from 'src/routes/hooks';
 
 import { paths } from 'src/routes/paths';
+import { toast } from 'sonner';
+import type { Career } from 'src/utils/types';
+import { deleteCareerById } from 'src/api/backendServies';
 import { CareerItem } from './career-item';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  jobs: IJobItem[];
+  jobs: Career[];
+  mutate: () => void;
 };
 
-export function CareerList({ jobs }: Props) {
+export function CareerList({ jobs, mutate }: Props) {
   const router = useRouter();
 
   const handleEdit = useCallback(
@@ -26,9 +28,19 @@ export function CareerList({ jobs }: Props) {
     [router]
   );
 
-  const handleDelete = useCallback((id: string) => {
-    console.info('DELETE', id);
-  }, []);
+  const handleDelete = useCallback(
+    async (id: string) => {
+      const res = await deleteCareerById(id);
+
+      if (!res) {
+        toast.error('Xəta baş verdi!');
+        return;
+      }
+      toast.success('Vakansiya ugurla silindi!');
+      mutate();
+    },
+    [mutate]
+  );
 
   return (
     <>

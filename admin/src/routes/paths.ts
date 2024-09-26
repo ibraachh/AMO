@@ -43,7 +43,11 @@ export const paths = {
   // DASHBOARD
   dashboard: {
     root: ROOTS.DASHBOARD,
-    home: `${ROOTS.DASHBOARD}/home`,
+    home: {
+      root:`${ROOTS.DASHBOARD}/home`,
+      list:`${ROOTS.DASHBOARD}/home/list`,
+      createSliderVideo:`${ROOTS.DASHBOARD}/home/create-slider-video`,
+    },
     about: {
       root: `${ROOTS.DASHBOARD}/about`,
       main: `${ROOTS.DASHBOARD}/about/main`,

@@ -12,6 +12,7 @@ import { AuthGuard } from 'src/auth/guard';
 
 const IndexPage = lazy(() => import('src/pages/dashboard/index-page/OverView'));
 const Home = lazy(() => import('src/pages/dashboard/home/Home'));
+const CreateSliderVideo = lazy(() => import('src/pages/dashboard/home/CreateSliderVideo'));
 
 // About
 const About = lazy(() => import('src/pages/dashboard/about/About'));
@@ -33,15 +34,15 @@ const AmoGrowEdit = lazy(() => import('src/pages/dashboard/companies/AmoGrowEdit
 const AmodoEdit = lazy(() => import('src/pages/dashboard/companies/AmodoEdit'));
 const TransportEdit = lazy(() => import('src/pages/dashboard/companies/TransportEdit'));
 
-// Career
-const Career = lazy(() => import('src/pages/dashboard/career/Career'));
-const CareerEdit = lazy(() => import('src/pages/dashboard/career/CareerEdit'));
-const CareerCreate = lazy(() => import('src/pages/dashboard/career/CareerCreate'));
-
 // Media Center
 const MediaCenter = lazy(() => import('src/pages/dashboard/media-center/MediaCenter'));
 const MediaCreate = lazy(() => import('src/pages/dashboard/media-center/MediaCreate'));
 const MediaEdit = lazy(() => import('src/pages/dashboard/media-center/MediaEdit'));
+
+// Career
+const Career = lazy(() => import('src/pages/dashboard/career/Career'));
+const CareerEdit = lazy(() => import('src/pages/dashboard/career/CareerEdit'));
+const CareerCreate = lazy(() => import('src/pages/dashboard/career/CareerCreate'));
 
 // Contact
 const Contact = lazy(() => import('src/pages/dashboard/contact/Contact'));
@@ -62,7 +63,14 @@ export const dashboardRoutes = [
     element: CONFIG.auth.skip ? <>{layoutContent}</> : <AuthGuard>{layoutContent}</AuthGuard>,
     children: [
       { element: <IndexPage />, index: true },
-      { path: 'home', element: <Home /> },
+      {
+        path: 'home',
+        children: [
+          { element: <Home />, index: true },
+          { path: 'list', element: <Home /> },
+          { path: 'create-slider-video', element: <CreateSliderVideo /> },
+        ],
+      },
       {
         path: 'about',
         children: [
