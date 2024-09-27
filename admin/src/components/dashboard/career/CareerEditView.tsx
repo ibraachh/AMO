@@ -10,9 +10,8 @@ import { Form, Field } from 'src/components/hook-form';
 import { toast } from 'sonner';
 import CustomTimeline from 'src/components/timeline/CustomTimeline';
 import { getLanguages } from 'src/utils/data';
-import type { Translation } from 'src/utils/types';
 import { DashboardContent } from 'src/layouts/dashboard';
-import { useGetCareerById } from 'src/api/backendServies';
+import { updateCareer, useGetCareerById } from 'src/api/backendServies';
 import { useParams, useRouter } from 'src/routes/hooks';
 import { paths } from 'src/routes/paths';
 
@@ -21,12 +20,9 @@ export type NewProductSchemaType = zod.infer<typeof NewProductSchema>;
 export const NewProductSchema = zod.object({
   title: zod.string().min(1, { message: 'Başlıq tələb olunur!' }),
   description: zod.string().min(1, { message: 'Açıqlama tələb olunur!' }),
-  expiredDate: zod.string().optional(), // ISO string olarak ayarlandı
+  expiredDate: zod.string().optional(),
+  languageCode: zod.string().optional(),
 });
-
-interface ProductData {
-  translations: Translation[];
-}
 
 export interface Language {
   id: string;
@@ -36,23 +32,21 @@ export interface Language {
 
 export default function CareerEditView() {
   const { id } = useParams();
-  const { career } = useGetCareerById(id ?? '');
+  const { career, careerLoading } = useGetCareerById(id ?? '');
   const { translations } = career || { translations: [] };
   const router = useRouter();
   const [step, setStep] = useState(0);
-
+  const [formData, setFormData] = useState<NewProductSchemaType[]>([]);
   const languages: Language[] = getLanguages;
 
-  const defaultValues = useMemo(() => {
-    const translation = translations.find((t) => t.languageCode === languages[step].code);
-    return {
-      title: translation?.title || '',
-      description: translation?.description || '',
-      expiredDate: translation?.expiredDate
-        ? new Date(translation.expiredDate).toISOString()
-        : undefined,
-    };
-  }, [translations, step, languages]);
+  const defaultValues = useMemo(
+    () => ({
+      title: '',
+      description: '',
+      expiredDate: undefined,
+    }),
+    []
+  );
 
   const methods = useForm<NewProductSchemaType>({
     resolver: zodResolver(NewProductSchema),
@@ -61,50 +55,66 @@ export default function CareerEditView() {
   });
 
   const {
-    reset,
     handleSubmit,
+    reset,
     setValue,
+    getValues,
     formState: { errors },
   } = methods;
 
   useEffect(() => {
-    reset(defaultValues);
-  }, [reset, defaultValues]);
+    if (career) {
+      const translation = (translations && translations[step]) || {};
+      reset({
+        title: formData[step]?.title || translation?.title,
+        description: formData[step]?.description || translation?.description,
+        expiredDate: career?.date ? new Date(career?.date).toISOString() : undefined,
+      });
+    }
+  }, [career, step, reset, formData, translations]);
 
-  const onSubmit = handleSubmit(async (data) => {
-    const newTranslation = {
-      languageCode: languages[step].code,
-      title: data.title,
-      description: data.description,
-      expiredDate: data.expiredDate,
-    };
-
-    const updatedProductData: ProductData = {
-      translations: [
-        ...translations.filter((t) => t.languageCode !== languages[step].code),
-        newTranslation,
-      ],
-    };
-
+  const handleNext = () => {
+    const currentData = getValues();
+    setFormData((prev) => {
+      const updatedData = [...prev];
+      updatedData[step] = { ...currentData, languageCode: languages[step].code };
+      return updatedData;
+    });
     if (step < languages.length - 1) {
       setStep((prev) => prev + 1);
-      const nextTranslation = translations.find((t) => t.languageCode === languages[step + 1].code);
-      reset({
-        title: nextTranslation?.title || '',
-        description: nextTranslation?.description || '',
-        expiredDate: nextTranslation?.expiredDate
-          ? new Date(nextTranslation.expiredDate).toISOString()
-          : undefined,
-      });
-    } else {
-      console.log(updatedProductData);
-      toast.success('Məlumatlar uğurla yeniləndi!');
+      reset(formData[step + 1] || defaultValues);
+    }
+  };
+
+  // Geri butonuna tıklama
+  const handlePrevious = () => {
+    if (step > 0) {
+      setStep((prev) => prev - 1);
+      reset(formData[step - 1] || defaultValues);
+    }
+  };
+
+  const onSubmit = handleSubmit(async (data) => {
+    const finalData = [...formData].map((item) => ({
+      ...item,
+      languageCode: item.languageCode || '',
+    }));
+
+    finalData[step] = { ...data, languageCode: languages[step].code };
+
+    console.log(finalData);
+    const res = await updateCareer(id ?? '', finalData[0].expiredDate ?? '', finalData);
+    if (res) {
+      toast.success('Məlumatlar yeniləndi');
       setTimeout(() => {
         router.push(paths.dashboard.career.root);
         router.refresh();
       }, 800);
     }
   });
+  if (careerLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <DashboardContent maxWidth="xl">
@@ -147,32 +157,15 @@ export default function CareerEditView() {
                   <Button
                     type="button"
                     className="!bg-[#1C252E] !w-max !px-4 !py-3 gap-2 !text-white !rounded-xl"
-                    onClick={() => {
-                      const previousLanguageCode = languages[step - 1].code;
-                      const previousTranslation = translations.find(
-                        (t) => t.languageCode === previousLanguageCode
-                      );
-                      if (previousTranslation) {
-                        setValue('title', previousTranslation.title);
-                        setValue('description', previousTranslation.description);
-                        setValue(
-                          'expiredDate',
-                          previousTranslation.expiredDate
-                            ? new Date(previousTranslation.expiredDate).toISOString()
-                            : undefined
-                        );
-                      } else {
-                        reset(defaultValues);
-                      }
-                      setStep((prev) => prev - 1);
-                    }}
+                    onClick={handlePrevious}
                   >
                     Geri
                   </Button>
                 )}
                 <Button
-                  type="submit"
+                  type="button"
                   className="!bg-[#1C252E] !w-max !px-4 !py-3 gap-2 !text-white !rounded-xl"
+                  onClick={step === languages.length - 1 ? onSubmit : handleNext}
                 >
                   {step === languages.length - 1 ? 'Yadda saxla' : 'Davam et'}
                 </Button>

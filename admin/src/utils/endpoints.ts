@@ -12,11 +12,15 @@ export const endpoints= {
     getFile:{
       getByFileName:"api/file/getFile/"
     },
+    file:{
+      upload:"/api/file/uploadFile",
+    },
     media:{
       list:"/api/news/list",
       listAll:"/api/news/listAll",
       delete:"/api/news/delete/",
-      getById:"/api/news/get/"
+      getById:"/api/news/getWithTranslation/",
+      create:"/api/news/create",
     },
     career:{
       list:"/api/career/list",
@@ -24,7 +28,8 @@ export const endpoints= {
       getWithTranslation:"/api/career/getWithTranslation/",
       create:"/api/career/create",
       delete: "/api/career/delete/",
-      getById:"/api/career/getWithTranslation/"
+      getById:"/api/career/getWithTranslation/",
+      update:"/api/career/",
     },
     contact:{
       list:"/api/contact-info/list",

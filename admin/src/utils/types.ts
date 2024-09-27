@@ -25,10 +25,11 @@ export interface Translation{
     title:string;
     description:string;
     expiredDate?: Date;
+    content?: string;
 }
 export interface Media {
     image: string;
-    id:string;
+    id?:string;
     translations:{
         title: string;
         description: string;

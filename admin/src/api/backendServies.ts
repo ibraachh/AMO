@@ -5,10 +5,10 @@ import axiosInstance, { axiosForUpload,
   axiosPatch,
   // axiosPatch, 
   fetcher, 
-  // fileFetcher
+  fileFetcher
  } from 'src/utils/axios';
 import { endpoints } from 'src/utils/endpoints';
-import type { Contact, SliderVideo, Translation, } from 'src/utils/types';
+import type { Contact, Media, SliderVideo, Translation, } from 'src/utils/types';
 
 const swrOptions = {
     revalidateIfStale: false,
@@ -176,6 +176,26 @@ export const useGetCareerById = (id: string) =>{
   return memoizedValue;
 }
 
+export const updateCareer = async (id: string, expiredDate: string, data : {
+  title: string;
+  description: string;
+  languageCode: string;
+}[] ) => {
+  console.log(data);
+  
+  try {
+    const url = endpoints.career.update.concat(id);
+    const response = await axiosPatch.patch(url, {
+      date: expiredDate,
+      translations: data,
+    });
+    return response;
+  } catch (error) {
+    console.error('Error during change:', error);
+    throw error;
+  }
+}
+
 
 export const deleteCareerById =async (id: string) =>{
   try {
@@ -227,4 +247,91 @@ export const deleteMediaById = async (id: string) =>{
     console.error('Error during change:', error);
     return false;
   }
+}
+
+export const createMedia = async (data: {
+  image:string;
+  translations: Translation[];
+}) => {
+  try {
+    const url = endpoints.media.create;
+    const response = await axiosInstance.post(url, data);
+    return response;
+  } catch (error) {
+    console.error('Error during change:', error);
+    throw error;
+  }
+};
+
+export const useAddFile = async (data: { image: File }) => {
+  try {
+    const url = endpoints.file.upload;
+    const formData = new FormData();
+    formData.append('file', data.image);
+    formData.append('fileName', data.image.name);
+
+    const response = await axiosForUpload.post(url, formData);
+    return response.data;
+  } catch (error) {
+    console.error('Error during video upload:', error);
+    throw error;
+  }
+};
+
+export const useGetMediaById = ( id :  string ) =>{
+  const url = endpoints.media.getById.concat(id);
+  const { data, isLoading, error, isValidating, mutate } = useSWR(
+    url,
+    fetcher,
+    swrOptions
+  );
+
+  const memoizedValue = useMemo(
+    () => ({
+      media: data || [],
+      mediaLoading: isLoading,
+      mediaError: error,
+      mediaValidating: isValidating,
+      mediaEmpty: !isLoading && !data?.length,
+      mutate,
+    }),
+    [data, error, isLoading, isValidating, mutate]
+  );
+
+  return memoizedValue;
+}
+
+export function getFile(fileName: string) {
+  try {
+    const url = endpoints.getFile.getByFileName.concat(fileName);
+    const { data, isLoading, error, isValidating, mutate } = useSWR<File>(
+      url,
+      fileFetcher,
+      swrOptions
+    );
+    const memoizedValue = useMemo(
+      () => ({
+        file: data || undefined,
+        fileLoading: isLoading,
+        fileError: error,
+        fileValidating: isValidating,
+        fileMutate: mutate,
+      }),
+      [data, error, isLoading, isValidating, mutate]
+    );
+
+    return memoizedValue;
+  } catch (error) {
+    console.error('Error during get file');
+    throw error;
+  }
+}
+
+
+export function blobToFile(blob: Blob, fileName: string) {
+  // Provide the Blob as the first argument, fileName, and set additional options like lastModified and type.
+  return new File([blob], fileName, {
+    type: blob.type, // Preserve the Blob type (e.g., 'image/webp')
+    lastModified: new Date().getTime(), // Optional: current timestamp or another value
+  });
 }

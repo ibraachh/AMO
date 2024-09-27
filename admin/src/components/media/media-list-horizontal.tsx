@@ -16,13 +16,12 @@ type Props = {
 
 export function MediaListHorizontal({ posts, loading, mutate }: Props) {
   const [page, setPage] = useState(1);
-  const perPage = 4; 
+  const perPage = 4;
 
   const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
-  // Sayfa numaralarına göre slice işlemi
   const paginatedPosts = posts.slice((page - 1) * perPage, page * perPage);
 
   const renderLoading = Array.from({ length: perPage }, (_, index) => (
@@ -42,13 +41,11 @@ export function MediaListHorizontal({ posts, loading, mutate }: Props) {
       >
         {loading ? renderLoading : renderList}
       </Box>
-
-      {/* Pagination sadece toplam post sayısı sayfa başına gösterimden fazla ise gösterilsin */}
       {posts.length > perPage && (
         <Pagination
-          count={Math.ceil(posts.length / perPage)} // Dinamik sayfa sayısı
+          count={Math.ceil(posts.length / perPage)}
           page={page}
-          onChange={handleChangePage} // Sayfa değişikliği
+          onChange={handleChangePage}
           sx={{
             mt: { xs: 5, md: 8 },
             [`& .${paginationClasses.ul}`]: { justifyContent: 'center' },

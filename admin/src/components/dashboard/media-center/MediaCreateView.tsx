@@ -3,100 +3,61 @@ import { useForm } from 'react-hook-form';
 import { useMemo, useState, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Box, Card, Chip, Stack, Button, Typography } from '@mui/material';
+import { Box, Card, Stack, Button, Typography } from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 import { _tags } from 'src/_mock';
 
 import { Form, Field } from 'src/components/hook-form';
 
-import { useLocation } from 'react-router';
 import { getLanguages } from 'src/utils/data';
 import CustomTimeline from 'src/components/timeline/CustomTimeline';
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 import { paths } from 'src/routes/paths';
 import type { Language } from '../about/SectionTop';
+import { createMedia, useAddFile } from 'src/api/backendServies';
+import { toast } from 'sonner';
+import { useRouter } from 'src/routes/hooks';
 
 export type ITranslation = {
   title: string;
-  content: string;
   description: string;
   languageCode: string;
 };
 
-export type ITag = {
-  keys: string[];
-  title: string;
-  description: string;
-};
-
 export type IPostItem = {
   id?: string;
-  title: string;
-  description: string;
-  imageUrls?: string[];
-  content: string;
-  coverImage?: string;
-  date?: Date;
-  type: string;
+  coverImage?: File;
   translations: ITranslation[];
-  displayInHomePage?: boolean; // Optional
-  tag: ITag;
 };
 
 export type NewProductSchemaType = zod.infer<typeof NewProductSchema>;
 
 export const NewProductSchema = zod.object({
   title: zod.string().min(1, { message: 'Başlıq tələb olunur!' }),
-  description: zod.string().min(1, { message: 'Açıqlama tələb olunur!' }),
-  content: zod.string().min(1, { message: 'Məzmun tələb olunur!' }),
-  image: zod.instanceof(File, { message: 'Şəkil tələb olunur!' }),
-  tag: zod
-    .object({
-      keys: zod.string().array().optional(),
-      title: zod.string().optional(),
-      description: zod.string().optional(),
-    })
-    .optional(),
+  description: zod.string().min(1, { message: 'Məzmun tələb olunur!' }),
+  coverImage: zod
+    .instanceof(File)
+    .refine((file) => file.size > 0, { message: 'Şəkil tələb olunur!' }),
 });
 
 export default function MediaCreateView() {
-  const location = useLocation();
-
-  const type = location.state?.type || '';
   const [step, setStep] = useState(0);
   const [image, setImage] = useState<File>();
-  // const [uploadedFileName, setUploadedFileName] = useState('');
+  const [uploadedFileName, setUploadedFileName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [productData, setProductData] = useState<IPostItem>({
-    title: '',
-    description: '',
-    content: '',
-    coverImage: '',
-    type,
-    tag: {
-      keys: [],
-      title: '',
-      description: '',
-    },
+    coverImage: '' || undefined,
     translations: [],
-    displayInHomePage: false,
   });
 
   const languages: Language[] = getLanguages;
 
   const defaultValues = useMemo(
     () => ({
-      title: productData.title || '',
-      description: productData.description || '',
-      content: productData.content || '',
-      image: image || undefined,
-      tag: {
-        keys: productData.tag?.keys ?? [],
-        title: productData.tag?.title ?? '',
-        description: productData.tag?.description ?? '',
-      },
-      displayInHomePage: productData.displayInHomePage,
+      title: '',
+      description: '',
+      coverImage: image || undefined,
     }),
     [productData, image]
   );
@@ -126,74 +87,25 @@ export default function MediaCreateView() {
         reset({
           title: currentTranslation.title || '',
           description: currentTranslation.description || '',
-          content: currentTranslation.description || '',
-          image: image || undefined,
-          tag: {
-            keys: productData.tag?.keys ?? [],
-            title: productData.tag?.title ?? '',
-            description: productData.tag?.description ?? '',
-          },
+          coverImage: image || undefined,
+        });
+      } else {
+        reset({
+          title: '',
+          description: '',
+          coverImage: image || undefined,
         });
       }
     }
   }, [step, productData, languages, reset, defaultValues, image]);
 
-  const handleNext = (data: NewProductSchemaType) => {
-    if (step === 0) {
-      const def = {
-        title: '',
-        content: '',
-        description: '',
-        image: data.image || productData?.coverImage,
-        tag: {
-          keys: data.tag?.keys ?? productData.tag?.keys ?? [],
-          title: data.tag?.title ?? productData.tag?.title,
-          description: data.tag?.description ?? data.tag?.description,
-        },
-      };
-      reset(def);
-      setProductData((prevData) => ({
-        ...prevData,
-        title: data.title,
-        description: data.description,
-        content: data.content,
-        coverImage: image?.name || prevData.coverImage,
-        type,
-        tag: {
-          keys: data.tag?.keys ?? [],
-          title: data.tag?.title ?? '',
-          description: data.tag?.description ?? '',
-        },
-        displayInHomePage: false,
-      }));
-    } else {
-      const updatedTranslations = [
-        ...productData.translations.filter((trans) => trans.languageCode !== languages[step].code),
-        {
-          languageCode: languages[step].code,
-          title: data.title,
-          description: data.description,
-          content: data.content,
-        },
-      ];
-
-      setProductData((prevData) => ({
-        ...prevData,
-        translations: updatedTranslations,
-      }));
-    }
-  };
-
   const handleBack = () => {
     const currentData = methods.getValues();
     reset(defaultValues);
-    // Update the product data based on the current step
     handleNext(currentData);
 
-    // Move to the previous step
     setStep((prev) => prev - 1);
 
-    // Update form values based on the new step
     const updatedValues =
       step > 0
         ? productData.translations.find(
@@ -204,63 +116,62 @@ export default function MediaCreateView() {
     reset(updatedValues);
   };
 
+  const router = useRouter();
+
   const onSubmit = handleSubmit(async (data) => {
     try {
-      if (step === 0 && data.image) {
+      if (step === 0 && data.coverImage) {
         setIsLoading(true);
-        // const [name, ext] = data.image.name.split('.');
-        // const fileName = `${name}${new Date().toISOString()}.${ext}`;
+        setImage(data.coverImage);
+        setProductData((prevData) => ({
+          ...prevData,
+          coverImage: data.coverImage,
+        }));
 
-        // Upload file
-        // const uploadResponse = await uploadFile(data.image, fileName, false);
-        // setUploadedFileName(uploadResponse.fileName); // Store file name
-        setImage(data.image); // Keep the file in state
+        const res: any = await useAddFile({ image: data.coverImage });
+        console.log(res);
+
+        if (res.statusCode === 'OK') {
+          setUploadedFileName(res?.message);
+        }
         setIsLoading(false);
-      } else {
-        // setUploadedFileName(productData.coverImage || ''); // Use existing file name if no new file
       }
 
-      // Perform next step logic
-      handleNext(data);
+      const newTranslation = {
+        languageCode: languages[step].code,
+        title: data.title,
+        description: data.description,
+      };
+      const updatedProductData: IPostItem = {
+        coverImage: productData.coverImage,
+        translations: [
+          ...productData.translations.filter((t) => t.languageCode !== languages[step].code),
+          newTranslation,
+        ],
+      };
+
+      setProductData(updatedProductData);
+
       if (step === languages.length - 1) {
-        // Prepare the final data
-        // const finalData = {
-        //   ...productData,
-        //   translations: [
-        //     ...productData.translations.filter(
-        //       (trans) => trans.languageCode !== languages[step].code
-        //     ),
-        //     {
-        //       title: data.title,
-        //       description: data.description,
-        //       cotent: data.content,
-        //       languageCode: languages[step].code,
-        //     },
-        //   ],
-        //   coverImage: uploadedFileName,
-        // };
-        // Create news with the final data
-        // const response = await useCreateNews(finalData);
-        // if (response.data) {
-        //   setProductData({
-        //     title: '',
-        // description: '',
-        //     content: '',
-        //     coverImage: '',
-        //     type,
-        //     tag: {
-        //       keys: [],
-        //       title: '',
-        //       description: '',
-        //     },
-        //     displayInHomePage: false,
-        //     translations: [],
-        //   });
-        //   setImage(undefined);
-        //   reset(defaultValues);
-        //   setStep(0);
-        //   toast.success('Kart əlavə olundu');
-        // }
+        console.log(uploadedFileName);
+
+        const res = await createMedia({
+          image: uploadedFileName,
+          translations: updatedProductData.translations,
+        });
+
+        if (!res) {
+          toast.error('Xəta bas verdi');
+          return;
+        }
+
+        reset(defaultValues);
+
+        toast.success('Əlavə edildi');
+        setTimeout(() => {
+          router.push(paths.dashboard.mediaCenter.list);
+          router.refresh();
+        }, 800);
       } else {
         setStep((prev) => prev + 1);
       }
@@ -269,6 +180,23 @@ export default function MediaCreateView() {
     }
   });
 
+  const handleNext = (data: NewProductSchemaType) => {
+    const updatedTranslation = {
+      languageCode: languages[step].code,
+      title: data.title,
+      description: data.description,
+    };
+
+    const updatedTranslations = [
+      ...productData.translations.filter((trans) => trans.languageCode !== languages[step].code),
+      updatedTranslation,
+    ];
+
+    setProductData((prevData) => ({
+      ...prevData,
+      translations: updatedTranslations,
+    }));
+  };
   return (
     <DashboardContent maxWidth="xl">
       <CustomBreadcrumbs
@@ -298,73 +226,19 @@ export default function MediaCreateView() {
                   error={!!errors.title}
                   helperText={errors.title?.message}
                 />
-                <Field.Text
-                  className="!w-full"
+                <Field.Editor
                   name="description"
-                  label="Məzmun"
+                  key={languages[step].code}
+                  placeholder="Zəhmət olmasa məlumatları daxil edin."
                   error={!!errors.description}
                   helperText={errors.description?.message}
                 />
-                <Field.Editor
-                  name="content"
-                  key={languages[step].code}
-                  placeholder="Zəhmət olmasa məlumatları daxil edin."
-                  error={!!errors.content}
-                  helperText={errors.content?.message}
-                />
                 <Field.Upload
                   disabled={step !== 0}
-                  name="image"
-                  onDelete={() => setValue('image', new File([], ''))} // Clear the file field
+                  name="coverImage"
+                  onDelete={() => setValue('coverImage', new File([], ''))} // Clear the file field
                 />
 
-                <Stack>
-                  <Field.Autocomplete
-                    name="tag.keys"
-                    label="Meta Keys"
-                    placeholder="+ Tags"
-                    multiple
-                    freeSolo
-                    disableCloseOnSelect
-                    options={_tags.map((option) => option)}
-                    getOptionLabel={(option) => option}
-                    disabled={step !== 0}
-                    renderTags={(selected, getTagProps) =>
-                      selected.map((option, index) => (
-                        <Chip
-                          {...getTagProps({ index })}
-                          key={option}
-                          label={option}
-                          size="small"
-                          color="info"
-                          variant="soft"
-                        />
-                      ))
-                    }
-                  />
-                </Stack>
-                <Stack>
-                  <Field.Text
-                    disabled={step !== 0}
-                    className="!w-full"
-                    name="tag.title"
-                    label="Meta title"
-                    value={methods.watch('tag.title') || ''} // Ensure value is controlled
-                    error={!!errors.tag?.title}
-                    helperText={errors.tag?.title?.message}
-                  />
-                </Stack>
-                <Stack>
-                  <Field.Text
-                    disabled={step !== 0}
-                    className="!w-full"
-                    name="tag.description"
-                    label="Meta Description"
-                    value={methods.watch('tag.description') || ''} // Ensure value is controlled
-                    error={!!errors.tag?.description}
-                    helperText={errors.tag?.description?.message}
-                  />
-                </Stack>
                 <div className={`flex ${step === 0 ? 'justify-end' : 'justify-between'} mt-3`}>
                   {step > 0 && (
                     <Button

@@ -16,6 +16,8 @@ import type { Media } from 'src/utils/types';
 import { BASE_URL } from 'src/utils/axios';
 import { deleteMediaById } from 'src/api/backendServies';
 import { toast } from 'sonner';
+import { useRouter } from 'src/routes/hooks';
+import { paths } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -29,6 +31,8 @@ export function MediaItemHorizontal({ post, mutate }: Props) {
 
   const popover = usePopover();
 
+  const router = useRouter();
+
   const { image, translations } = post;
 
   const handleDelete = async () => {
@@ -40,6 +44,11 @@ export function MediaItemHorizontal({ post, mutate }: Props) {
     }
   };
 
+  const handleEdit = () => {
+    popover.onClose();
+    router.push(paths.dashboard.mediaCenter.edit(post.id));
+  };
+
   return (
     <>
       <Card sx={{ display: 'flex', flexDirection: 'column-reverse' }}>
@@ -47,9 +56,7 @@ export function MediaItemHorizontal({ post, mutate }: Props) {
           <Stack spacing={1} flexGrow={1}>
             {translations[0].title}
 
-            <Typography variant="body2" sx={{ ...maxLine({ line: 2 }), color: 'text.secondary' }}>
-              {translations[0].description}
-            </Typography>
+            <span dangerouslySetInnerHTML={{ __html: translations[0].description }} />
           </Stack>
 
           <Box display="flex" alignItems="center">
@@ -84,6 +91,10 @@ export function MediaItemHorizontal({ post, mutate }: Props) {
         slotProps={{ arrow: { placement: 'bottom-center' } }}
       >
         <MenuList>
+          <MenuItem onClick={handleEdit}>
+            <Iconify icon="eva:edit-fill" />
+            Edit
+          </MenuItem>
           <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
             <Iconify icon="solar:trash-bin-trash-bold" />
             Delete
