@@ -66,7 +66,7 @@ public class MissionController {
             Mission mission = missionRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Mission with this id does not exist"));
             patcher.patcher(mission, patch);
-            return ResponseEntity.ok(missionRepository.save(mission));
+            return ResponseEntity.ok(missionService.update(mission));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

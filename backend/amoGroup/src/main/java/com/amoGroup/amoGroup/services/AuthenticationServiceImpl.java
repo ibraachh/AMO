@@ -109,6 +109,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userRepository.save(user);
 
             return AuthenticationResponse.builder()
+                    .id(user.getId())
                     .username(user.getUsername())
                     .email(user.getEmail())
                     .role(user.getRole())

@@ -67,7 +67,7 @@ public class CompanyController {
             Company company = repository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Company not found with given id"));
             patcher.patcher(company, patch);
-            return ResponseEntity.ok(repository.save(company));
+            return ResponseEntity.ok(companyService.update(company));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

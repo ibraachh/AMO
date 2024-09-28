@@ -1,12 +1,9 @@
 package com.amoGroup.amoGroup.controller;
 
-
-import com.amoGroup.amoGroup.entities.About;
 import com.amoGroup.amoGroup.entities.Career;
 import com.amoGroup.amoGroup.patch.Patcher;
 import com.amoGroup.amoGroup.repositories.CareerRepository;
 import com.amoGroup.amoGroup.response.CareerResponse;
-import com.amoGroup.amoGroup.response.EntityResponse;
 import com.amoGroup.amoGroup.response.MessageResponse;
 import com.amoGroup.amoGroup.services.career.CareerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

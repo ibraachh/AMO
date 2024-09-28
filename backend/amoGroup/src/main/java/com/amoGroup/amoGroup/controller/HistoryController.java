@@ -66,7 +66,7 @@ public class HistoryController {
             History history = historyRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Not found"));
             patcher.patcher(history, patch);
-            return ResponseEntity.ok(historyRepository.save(history));
+            return ResponseEntity.ok(historyService.update(history));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

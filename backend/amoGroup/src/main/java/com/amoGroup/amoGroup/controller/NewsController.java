@@ -67,7 +67,7 @@ public class NewsController {
             News news = newsRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("News with this id does not exist"));
             patcher.patcher(news, patch);
-            return ResponseEntity.ok(newsRepository.save(news));
+            return ResponseEntity.ok(newsService.update(news));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
