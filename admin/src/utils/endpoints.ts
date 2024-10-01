@@ -21,6 +21,7 @@ export const endpoints= {
       delete:"/api/news/delete/",
       getById:"/api/news/getWithTranslation/",
       create:"/api/news/create",
+      update:"/api/news/",
     },
     career:{
       list:"/api/career/list",
@@ -35,5 +36,42 @@ export const endpoints= {
       list:"/api/contact-info/list",
       create:"/api/contact-info/create",
       update:"/api/contact-info/"
+    },
+    about:{
+      info:{
+        create:"/api/about/create",
+        update:"/api/about/",
+        getAll:"/api/about/listAll",
+      },
+      value:{
+        getAll:"/api/value/list",
+        getById:"/api/value/getWithTranslation/",
+        update:"/api/value/",
+        create:"/api/value/create"
+      },
+      mission:{
+        getAll:"/api/mission/list",
+        getById:"/api/mission/getWithTranslation/",
+        update:"/api/mission/",
+        create:"/api/mission/create"
+      },
+      history:{
+        getAll:"/api/history/listAll",
+        create:"/api/history/create",
+        update:"/api/history/",
+      },
+      chronology:{
+        list:"/api/chronology/list",
+        getAll:"/api/chronology/listAll",
+        delete:"/api/chronology/delete/",
+        create:"/api/chronology/create",
+        update:"/api/chronology/",
+        getById:"/api/chronology/getWithTranslation/",
+      },
+      founderMessage:{
+        getAll:"/api/founderMessage/listAll",
+        create:"/api/founderMessage/create",
+        update:"/api/founderMessage/",
+      }
     }
 }

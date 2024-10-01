@@ -36,3 +36,25 @@ export interface Media {
         languageCode: string;
     }[]
 }
+
+
+export interface Info {
+    id?:string;
+    translations:{
+        title: string;
+        description: string;
+        languageCode: string;
+    }[]
+}
+
+export interface Value {
+    id?:string;
+    title: string;
+    description: string;
+}
+
+export interface Language {
+    id: string;
+    name: string;
+    code: string;
+  }

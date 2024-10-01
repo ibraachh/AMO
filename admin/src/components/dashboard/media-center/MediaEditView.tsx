@@ -1,3 +1,5 @@
+import type { Language } from 'src/utils/types';
+
 import { z as zod } from 'zod';
 import { useForm } from 'react-hook-form';
 import { useMemo, useState, useEffect } from 'react';
@@ -15,7 +17,6 @@ import { getLanguages } from 'src/utils/data';
 import CustomTimeline from 'src/components/timeline/CustomTimeline';
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 import { paths } from 'src/routes/paths';
-import type { Language } from '../about/SectionTop';
 
 export type ITranslation = {
   title: string;
@@ -60,7 +61,7 @@ export const NewProductSchema = zod.object({
     .optional(),
 });
 
-export default function MediaEditView() {
+export default function MediaEditView({ post, file }: { post: IPostItem; file: File }) {
   const location = useLocation();
 
   const type = location.state?.type || '';

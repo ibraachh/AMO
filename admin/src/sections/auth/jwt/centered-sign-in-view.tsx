@@ -66,7 +66,7 @@ export function CenteredSignInView() {
       await signInWithPassword({ username: data.username, password: data.password });
       await checkUserSession?.();
 
-      router.refresh();
+      // router.refresh();
     } catch (error) {
       console.error(error);
       setErrorMsg(error instanceof Error ? error.message : error);

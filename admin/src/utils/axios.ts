@@ -23,6 +23,7 @@ axiosInstance.interceptors.request.use(
   async (config) => {
     config.headers['X-API-KEY'] = API_KEY;
     config.headers['Access-Control-Allow-Origin'] = '*';
+    config.headers["Accept-Language"] = "az";
     const token = sessionStorage.getItem(STORAGE_KEY);
 
     if (token) {

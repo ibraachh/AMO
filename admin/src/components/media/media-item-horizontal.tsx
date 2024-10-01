@@ -5,9 +5,6 @@ import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-
-import { maxLine } from 'src/theme/styles';
 
 import { Image } from 'src/components/image';
 import { Iconify } from 'src/components/iconify';
@@ -37,7 +34,7 @@ export function MediaItemHorizontal({ post, mutate }: Props) {
 
   const handleDelete = async () => {
     popover.onClose();
-    const res = await deleteMediaById(post.id);
+    const res = await deleteMediaById(post?.id ?? '');
     if (res && mutate) {
       toast.success('Media deleted successfully');
       mutate();
@@ -46,7 +43,7 @@ export function MediaItemHorizontal({ post, mutate }: Props) {
 
   const handleEdit = () => {
     popover.onClose();
-    router.push(paths.dashboard.mediaCenter.edit(post.id));
+    router.push(paths.dashboard.mediaCenter.edit(post?.id ?? ''));
   };
 
   return (
