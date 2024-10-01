@@ -66,7 +66,7 @@ public class ValueController {
             Value value = valueRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Value with this id does not exist"));
             patcher.patcher(value, patch);
-            return ResponseEntity.ok(valueRepository.save(value));
+            return ResponseEntity.ok(valueService.update(value));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

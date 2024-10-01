@@ -67,7 +67,7 @@ public class FounderMessageController {
             FounderMessage founderMessage = founderMessageRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Not found"));
             patcher.patcher(founderMessage, patch);
-            return ResponseEntity.ok(founderMessageRepository.save(founderMessage));
+            return ResponseEntity.ok(founderMessageService.update(founderMessage));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

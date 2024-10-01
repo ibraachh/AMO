@@ -64,7 +64,7 @@ public class ContactFormController {
                     .orElseThrow(() -> new RuntimeException("There is no contact info with given id"));
             patcher.patcher(existing, request);
 
-            return ResponseEntity.ok(repository.save(existing));
+            return ResponseEntity.ok(contactFormService.update(existing));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

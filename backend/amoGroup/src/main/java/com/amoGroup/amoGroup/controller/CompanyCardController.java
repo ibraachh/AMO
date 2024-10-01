@@ -65,7 +65,7 @@ public class CompanyCardController {
             CompanyCard companyCard = repository.findById(id)
                     .orElseThrow(() -> new RuntimeException("CompanyCard not found with given id"));
             patcher.patcher(companyCard, patch);
-            return ResponseEntity.ok(repository.save(companyCard));
+            return ResponseEntity.ok(companyCardService.update(companyCard));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

@@ -83,7 +83,7 @@ public class LanguageController {
                     .orElseThrow(() -> new RuntimeException("There is no contact info with given id"));
             patcher.patcher(existing, request);
 
-            return ResponseEntity.ok(repository.save(existing));
+            return ResponseEntity.ok(languageService.updateLanguage(existing));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
