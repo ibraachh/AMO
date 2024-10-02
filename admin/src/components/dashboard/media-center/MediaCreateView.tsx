@@ -1,3 +1,5 @@
+import type { Language } from 'src/utils/types';
+
 import { z as zod } from 'zod';
 import { useForm } from 'react-hook-form';
 import { useMemo, useState, useEffect } from 'react';
@@ -6,7 +8,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Card, Stack, Button, Typography } from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
-import { _tags } from 'src/_mock';
 
 import { Form, Field } from 'src/components/hook-form';
 
@@ -14,7 +15,6 @@ import { getLanguages } from 'src/utils/data';
 import CustomTimeline from 'src/components/timeline/CustomTimeline';
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 import { paths } from 'src/routes/paths';
-import type { Language } from '../about/SectionTop';
 import { createMedia, useAddFile } from 'src/api/backendServies';
 import { toast } from 'sonner';
 import { useRouter } from 'src/routes/hooks';
@@ -59,7 +59,7 @@ export default function MediaCreateView() {
       description: '',
       coverImage: image || undefined,
     }),
-    [productData, image]
+    [image]
   );
 
   const methods = useForm<NewProductSchemaType>({

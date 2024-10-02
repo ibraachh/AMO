@@ -14,15 +14,13 @@ export default function MediaEdit() {
 
   const { file } = getFile(media?.image || '');
 
-  console.log(media);
-
   return (
     <>
       <Helmet>
         <title>{metaData.title}</title>
       </Helmet>
 
-      <MediaEditView />
+      {media && file && <MediaEditView file={file} post={media} />}
     </>
   );
 }

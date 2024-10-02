@@ -1,9 +1,11 @@
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 import { DashboardContent } from 'src/layouts/dashboard';
-import HeadingSection from './HeadingSection';
-import FounderMessageMeta from './FounderMessageMeta';
+import HeadingSection from '../history/HeadingSection';
+import { useGetAllMessage } from 'src/api/backendServies';
 
 export default function FounderMessageView() {
+  const { message, messageLoading, mutate } = useGetAllMessage();
+
   return (
     <DashboardContent maxWidth="xl">
       <CustomBreadcrumbs
@@ -11,9 +13,7 @@ export default function FounderMessageView() {
         links={[{ name: 'Saytın aktivliyi', href: '/dashboard' }, { name: 'Qurucu mesajı' }]}
       />
 
-      <HeadingSection />
-
-      <FounderMessageMeta />
+      {!messageLoading && <HeadingSection mutate={mutate} initialData={message[0]} />}
     </DashboardContent>
   );
 }
