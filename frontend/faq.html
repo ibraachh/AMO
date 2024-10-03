@@ -189,11 +189,11 @@
             <select
               name="langage"
               class="!appearance-none !border-0 outline-none p-1 cursor-pointer !opacity-100 !text-[#fff]"
-              id="lamguage"
+              id="language"
             >
               <option value="en">EN</option>
-              <option value="en">RU</option>
-              <option value="en">AZ</option>
+              <option value="ru">RU</option>
+              <option value="az">AZ</option>
             </select>
             <svg
               class="search"
@@ -735,5 +735,18 @@
 
     <!-- App Js file -->
     <script src="./assets/js/app.js"></script>
+    <script>
+      function changeLanguage(event) {
+        localStorage.setItem("language", event.target.value);
+        window.location.reload();
+      }
+
+      window.onload = function () {
+        const savedLanguage = localStorage.getItem("language");
+        if (savedLanguage) {
+          document.getElementById("language").value = savedLanguage;
+        }
+      };
+    </script>
   </body>
 </html>
