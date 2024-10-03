@@ -1,18 +1,17 @@
 package com.amoGroup.amoGroup.services.companyCard;
 
+import com.amoGroup.amoGroup.entities.Company;
 import com.amoGroup.amoGroup.entities.CompanyCard;
 import com.amoGroup.amoGroup.entities.translations.Translation;
 import com.amoGroup.amoGroup.repositories.CompanyCardRepository;
+import com.amoGroup.amoGroup.repositories.CompanyRepository;
 import com.amoGroup.amoGroup.repositories.LanguageRepository;
 import com.amoGroup.amoGroup.response.CompanyCardResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -24,10 +23,23 @@ public class CompanyCardServiceImpl implements CompanyCardService {
     @Autowired
     CompanyCardRepository companyCardRepository;
 
+    @Autowired
+    CompanyRepository companyRepository;
+
     @Override
     public CompanyCard add(CompanyCard companyCard) {
+        Company company = companyRepository.findById(companyCard.getCompanyId())
+                .orElseThrow(() -> new RuntimeException("Company with this id does not exist"));
+
+        if (company.getCompanyCards() == null) {
+            company.setCompanyCards(new ArrayList<>());
+        }
+
+        company.getCompanyCards().add(companyCard);
         validateTranslations(companyCard);
-        return companyCardRepository.insert(companyCard);
+        companyCardRepository.insert(companyCard);
+        companyRepository.save(company);
+        return companyCard;
     }
 
     @Override
@@ -35,9 +47,19 @@ public class CompanyCardServiceImpl implements CompanyCardService {
         if (!companyCardRepository.existsById(companyCard.getId())) {
             throw new RuntimeException("CompanyCard with this id does not exist");
         }
-        validateTranslations(companyCard);
+        Company company = companyRepository.findById(companyCard.getCompanyId())
+                .orElseThrow(() -> new RuntimeException("Company with this id does not exist"));
 
-        return companyCardRepository.save(companyCard);
+        if (company.getCompanyCards() == null) {
+            company.setCompanyCards(new ArrayList<>());
+        }
+        company.getCompanyCards().removeIf(card -> card.getId().equals(companyCard.getId()));
+        company.getCompanyCards().add(companyCard);
+
+        validateTranslations(companyCard);
+        companyCardRepository.save(companyCard);
+        companyRepository.save(company);
+        return companyCard;
     }
 
     @Override

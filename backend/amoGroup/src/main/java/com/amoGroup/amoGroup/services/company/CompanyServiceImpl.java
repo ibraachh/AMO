@@ -75,6 +75,9 @@ public class CompanyServiceImpl implements CompanyService {
     public Company addCard(String companyId, CompanyCard companyCard) {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new RuntimeException("Company not found with given id"));
+        if (!companyCard.getCompanyId().equals(companyId)) {
+            throw new RuntimeException("Company id is different in the body");
+        }
         companyCard.setCompanyId(companyId);
         if (company.getCompanyCards() == null) {
             company.setCompanyCards(new ArrayList<>());
