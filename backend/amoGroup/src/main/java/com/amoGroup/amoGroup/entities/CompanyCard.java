@@ -15,5 +15,6 @@ public class CompanyCard extends BaseEntity {
     @Id
     private String id;
     private String category;
+    private String companyId;
     private List<Translation> translations;
 }

@@ -88,6 +88,20 @@ public class CompanyCardServiceImpl implements CompanyCardService {
     }
 
     @Override
+    public List<CompanyCardResponse> getAllCompanyCardsByCompany(String companyId, String language) {
+        return companyCardRepository.findAllByCompanyId(companyId).stream()
+                .map(companyCard -> getTranslation(language, companyCard))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
+    }
+
+    @Override
+    public List<CompanyCard> getAllCompanyCardsByCompany(String companyId) {
+        return companyCardRepository.findAllByCompanyId(companyId);
+    }
+
+    @Override
     public void validateTranslations(CompanyCard request) {
         if (request.getTranslations() != null) {
             Set<String> languageCodes = new HashSet<>();

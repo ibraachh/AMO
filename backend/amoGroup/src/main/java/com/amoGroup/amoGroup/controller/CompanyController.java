@@ -125,6 +125,34 @@ public class CompanyController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "authentication")
+    @GetMapping("/getAllByName/{name}")
+    public ResponseEntity<Company> getAllCompanyByName(@PathVariable String name) {
+        try {
+            Company company = companyService.getCompanyByName(name)
+                    .orElseThrow(() -> new RuntimeException("Company not found with given name"));
+            return ResponseEntity.ok(company);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .build();
+        }
+    }
+
+    @GetMapping("/getByName/{name}")
+    public ResponseEntity<CompanyResponse> getCompanyByName(@RequestHeader(value = "Accept-Language", defaultValue = "az") String language, @PathVariable String name) {
+        try {
+            CompanyResponse company = companyService.getCompanyByName(name, language)
+                    .orElseThrow(() -> new RuntimeException("Company not found with given name"));
+            return ResponseEntity.ok(company);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .build();
+        }
+    }
+
     @GetMapping("/list")
     public ResponseEntity<List<CompanyResponse>> list(@RequestHeader(value = "Accept-Language", defaultValue = "az") String language) {
         try {

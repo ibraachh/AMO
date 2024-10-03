@@ -1,6 +1,7 @@
 package com.amoGroup.amoGroup.entities;
 
 import com.amoGroup.amoGroup.entities.translations.Translation;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
@@ -14,6 +15,8 @@ import java.util.List;
 public class Company extends BaseEntity {
     @Id
     private String id;
+    @NotBlank
+    private String name;
     private List<Translation> translations;
     private List<CompanyCard> companyCards;
 }

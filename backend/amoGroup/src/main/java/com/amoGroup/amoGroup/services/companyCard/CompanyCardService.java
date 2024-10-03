@@ -26,4 +26,8 @@ public interface CompanyCardService {
     void validateTranslations(CompanyCard request);
 
     Optional<CompanyCardResponse> getTranslation(String language, CompanyCard companyCard);
+
+    List<CompanyCardResponse> getAllCompanyCardsByCompany(String companyId, String language);
+
+    List<CompanyCard> getAllCompanyCardsByCompany(String companyId);
 }

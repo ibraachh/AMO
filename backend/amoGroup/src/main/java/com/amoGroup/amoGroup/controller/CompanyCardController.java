@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = {"*"}, maxAge = 3600)
 @RestController
 @RequestMapping("/api/companyCard")
@@ -132,10 +134,36 @@ public class CompanyCardController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "authentication")
     @GetMapping("/listAll")
     public ResponseEntity<?> listAll() {
         try {
             return ResponseEntity.ok(companyCardService.getAllCompanyCards());
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .build();
+        }
+    }
+
+    @GetMapping("/listByCompany/{companyId}")
+    public ResponseEntity<List<CompanyCardResponse>> listByCompanyId(@RequestHeader(value = "Accept-Language", defaultValue = "az") String language, @PathVariable String companyId) {
+        try {
+            return ResponseEntity.ok(companyCardService.getAllCompanyCardsByCompany(companyId, language));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .build();
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "authentication")
+    @GetMapping("/listAllByCompany/{companyId}")
+    public ResponseEntity<List<CompanyCard>> listAllByCompanyId(@PathVariable String companyId) {
+        try {
+            return ResponseEntity.ok(companyCardService.getAllCompanyCardsByCompany(companyId));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

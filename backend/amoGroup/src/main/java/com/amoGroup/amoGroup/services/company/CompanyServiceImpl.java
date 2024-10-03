@@ -67,6 +67,7 @@ public class CompanyServiceImpl implements CompanyService {
     public Company addCard(String companyId, CompanyCard companyCard) {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new RuntimeException("Company not found with given id"));
+        companyCard.setCompanyId(companyId);
         if (company.getCompanyCards() == null) {
             company.setCompanyCards(new ArrayList<>());
         }
@@ -117,6 +118,17 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public long count() {
         return companyRepository.count();
+    }
+
+    @Override
+    public Optional<Company> getCompanyByName(String name) {
+        return companyRepository.findByName(name);
+    }
+
+    @Override
+    public Optional<CompanyResponse> getCompanyByName(String name, String language) {
+        return companyRepository.findByName(name)
+                .flatMap(company -> getTranslation(language, company));
     }
 
     private void validateTranslations(Company request) {

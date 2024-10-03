@@ -27,4 +27,8 @@ public interface CompanyService {
     Optional<Company> getCompanyWithTranslations(String id);
 
     long count();
+
+    Optional<Company> getCompanyByName(String name);
+
+    Optional<CompanyResponse> getCompanyByName(String name, String language);
 }
