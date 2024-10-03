@@ -66,7 +66,9 @@ public class CompanyServiceImpl implements CompanyService {
                     .orElseThrow(() -> new RuntimeException("Company with this id does not exist"));
 
             List<CompanyCard> cards = company.getCompanyCards();
-            storageService.deleteExistingImages(company.getLogo());
+            if (company.getLogo() != null) {
+                storageService.deleteExistingImages(company.getLogo());
+            }
             companyCardRepository.deleteAll(cards);
             companyRepository.delete(company);
             return true;
