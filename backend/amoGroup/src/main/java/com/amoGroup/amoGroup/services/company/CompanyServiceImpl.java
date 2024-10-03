@@ -33,6 +33,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company add(Company company) {
+        if (companyRepository.existsByName(company.getName())) {
+            throw new RuntimeException("Company with this name already exists");
+        }
         validateTranslations(company);
         return companyRepository.insert(company);
     }
@@ -41,6 +44,11 @@ public class CompanyServiceImpl implements CompanyService {
     public Company update(Company company) {
         if (!companyRepository.existsById(company.getId())) {
             throw new RuntimeException("Company with this id does not exist");
+        }
+        Company existingCompany = companyRepository.findByName(company.getName())
+                .orElse(null);
+        if (existingCompany != null && !existingCompany.getId().equals(company.getId())) {
+            throw new RuntimeException("Company with this name already exists");
         }
         validateTranslations(company);
 
