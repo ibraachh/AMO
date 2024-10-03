@@ -9,6 +9,7 @@ import com.amoGroup.amoGroup.repositories.LanguageRepository;
 import com.amoGroup.amoGroup.response.CompanyCardResponse;
 import com.amoGroup.amoGroup.response.CompanyResponse;
 import com.amoGroup.amoGroup.services.companyCard.CompanyCardService;
+import com.amoGroup.amoGroup.services.storage.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     CompanyCardRepository companyCardRepository;
+
+    @Autowired
+    StorageService storageService;
 
     @Override
     public Company add(Company company) {
@@ -62,6 +66,7 @@ public class CompanyServiceImpl implements CompanyService {
                     .orElseThrow(() -> new RuntimeException("Company with this id does not exist"));
 
             List<CompanyCard> cards = company.getCompanyCards();
+            storageService.deleteExistingImages(company.getLogo());
             companyCardRepository.deleteAll(cards);
             companyRepository.delete(company);
             return true;

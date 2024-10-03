@@ -18,6 +18,7 @@ public class Company extends BaseEntity {
     private String id;
     @NotBlank
     private String name;
+    private String logo;
     private List<Translation> translations;
     @DBRef
     private List<CompanyCard> companyCards;
