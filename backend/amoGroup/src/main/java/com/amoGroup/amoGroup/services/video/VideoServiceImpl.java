@@ -41,7 +41,9 @@ public class VideoServiceImpl implements VideoService {
         try {
             Video video = videoRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Video not found with given id"));
-            storageService.deleteExistingImages(video.getVideoUrl());
+            if (video.getVideoUrl() != null) {
+                storageService.deleteExistingImages(video.getVideoUrl());
+            }
             videoRepository.delete(video);
             return true;
         } catch (Exception e) {

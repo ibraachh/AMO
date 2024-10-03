@@ -9,6 +9,7 @@ import com.amoGroup.amoGroup.repositories.LanguageRepository;
 import com.amoGroup.amoGroup.response.CompanyCardResponse;
 import com.amoGroup.amoGroup.response.CompanyResponse;
 import com.amoGroup.amoGroup.services.companyCard.CompanyCardService;
+import com.amoGroup.amoGroup.services.storage.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     CompanyCardRepository companyCardRepository;
+
+    @Autowired
+    StorageService storageService;
 
     @Override
     public Company add(Company company) {
@@ -62,7 +66,12 @@ public class CompanyServiceImpl implements CompanyService {
                     .orElseThrow(() -> new RuntimeException("Company with this id does not exist"));
 
             List<CompanyCard> cards = company.getCompanyCards();
-            companyCardRepository.deleteAll(cards);
+            if (company.getLogo() != null) {
+                storageService.deleteExistingImages(company.getLogo());
+            }
+            if (company.getCompanyCards() != null) {
+                companyCardRepository.deleteAll(cards);
+            }
             companyRepository.delete(company);
             return true;
         } catch (Exception e) {
@@ -75,6 +84,9 @@ public class CompanyServiceImpl implements CompanyService {
     public Company addCard(String companyId, CompanyCard companyCard) {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new RuntimeException("Company not found with given id"));
+        if (!companyCard.getCompanyId().equals(companyId)) {
+            throw new RuntimeException("Company id is different in the body");
+        }
         companyCard.setCompanyId(companyId);
         if (company.getCompanyCards() == null) {
             company.setCompanyCards(new ArrayList<>());
@@ -90,7 +102,9 @@ public class CompanyServiceImpl implements CompanyService {
                 .orElseThrow(() -> new RuntimeException("Company not found with given id"));
         CompanyCard companyCard = companyCardRepository.findById(cardId)
                 .orElseThrow(() -> new RuntimeException("Company card not found with given id"));
-        company.getCompanyCards().remove(companyCard);
+        if (company.getCompanyCards() != null) {
+            company.getCompanyCards().remove(companyCard);
+        }
         companyCardRepository.delete(companyCard);
         return companyRepository.save(company);
     }

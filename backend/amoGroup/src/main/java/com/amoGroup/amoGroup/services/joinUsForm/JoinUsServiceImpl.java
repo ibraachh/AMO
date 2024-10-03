@@ -73,7 +73,9 @@ public class JoinUsServiceImpl implements JoinUsService {
         try {
             JoinUsForm joinUsForm = joinUsFormRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("JoinUsForm with this id does not exists"));
-            storageService.deleteExistingImages(joinUsForm.getFile());
+            if(joinUsForm.getFile() != null){
+                storageService.deleteExistingImages(joinUsForm.getFile());
+            }
             joinUsFormRepository.delete(joinUsForm);
             return true;
         } catch (Exception e) {
