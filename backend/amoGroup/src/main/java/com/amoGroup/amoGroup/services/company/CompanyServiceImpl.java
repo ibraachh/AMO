@@ -69,7 +69,9 @@ public class CompanyServiceImpl implements CompanyService {
             if (company.getLogo() != null) {
                 storageService.deleteExistingImages(company.getLogo());
             }
-            companyCardRepository.deleteAll(cards);
+            if (company.getCompanyCards() != null) {
+                companyCardRepository.deleteAll(cards);
+            }
             companyRepository.delete(company);
             return true;
         } catch (Exception e) {
@@ -100,7 +102,9 @@ public class CompanyServiceImpl implements CompanyService {
                 .orElseThrow(() -> new RuntimeException("Company not found with given id"));
         CompanyCard companyCard = companyCardRepository.findById(cardId)
                 .orElseThrow(() -> new RuntimeException("Company card not found with given id"));
-        company.getCompanyCards().remove(companyCard);
+        if (company.getCompanyCards() != null) {
+            company.getCompanyCards().remove(companyCard);
+        }
         companyCardRepository.delete(companyCard);
         return companyRepository.save(company);
     }

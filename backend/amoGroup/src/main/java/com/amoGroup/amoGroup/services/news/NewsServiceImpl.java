@@ -48,7 +48,9 @@ public class NewsServiceImpl implements NewsService {
         try {
             News news = newsRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("News with this id does not exists"));
-            storageService.deleteExistingImages(news.getImage());
+            if (news.getImage() != null) {
+                storageService.deleteExistingImages(news.getImage());
+            }
             newsRepository.delete(news);
             return true;
         } catch (Exception e) {
