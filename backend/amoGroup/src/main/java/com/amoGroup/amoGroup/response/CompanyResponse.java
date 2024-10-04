@@ -13,5 +13,6 @@ public class CompanyResponse {
     private String id;
     private String description;
     private String title;
+    private String logo;
     private List<CompanyCardResponse> companyCards;
 }
