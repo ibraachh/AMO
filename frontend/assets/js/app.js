@@ -27,6 +27,7 @@ getOthersSecond.addEventListener("click", () => {
   iconArrowSecond.classList.toggle("active");
 });
 
+
 const close_btn_for_mobile = document.querySelector(".close-btn-for-mobile");
 const mobil_menu_icon = document.querySelector(".mobil-menu-icon");
 const mobil_menu = document.querySelector(".mobil-menu");

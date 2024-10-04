@@ -406,7 +406,7 @@
             class="contactForm gap-8 my-14 max-lg:flex-col max-lg:!items-start"
           >
             <form
-              class="p-20 max-md:p-16 max-sm:p-6 flex-col gap-10 w-2/3 max-lg:w-full"
+              class="p-20 max-md:p-16 max-sm:p-6 flex-col gap-10 w-2/3 max-lg:w-full contact-us-form"
               action=""
             >
               <div class="inputRow max-md:flex-col w-full gap-10 flex">
@@ -415,6 +415,7 @@
                     First Name
                   </label>
                   <input
+                    name="name"
                     class="border-0 outline-none bg-transparent text-[#fff] !border-b-2 !border-b-[#fff] placeholder:text-white py-2"
                     type="text"
                     placeholder="John"
@@ -422,58 +423,63 @@
                   />
                 </div>
                 <div class="flex w-1/2 max-md:w-full h-max flex-col gap-3">
-                  <label class="text-[#fff] text-[14px]" for="name">
+                  <label class="text-[#fff] text-[14px]" for="lastname">
                     Last Name
                   </label>
                   <input
+                    name="lastName"
                     class="border-0 outline-none bg-transparent text-[#fff] !border-b-2 !border-b-[#fff] placeholder:text-white py-2"
                     type="text"
                     placeholder="Doe"
-                    id="name"
+                    id="lastname"
                   />
                 </div>
               </div>
               <div class="inputRow max-md:flex-col w-full gap-10 flex">
                 <div class="flex w-1/2 max-md:w-full h-max flex-col gap-3">
-                  <label class="text-[#fff] text-[14px]" for="name">
+                  <label class="text-[#fff] text-[14px]" for="email">
                     Email
                   </label>
                   <input
+                    name="email"
                     class="border-0 outline-none bg-transparent text-[#fff] !border-b-2 !border-b-[#fff] placeholder:text-white py-2"
                     type="text"
                     placeholder="John@example.com"
-                    id="name"
+                    id="email"
                   />
                 </div>
                 <div class="flex w-1/2 max-md:w-full h-max flex-col gap-3">
-                  <label class="text-[#fff] text-[14px]" for="name">
+                  <label class="text-[#fff] text-[14px]" for="phonenumber">
                     Phone Number
                   </label>
                   <input
+                    name="phoneNumber"
                     class="border-0 outline-none bg-transparent text-[#fff] !border-b-2 !border-b-[#fff] placeholder:text-white py-2"
                     type="text"
                     placeholder="+1 012 3456 789"
-                    id="name"
+                    id="phonenumber"
                   />
                 </div>
               </div>
               <div class="inputRow w-full gap-10 flex">
                 <div class="flex w-full h-max flex-col gap-3">
-                  <label class="text-[#fff] text-[14px]" for="name">
+                  <label class="text-[#fff] text-[14px]" for="message">
                     Message
                   </label>
                   <textarea
+                    name="message"
                     class="border-0 resize-none outline-none bg-transparent text-[#fff] !border-b-2 !border-b-[#fff] placeholder:text-white py-2"
                     type="text"
                     placeholder="Write your message.."
-                    id="name"
+                    id="message"
                   ></textarea>
                 </div>
               </div>
+              <div class="alert"></div>
               <div class="flex justify-end">
                 <button
                   type="submit"
-                  class="px-8 py-4 max-sm:!px-6 max-md:!text-[16px] max-sm:!w-max max-sm:!py-3 bg-white rounded-xl font-semibold"
+                  class="px-8 py-4 max-sm:!px-6 max-md:!text-[16px] max-sm:!w-max max-sm:!py-3 bg-white rounded-xl font-semibold submitButton"
                 >
                   Send Message
                 </button>
@@ -481,14 +487,16 @@
             </form>
             <div class="text-white flex flex-col gap-3">
               <div class="flex flex-col gap-1 text-[16px]">
-                <span>Tel: (+994) 55 510 00 00</span>
-                <span>E-mail: office@amogroup.az</span>
-                <span>Fax: (+994) 12 510 00 00 </span>
+                <span>Tel: <span class="phone"></span></span>
+                <span>E-mail: <span class="email"></span></span>
+                <span>Fax: <span class="fax"></span></span>
               </div>
               <div class="text-[16px]">
-                <h4 class="text-[24px] font-semibold">Baku, Azerbaijan</h4>
+                <h4 class="text-[24px] font-semibold">
+                  <span class="city"></span>
+                </h4>
                 <address class="max-w-[300px]">
-                  Baku 153,  Neftchilyar Avenue, AZ 1010, Baku, Azerbaijan
+                  <span class="location"></span>
                 </address>
               </div>
             </div>
@@ -593,5 +601,7 @@
         }
       };
     </script>
+
+    <script src="./assets/js/contact.js" type="module"></script>
   </body>
 </html>
