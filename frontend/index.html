@@ -424,21 +424,11 @@
             <div class="flex flex-col gap-6">
               <div
                 class="title titleee text-[68px] max-xl:text-[42px] max-sm:text-[32px]"
-              >
-                <h3>
-                  We are AMO <br />
-                  Corporate Group
-                </h3>
-              </div>
+              ></div>
               <div>
                 <p
                   class="text-[20px] desccc max-xl:text-[18px] max-sm:text-[14px] md:max-w-[60%]"
-                >
-                  "AMO CORPORATE GROUP" is a group of corporate companies
-                  operating since 1995 in the fields of production of
-                  agricultural products, their import and export, delivery
-                  through the Horeca system and international transport.
-                </p>
+                ></p>
                 <div
                   class="link mt-8 flex relative before:w-[43%] before:absolute before:left-0 before:top-1/2 before:h-[2px] before:bg-white items-center justify-center max-sm:before:w-[30%]"
                 >
@@ -571,44 +561,34 @@
     </script>
 
     <script type="module">
-      async function fetchAboutList() {
+      async function fetchAboutList(language) {
         const headers = {
           "x-api-key": "aebddf40-4255-4a9a-8bdb-3eea84c28bb9",
+          "accept-language": language,
         };
-        try {
-          const response = await fetch(
-            "https://api.studentall.az:9851/api/about/list",
-            { headers }
-          );
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
 
-          const abouttitle = document.querySelector(".titleee h3");
-          const abouttext = document.querySelector(".desccc p");
+        fetch("https://api.studentall.az:9851/api/about/list", { headers })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            const abouttitle = document.querySelector(".titleee");
+            const abouttext = document.querySelector(".desccc");
 
-  
-          const translations = data[0].translations;
+            if (data.length > 0) {
+              const item = data[0];
 
-          const language = localStorage.getItem("language");
-         
-
-          if (translation) {
-            abouttitle.innerHTML = translation.title;
-            abouttext.innerHTML = translation.description;
-          }
-
-          console.log(data, "data");
-        } catch (error) {
-          console.log(error);
-        }
+              abouttitle.innerHTML = item.title;
+              abouttext.innerHTML = item.description;
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       }
 
-
-      window.onload = function () {
-        fetchAboutList();
-      };
+      fetchAboutList("az");
+      fetchAboutList("ru");
+      fetchAboutList("en");
 
       async function fetchVideoUrls() {
         const headers = {
@@ -675,9 +655,11 @@
       }
 
       window.onload = function () {
-        const savedLanguage = localStorage.getItem("language");
-        if (savedLanguage) {
-          document.getElementById("language").value = savedLanguage;
+        const language = localStorage.getItem("language");
+        const languageSelect = document.getElementById("language");
+
+        if (language && languageSelect) {
+          languageSelect.value = language;
         }
       };
     </script>
