@@ -1,4 +1,3 @@
-import type { IJobItem } from 'src/types/job';
 import type { UseSetStateReturn } from 'src/hooks/use-set-state';
 
 import parse from 'autosuggest-highlight/parse';
@@ -15,6 +14,7 @@ import { useRouter } from 'src/routes/hooks';
 import { Iconify } from 'src/components/iconify';
 import { SearchNotFound } from 'src/components/search-not-found';
 import { paths } from 'src/routes/paths';
+import type { Career } from 'src/utils/types';
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +22,7 @@ type Props = {
   onSearch: (inputValue: string) => void;
   search: UseSetStateReturn<{
     query: string;
-    results: IJobItem[];
+    results: Career[];
   }>;
 };
 

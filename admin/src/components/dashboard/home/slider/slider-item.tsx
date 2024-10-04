@@ -1,5 +1,4 @@
-import type { Value } from 'src/utils/types';
-
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import MenuList from '@mui/material/MenuList';
@@ -8,35 +7,51 @@ import IconButton from '@mui/material/IconButton';
 
 import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
-import { Typography } from '@mui/material';
+import type { SliderVideo } from 'src/utils/types';
+import { BASE_URL } from 'src/utils/axios';
+import { endpoints } from 'src/utils/endpoints';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  item: Value;
-  onEdit: () => void;
+  tour: SliderVideo;
   onDelete: () => void;
 };
 
-export function TimeLineItem({ item, onEdit, onDelete }: Props) {
+export function SliderItem({ tour, onDelete }: Props) {
   const popover = usePopover();
+
+  console.log(`${BASE_URL}${endpoints.getFile.getByFileName}${tour.videoUrl}`);
+
+  const renderImages = (
+    <Box gap={0.5} display="flex" sx={{ p: 1 }}>
+      <Box flexGrow={1} sx={{ position: 'relative' }}>
+        <video
+          // alt={tour.videoUrl}
+          src={`${BASE_URL}${endpoints.getFile.getByFileName}${tour.videoUrl}`}
+          // sx={{ width: 1, height: 164, borderRadius: 1 }}
+        />
+      </Box>
+    </Box>
+  );
+
+  const renderInfo = (
+    <Stack
+      spacing={1.5}
+      sx={{ position: 'relative', p: (theme) => theme.spacing(0, 2.5, 2.5, 2.5), mt: 4 }}
+    >
+      <IconButton onClick={popover.onOpen} sx={{ position: 'absolute', bottom: 20, right: 8 }}>
+        <Iconify icon="eva:more-vertical-fill" />
+      </IconButton>
+    </Stack>
+  );
 
   return (
     <>
       <Card>
-        <IconButton onClick={popover.onOpen} sx={{ position: 'absolute', top: 8, right: 8 }}>
-          <Iconify icon="eva:more-vertical-fill" />
-        </IconButton>
+        {renderImages}
 
-        <Stack sx={{ p: 3, pb: 1 }}>
-          <span className="font-bold">{item?.title}</span>
-        </Stack>
-
-        <Typography
-          variant="subtitle2"
-          sx={{ px: 3, py: 2 }}
-          dangerouslySetInnerHTML={{ __html: item?.description }}
-        />
+        {renderInfo}
       </Card>
 
       <CustomPopover
@@ -46,16 +61,6 @@ export function TimeLineItem({ item, onEdit, onDelete }: Props) {
         slotProps={{ arrow: { placement: 'right-top' } }}
       >
         <MenuList>
-          <MenuItem
-            onClick={() => {
-              popover.onClose();
-              onEdit();
-            }}
-          >
-            <Iconify icon="solar:pen-bold" />
-            Edit
-          </MenuItem>
-
           <MenuItem
             onClick={() => {
               popover.onClose();
