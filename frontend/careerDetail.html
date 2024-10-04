@@ -172,7 +172,6 @@
                     href="./career.html"
                     class="!text-[#fff] hover:!font-bold shrink-0 block !min-w-max hover:mx-1 duration-200"
                   >
-                    Career
                   </a>
                 </li>
                 <li>
@@ -403,14 +402,14 @@
           <div class="w-full mt-12 md:mt-16">
             <h4
               <h5
-              class="max-md:before:!w-[180px] text-[49px] before:w-[300px] before:h-[2px] before:bg-[#fff] before:absolute relative before:left-[110%] before:top-1/2 w-max !text-white !font-semibold max-sm:!text-[30px] max-sm:before:!w-[80px]"
+              class="max-md:before:!w-[180px] careerrr text-[49px] before:w-[300px] before:h-[2px] before:bg-[#fff] before:absolute relative before:left-[110%] before:top-1/2 w-max !text-white !font-semibold max-sm:!text-[30px] max-sm:before:!w-[80px]"
             >
               CAREER
             </h4>
           </div>
 
           <div>
-            <div class="text-white my-8 flex flex-col gap-1 md:pl-2">
+            <div class="text-white jobbb my-8 flex flex-col gap-1 md:pl-2">
               <h3 class="font-semibold">Responsibilities:</h3>
               <ul class="pl-5 md:max-w-[680px]">
                 <li class="list-disc">
@@ -630,7 +629,58 @@
 
     <!-- App js file -->
     <script src="./assets/js/app.js"></script>
+
     <script>
+      function changeCareerText() {
+        const language = localStorage.getItem("language") || "az";
+        const careerText = document.querySelector(".careerrr");
+
+        if (language === "az") {
+          careerText.textContent = "Karyera";
+        } else if (language === "ru") {
+          careerText.textContent = "Карьера";
+        } else {
+          careerText.textContent = "Career";
+        }
+      }
+
+      changeCareerText();
+
+      // now fetch the data due to id from the url. url is like; http://127.0.0.1:5500/frontend/careerDetail.html?id=66f51effabfed80c31bd94ba
+
+      // fetch the data from the server
+      async function fetchJob() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get("id");
+
+        const language = localStorage.getItem("language") || "en";
+        const headers = {
+          "x-api-key": "aebddf40-4255-4a9a-8bdb-3eea84c28bb9",
+          "accept-language": language,
+        };
+
+        fetch(`https://api.studentall.az:9851/api/career/get/${id}`, { headers })
+          .then((response) => response.json())
+          .then((data) => {
+            const container = document.querySelector(".jobbb");
+            container.innerHTML = ""; // Clear the container
+
+            const title = document.createElement("h1");
+            title.innerHTML = data.title;
+
+            const description = document.createElement("p");
+            description.innerHTML = data.description;
+
+            container.appendChild(title);
+            container.appendChild(description);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      fetchJob();
+
       const applyBtn = document.getElementById("apply");
       const modal = document.querySelector(".modal");
       const closeModal = document.querySelector(".close-modal");
@@ -642,8 +692,8 @@
       function hideModal() {
         modal.classList.remove("active");
       }
-      closeModal.addEventListener("click", hideModal);
-      applyBtn.addEventListener("click", showModal);
+      // closeModal.addEventListener("click", hideModal);
+      // applyBtn.addEventListener("click", showModal);
     </script>
     <script>
       function changeLanguage(event) {
