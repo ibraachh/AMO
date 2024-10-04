@@ -464,7 +464,7 @@
           <div class="w-full mt-[90px]">
             <h4
               <h5
-              class="max-md:before:!w-[180px] text-[49px] before:w-[300px] before:h-[2px] before:bg-[#fff] before:absolute relative before:left-[110%] before:top-1/2 w-max !text-white !font-semibold max-sm:!text-[30px] max-sm:before:!w-[80px]"
+              class="max-md:before:!w-[180px] joinnn text-[49px] before:w-[300px] before:h-[2px] before:bg-[#fff] before:absolute relative before:left-[110%] before:top-1/2 w-max !text-white !font-semibold max-sm:!text-[30px] max-sm:before:!w-[80px]"
             >
               Join us
             </h4>
@@ -487,7 +487,7 @@
                     />
                   </div>
                   <div class="flex w-1/2 max-md:w-full h-max flex-col gap-3">
-                    <label class="text-[#fff] text-[14px]" for="name">
+                    <label class="text-[#fff] text-[14px]" for="surname">
                       Last Name
                     </label>
                     <input
@@ -500,7 +500,7 @@
                 </div>
                 <div class="inputRow max-md:flex-col w-full gap-10 flex">
                   <div class="flex w-1/2 max-md:w-full h-max flex-col gap-3">
-                    <label class="text-[#fff] text-[14px]" for="name">
+                    <label class="text-[#fff] text-[14px]" for="email">
                       Email
                     </label>
                     <input
@@ -511,7 +511,7 @@
                     />
                   </div>
                   <div class="flex w-1/2 max-md:w-full h-max flex-col gap-3">
-                    <label class="text-[#fff] text-[14px]" for="name">
+                    <label class="text-[#fff] text-[14px]" for="numberField">
                       Phone Number
                     </label>
                     <input
@@ -526,7 +526,7 @@
                   <div
                     class="flex w-full pb-2 max-md:w-full h-max flex-col gap-3 border-b-2 border-b-[#fff]"
                   >
-                    <label class="text-[#fff] text-[14px]" for="name">
+                    <label class="text-[#fff] text-[14px]" for="file">
                       Message
                     </label>
                     <label
@@ -629,7 +629,68 @@
 
     <!-- App js file -->
     <script src="./assets/js/app.js"></script>
+    <script src="https://unpkg.com/i18next@19.9.2/i18next.min.js"></script>
+    <script>
+      i18next.init(
+        {
+          lng: localStorage.getItem("language") || "en", // use the language from localStorage or default to 'en'
+          resources: {
+            en: {
+              translation: {
+                "First Name": "First Name",
+                "Last Name": "Last Name",
+                Email: "Email",
+                "Phone Number": "Phone Number",
+                Message: "Message",
+                "Upload your CV": "Upload your CV",
+                "Send Message": "Send Message",
+              },
+            },
+            az: {
+              translation: {
+                "First Name": "Ad",
+                "Last Name": "Soyad",
+                Email: "E-poçt",
+                "Phone Number": "Telefon nömrəsi",
+                Message: "Mesaj",
+                "Upload your CV": "CV-nizi yükləyin",
+                "Send Message": "Mesaj göndər",
+              },
+            },
+            ru: {
+              translation: {
+                "First Name": "Имя",
+                "Last Name": "Фамилия",
+                Email: "Эл. адрес",
+                "Phone Number": "Номер телефона",
+                Message: "Сообщение",
+                "Upload your CV": "Загрузите ваше резюме",
+                "Send Message": "Отправить сообщение",
+              },
+            },
+          },
+        },
+        function (err, t) {
+          // initialized and ready to go!
+          updateForm();
+        }
+      );
 
+      function updateForm() {
+        document.querySelector('label[for="name"]').textContent =
+          i18next.t("First Name");
+        document.querySelector('label[for="surname"]').textContent =
+          i18next.t("Last Name");
+        document.querySelector('label[for="numberField"]').textContent =
+          i18next.t("Phone Number");
+        document.querySelector('label[for="email"]').textContent =
+          i18next.t("Email");
+        document.querySelector('label[for="file"]').textContent =
+          i18next.t("Upload your CV");
+        document.querySelector('button[type="submit"]').textContent =
+          i18next.t("Send Message");
+      }
+    </script>
     <script>
       function changeCareerText() {
         const language = localStorage.getItem("language") || "az";
@@ -641,6 +702,20 @@
           careerText.textContent = "Карьера";
         } else {
           careerText.textContent = "Career";
+        }
+      }
+
+      changeCareerText();
+      function changeCareerText() {
+        const language = localStorage.getItem("language") || "az";
+        const careerText = document.querySelector(".joinnn");
+
+        if (language === "az") {
+          careerText.textContent = "Bizə qoşul";
+        } else if (language === "ru") {
+          careerText.textContent = "Присоединяйтесь к нам";
+        } else {
+          careerText.textContent = "Join Us";
         }
       }
 
@@ -659,7 +734,9 @@
           "accept-language": language,
         };
 
-        fetch(`https://api.studentall.az:9851/api/career/get/${id}`, { headers })
+        fetch(`https://api.studentall.az:9851/api/career/get/${id}`, {
+          headers,
+        })
           .then((response) => response.json())
           .then((data) => {
             const container = document.querySelector(".jobbb");

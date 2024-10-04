@@ -401,25 +401,11 @@
       <section class="container">
         <div class="mt-12 md:mt-16">
           <h4
-            class="max-md:before:!w-[180px] text-[46px] before:w-[300px] before:h-[2px] before:bg-[#fff] before:absolute relative before:left-[110%] before:top-1/2 w-max !text-white !font-semibold max-sm:!text-[30px] max-sm:before:!w-[45px] max-sm:before:left-[105%]"
-          >
-            Founder Message
-          </h4>
-          <p class="text-white text-[20px] mt-8 mb-12 md:max-w-[70%]">
-            Great things in life are rarely accomplished alone. It takes
-            teamwork to build something beautiful, strong, and enduring. CBG has
-            been a trusted, hard-working partner at the side of construction in
-            the region, collaborating on iconic, world-class projects across
-            Azerbaijan.
-            <br />
-            <br />
-
-            Our role is to successfully deliver the client’s vision into reality
-            using our history of experience, vast resources, and dedicated team
-            members. We attribute our accomplishments to commitment to our
-            clients, and a deep understanding of their interests and goals,
-            providing real value in building skylines of tomorrow today.
-          </p>
+            class="max-md:before:!w-[180px] fmmm text-[46px] before:w-[300px] before:h-[2px] before:bg-[#fff] before:absolute relative before:left-[110%] before:top-1/2 w-max !text-white !font-semibold max-sm:!text-[30px] max-sm:before:!w-[45px] max-sm:before:left-[105%]"
+          ></h4>
+          <p
+            class="text-white foundermessage text-[20px] mt-8 mb-12 md:max-w-[70%]"
+          ></p>
 
           <div class="flex gap-20 max-sm:my-8 max-md:justify-between">
             <div class="text-white text-[18px] leading-7">
@@ -475,6 +461,36 @@
 
     <!-- App Js file -->
     <script src="./assets/js/app.js"></script>
+    <script>
+      async function fetchAboutList() {
+        const language = localStorage.getItem("language") || "en";
+        const headers = {
+          "x-api-key": "aebddf40-4255-4a9a-8bdb-3eea84c28bb9",
+          "accept-language": language,
+        };
+
+        fetch("https://api.studentall.az:9851/api/founderMessage/list", {
+          headers,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const abouttitle = document.querySelector(".fmmm");
+            const abouttext = document.querySelector(".foundermessage");
+
+            if (data.length > 0) {
+              const item = data[0];
+
+              abouttitle.innerHTML = item.title;
+              abouttext.innerHTML = item.description;
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      fetchAboutList();
+    </script>
     <script>
       function changeLanguage(event) {
         localStorage.setItem("language", event.target.value);
