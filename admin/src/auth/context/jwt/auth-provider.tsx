@@ -2,8 +2,7 @@ import { useMemo, useEffect, useCallback } from 'react';
 
 import { useSetState } from 'src/hooks/use-set-state';
 
-import axios from 'src/utils/axios';
-import { endpoints } from 'src/utils/endpoints';
+import axios, { endpoints } from 'src/utils/axios';
 
 import { STORAGE_KEY } from './constant';
 import { AuthContext } from '../auth-context';

@@ -1,3 +1,4 @@
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import MenuList from '@mui/material/MenuList';
@@ -6,44 +7,38 @@ import IconButton from '@mui/material/IconButton';
 
 import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
-import type { Value } from 'src/utils/types';
-import { Typography } from '@mui/material';
+import type { ICard } from './card-list';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  item: Value;
+  item: ICard;
   onEdit: () => void;
-  index: number;
-  type?: string;
+  onDelete: () => void;
 };
 
-export function CardItem({ item, type, index, onEdit }: Props) {
+export function CardItem({ item, onEdit, onDelete }: Props) {
   const popover = usePopover();
 
   return (
     <>
       <Card>
         <Stack sx={{ p: 3, pb: 1 }}>
-          <img
-            src={`/assets/icons/card/${type ? `${type}-` : ''}card-icon${index + 1}.svg`}
-            alt=""
-            className="w-[50px] h-[50px]"
-          />
+          <img src={item.icon} alt="" className='w-[50px] h-[50px]' />
         </Stack>
         <IconButton onClick={popover.onOpen} sx={{ position: 'absolute', top: 8, right: 8 }}>
           <Iconify icon="eva:more-vertical-fill" />
         </IconButton>
 
         <Stack sx={{ p: 3, pb: 1 }}>
-          <span className="font-bold">{item?.title}</span>
+          <span className="font-bold">{item.title}</span>
         </Stack>
 
-        <Typography
-          variant="subtitle2"
-          sx={{ p: 3, pt: 0 }}
-          dangerouslySetInnerHTML={{ __html: item?.description }}
-        />
+        <Box sx={{ p: 3, pt: 0 }}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius voluptatibus consequuntur
+          alias molestiae dolores! Minus facilis non quae distinctio fugit? Veritatis adipisci
+          eveniet perspiciatis laborum quas cum soluta accusamus inventore.
+        </Box>
       </Card>
 
       <CustomPopover
@@ -61,6 +56,17 @@ export function CardItem({ item, type, index, onEdit }: Props) {
           >
             <Iconify icon="solar:pen-bold" />
             Edit
+          </MenuItem>
+
+          <MenuItem
+            onClick={() => {
+              popover.onClose();
+              onDelete();
+            }}
+            sx={{ color: 'error.main' }}
+          >
+            <Iconify icon="solar:trash-bin-trash-bold" />
+            Delete
           </MenuItem>
         </MenuList>
       </CustomPopover>

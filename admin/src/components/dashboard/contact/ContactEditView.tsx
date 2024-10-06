@@ -1,5 +1,3 @@
-import type { Contact } from 'src/utils/types';
-
 import { useState, useEffect } from 'react';
 import {
   Button,
@@ -22,14 +20,13 @@ import { Field, Form } from 'src/components/hook-form';
 import { ChipDeleteIcon } from 'src/theme/core/components/chip';
 import { toast } from 'sonner';
 import { z as zod } from 'zod';
-import { createContact, updateContact } from 'src/api/backendServies';
-import { useRouter } from 'src/routes/hooks';
 import { CustomBreadcrumbs } from '../../custom-breadcrumbs';
 
 export const ContactSchema = zod.object({
   phoneNumber: zod.string().min(1, { message: 'Telefon tələb olunur!' }),
   email: zod.string().min(1, { message: 'Email tələb olunur!' }),
   socials: zod.record(zod.string().nullable()), // socials as an object with key-value pairs
+  workingHours: zod.string().min(1, { message: 'İş saatı tələb olunur!' }),
   location: zod.string().min(1, { message: 'Lokasiya tələb olunur!' }),
 });
 
@@ -38,53 +35,54 @@ export interface IContactInfo {
   phoneNumber?: string;
   email?: string;
   socials?: Record<string, string | null | undefined>;
+  workingHours?: string;
   location?: string;
 }
 
 export default function ContactEditView() {
   const location = useLocation();
-  const router = useRouter();
-  const { contacts } = location.state || {};
+  // const navigate = useNavigate();
+  const { contact } = location.state || {};
 
   const [open, setOpen] = useState(false);
   const [socialName, setSocialName] = useState('');
   const [socialLink, setSocialLink] = useState('');
-  const [changedValues, setChangedValues] = useState<Contact>(contacts || { socials: {} });
+  const [changedValues, setChangedValues] = useState<IContactInfo>(contact || { socials: {} });
 
   const methods = useForm<IContactInfo>({
     resolver: zodResolver(ContactSchema),
-    defaultValues: contacts || {},
+    defaultValues: contact || {},
   });
 
   const { handleSubmit, setValue } = methods;
 
   useEffect(() => {
-    if (contacts) {
+    if (contact) {
       // Initialize additional socials with contact socials if present
       setChangedValues((prev) => ({
         ...prev,
-        socials: { ...contacts.socials },
+        socials: { ...contact.socials },
       }));
     }
-  }, [contacts]);
+  }, [contact]);
 
   const onSubmit = async () => {
-    try {
-      const response =
-        contacts === undefined || contacts === null
-          ? await createContact(changedValues)
-          : await updateContact(contacts.id, changedValues);
-      if (response.data) {
-        toast.success('Kontakt info dəyişdirildi');
-
-        setTimeout(() => {
-          router.push(paths.dashboard.contact.root);
-          router.refresh();
-        }, 1000);
-      }
-    } catch (error) {
-      toast.error('Xəta baş verdi');
-    }
+    // try {
+    //   const response =
+    //     contact === undefined || contact === null
+    //       ? await createContact(changedValues)
+    //       : await updateContact(contact?.id || '', changedValues);
+    //   if (response.data) {
+    //     navigate(paths.dashboard.contact.list);
+    //     toast.success('Kontakt info dəyişdirildi');
+    //   }
+    // } catch (error) {
+    //   toast.error('Xəta baş verdi');
+    // } finally {
+    //   if (mutate) {
+    //     mutate();
+    //   }
+    // }
   };
 
   const handleFieldChange = (field: keyof IContactInfo, value: string) => {
@@ -160,6 +158,12 @@ export default function ContactEditView() {
               label="Lokasiya"
               value={methods.watch('location')}
               onChange={(e) => handleFieldChange('location', e.target.value)}
+            />
+            <Field.Text
+              name="workingHours"
+              label="İş saatı"
+              value={methods.watch('workingHours')}
+              onChange={(e) => handleFieldChange('workingHours', e.target.value)}
             />
 
             {Object.entries(changedValues.socials || {}).map(([key, value]) => (

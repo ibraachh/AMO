@@ -7,7 +7,7 @@ import { UploadIllustration } from 'src/assets/illustrations';
 
 // ----------------------------------------------------------------------
 
-export function UploadPlaceholder({ title, ...other }: BoxProps) {
+export function UploadPlaceholder({ ...other }: BoxProps) {
   return (
     <Box
       sx={{

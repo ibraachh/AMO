@@ -72,7 +72,11 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
           openOnClick: false,
           HTMLAttributes: { class: editorClasses.content.link },
         }),
-      
+        CodeBlockLowlightExtension.extend({
+          addNodeView() {
+            return ReactNodeViewRenderer(CodeHighlightBlock);
+          },
+        }).configure({ lowlight, HTMLAttributes: { class: editorClasses.content.codeBlock } }),
       ],
       onUpdate({ editor: _editor }) {
         const html = _editor.getHTML();

@@ -183,7 +183,7 @@ export default function SectionCenter() {
         <CustomTimeline step={step} />
       </div>
 
-      <ValueCards values={[]} />
+      <ValueCards />
     </>
   );
 }

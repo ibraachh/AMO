@@ -43,11 +43,7 @@ export const paths = {
   // DASHBOARD
   dashboard: {
     root: ROOTS.DASHBOARD,
-    home: {
-      root:`${ROOTS.DASHBOARD}/home`,
-      list:`${ROOTS.DASHBOARD}/home/list`,
-      createSliderVideo:`${ROOTS.DASHBOARD}/home/create-slider-video`,
-    },
+    home: `${ROOTS.DASHBOARD}/home`,
     about: {
       root: `${ROOTS.DASHBOARD}/about`,
       main: `${ROOTS.DASHBOARD}/about/main`,
@@ -60,9 +56,9 @@ export const paths = {
     },
     companies:{
       root: `${ROOTS.DASHBOARD}/companies`,
-      // editCard:(id:string)=>`${ROOTS.DASHBOARD}/companies/edit-card/${id}`,
-      // editGrowCard:(id:string)=>`${ROOTS.DASHBOARD}/companies/edit-grow-card/${id}`,
-      editAmoCard:(id:string)=>`${ROOTS.DASHBOARD}/companies/edit-amo-card/${id}`,
+      editCard:(id:string)=>`${ROOTS.DASHBOARD}/companies/edit-card/${id}`,
+      editGrowCard:(id:string)=>`${ROOTS.DASHBOARD}/companies/edit-grow-card/${id}`,
+      editAmodoCard:(id:string)=>`${ROOTS.DASHBOARD}/companies/edit-amodo-card/${id}`,
       createCard:`${ROOTS.DASHBOARD}/companies/create-card`,
       amoTransportEdit:(id:string)=>`${ROOTS.DASHBOARD}/companies/amo-transport-edit/${id}`,
     },

@@ -20,14 +20,16 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { Iconify } from 'src/components/iconify';
 import { Form, Field } from 'src/components/hook-form';
 
+import { signUp } from 'src/auth/context/jwt';
 import { useAuthContext } from 'src/auth/hooks';
-import { signInWithPassword } from 'src/auth/context/jwt';
 
 // ----------------------------------------------------------------------
 
-export type SignInSchemaType = zod.infer<typeof SignInSchema>;
+export type SignUpSchemaType = zod.infer<typeof SignUpSchema>;
 
-export const SignInSchema = zod.object({
+export const SignUpSchema = zod.object({
+  firstName: zod.string().min(1, { message: 'First name is required!' }),
+  lastName: zod.string().min(1, { message: 'Last name is required!' }),
   email: zod
     .string()
     .min(1, { message: 'Email is required!' })
@@ -40,22 +42,24 @@ export const SignInSchema = zod.object({
 
 // ----------------------------------------------------------------------
 
-export function JwtSignInView() {
-  const router = useRouter();
-
+export function JwtSignUpView() {
   const { checkUserSession } = useAuthContext();
 
-  const [errorMsg, setErrorMsg] = useState('');
+  const router = useRouter();
 
   const password = useBoolean();
 
+  const [errorMsg, setErrorMsg] = useState('');
+
   const defaultValues = {
-    email: 'demo@minimals.cc',
+    firstName: 'Hello',
+    lastName: 'Friend',
+    email: 'hello@gmail.com',
     password: '@demo1',
   };
 
-  const methods = useForm<SignInSchemaType>({
-    resolver: zodResolver(SignInSchema),
+  const methods = useForm<SignUpSchemaType>({
+    resolver: zodResolver(SignUpSchema),
     defaultValues,
   });
 
@@ -66,7 +70,12 @@ export function JwtSignInView() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await signInWithPassword({ email: data.email, password: data.password });
+      await signUp({
+        email: data.email,
+        password: data.password,
+        firstName: data.firstName,
+        lastName: data.lastName,
+      });
       await checkUserSession?.();
 
       router.refresh();
@@ -78,15 +87,15 @@ export function JwtSignInView() {
 
   const renderHead = (
     <Stack spacing={1.5} sx={{ mb: 5 }}>
-      <Typography variant="h5">Sign in to your account</Typography>
+      <Typography variant="h5">Get started absolutely free</Typography>
 
       <Stack direction="row" spacing={0.5}>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {`Don't have an account?`}
+          Already have an account?
         </Typography>
 
-        <Link component={RouterLink} href={paths.auth.jwt.signUp} variant="subtitle2">
-          Get started
+        <Link component={RouterLink} href={paths.auth.jwt.signIn} variant="subtitle2">
+          Sign in
         </Link>
       </Stack>
     </Stack>
@@ -94,36 +103,29 @@ export function JwtSignInView() {
 
   const renderForm = (
     <Stack spacing={3}>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <Field.Text name="firstName" label="First name" InputLabelProps={{ shrink: true }} />
+        <Field.Text name="lastName" label="Last name" InputLabelProps={{ shrink: true }} />
+      </Stack>
+
       <Field.Text name="email" label="Email address" InputLabelProps={{ shrink: true }} />
 
-      <Stack spacing={1.5}>
-        <Link
-          component={RouterLink}
-          href="#"
-          variant="body2"
-          color="inherit"
-          sx={{ alignSelf: 'flex-end' }}
-        >
-          Forgot password?
-        </Link>
-
-        <Field.Text
-          name="password"
-          label="Password"
-          placeholder="6+ characters"
-          type={password.value ? 'text' : 'password'}
-          InputLabelProps={{ shrink: true }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={password.onToggle} edge="end">
-                  <Iconify icon={password.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Stack>
+      <Field.Text
+        name="password"
+        label="Password"
+        placeholder="6+ characters"
+        type={password.value ? 'text' : 'password'}
+        InputLabelProps={{ shrink: true }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={password.onToggle} edge="end">
+                <Iconify icon={password.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
 
       <LoadingButton
         fullWidth
@@ -132,22 +134,38 @@ export function JwtSignInView() {
         type="submit"
         variant="contained"
         loading={isSubmitting}
-        loadingIndicator="Sign in..."
+        loadingIndicator="Create account..."
       >
-        Sign in
+        Create account
       </LoadingButton>
     </Stack>
+  );
+
+  const renderTerms = (
+    <Typography
+      component="div"
+      sx={{
+        mt: 3,
+        textAlign: 'center',
+        typography: 'caption',
+        color: 'text.secondary',
+      }}
+    >
+      {'By signing up, I agree to '}
+      <Link underline="always" color="text.primary">
+        Terms of service
+      </Link>
+      {' and '}
+      <Link underline="always" color="text.primary">
+        Privacy policy
+      </Link>
+      .
+    </Typography>
   );
 
   return (
     <>
       {renderHead}
-
-      <Alert severity="info" sx={{ mb: 3 }}>
-        Use <strong>{defaultValues.email}</strong>
-        {' with password '}
-        <strong>{defaultValues.password}</strong>
-      </Alert>
 
       {!!errorMsg && (
         <Alert severity="error" sx={{ mb: 3 }}>
@@ -158,6 +176,8 @@ export function JwtSignInView() {
       <Form methods={methods} onSubmit={onSubmit}>
         {renderForm}
       </Form>
+
+      {renderTerms}
     </>
   );
 }

@@ -183,6 +183,7 @@ public class CompanyServiceImpl implements CompanyService {
                         .id(company.getId())
                         .description(translation.getDescription())
                         .title(translation.getTitle())
+                        .logo(company.getLogo())
                         .companyCards(companyCardResponses)
                         .build());
     }

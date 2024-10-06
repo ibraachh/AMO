@@ -1,65 +1,57 @@
-import type { Language } from 'src/utils/types';
-
 import { z as zod } from 'zod';
 import { useForm } from 'react-hook-form';
 import { useMemo, useState, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Box, Card, Stack, Button, Typography } from '@mui/material';
+import { Card, Stack, Button, Typography, Divider } from '@mui/material';
 
 import { Form, Field } from 'src/components/hook-form';
 
+import { toast } from 'sonner';
 import { getLanguages } from 'src/utils/data';
 import CustomTimeline from 'src/components/timeline/CustomTimeline';
-import { blobToFile, updateCompany, uploadFile, useCreateCompany } from 'src/api/backendServies';
-import { toast } from 'sonner';
 import AmoTransportCards from './AmoTransportCards';
-
-export type ITranslation = {
-  title: string;
-  languageCode: string;
-};
-
-export type IPostItem = {
-  id?: string;
-  title: string;
-  imageUrls?: string[];
-  logo?: string;
-  translations: ITranslation[];
-};
 
 export type NewProductSchemaType = zod.infer<typeof NewProductSchema>;
 
 export const NewProductSchema = zod.object({
   title: zod.string().min(1, { message: 'Başlıq tələb olunur!' }),
-  logo: zod.instanceof(File, { message: 'Şəkil tələb olunur!' }),
+  image: zod.any().optional(),
 });
 
-export default function Amotransport({ post, file }: { post: IPostItem; file?: File }) {
-  const [step, setStep] = useState(0);
-  const imageFile = blobToFile(
-    (file as Blob) || new Blob([], { type: 'image/jpeg' }),
-    'image.jpeg'
-  );
+interface Translation {
+  language: string;
+  title: string;
+}
 
-  const [image, setImage] = useState<File>(imageFile);
-  const [uploadedFileName, setUploadedFileName] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [productData, setProductData] = useState<IPostItem>(
-    post || {
-      logo: '',
-      translations: [],
-    }
-  );
+interface ProductData {
+  title: string;
+  translation: Translation[];
+  image?: File | null;
+}
+
+export interface Language {
+  id: string;
+  name: string;
+  code: string;
+}
+
+export default function Amotrade() {
+  const [step, setStep] = useState(0);
+  const [productData, setProductData] = useState<ProductData>({
+    title: '',
+    translation: [],
+    image: null,
+  });
 
   const languages: Language[] = getLanguages;
 
   const defaultValues = useMemo(
     () => ({
-      title: productData?.translations[step]?.title || '',
-      logo: image || undefined,
+      title: '',
+      image: null,
     }),
-    [productData, image, step]
+    []
   );
 
   const methods = useForm<NewProductSchemaType>({
@@ -71,124 +63,63 @@ export default function Amotransport({ post, file }: { post: IPostItem; file?: F
   const {
     reset,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = methods;
 
   useEffect(() => {
-    const currentTranslation = productData.translations.find(
-      (trans) => trans.languageCode === languages[step]?.code
-    );
-
-    if (currentTranslation) {
+    if (step === 0) {
       reset({
-        title: currentTranslation.title || '',
-        logo: image || undefined,
+        title: productData.title,
+        image: productData.image,
       });
     } else {
-      reset({
-        title: '',
-        logo: image || undefined,
-      });
+      const currentTranslation = productData.translation.find(
+        (trans) => trans.language === languages[step].code
+      );
+
+      if (currentTranslation) {
+        reset({
+          title: currentTranslation.title,
+        });
+      }
     }
-  }, [step, productData, languages, reset, image]);
-
-  const handleNext = (data: NewProductSchemaType) => {
-    const updatedTranslations = [
-      ...productData.translations.filter((trans) => trans.languageCode !== languages[step].code),
-      {
-        languageCode: languages[step].code,
-        title: data.title,
-      },
-    ];
-
-    reset({
-      title: '',
-      logo: image || undefined,
-    });
-
-    setProductData((prevData) => ({
-      ...prevData,
-      translations: updatedTranslations,
-    }));
-  };
-
-  const handleBack = () => {
-    const currentData = methods.getValues();
-
-    const updatedTranslations = [
-      ...productData.translations.filter((trans) => trans.languageCode !== languages[step].code),
-      {
-        languageCode: languages[step].code,
-        title: currentData.title,
-      },
-    ];
-
-    setProductData((prevData) => ({
-      ...prevData,
-      translations: updatedTranslations,
-    }));
-
-    const updatedValues =
-      step > 0
-        ? productData.translations.find(
-            (trans) => trans.languageCode === languages[step - 1].code
-          ) || defaultValues
-        : defaultValues;
-
-    reset({
-      ...updatedValues,
-      logo: image || undefined,
-    });
-
-    setStep(step - 1);
-  };
+  }, [step, productData, languages, reset]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      if (step === 0 && data.logo) {
-        setIsLoading(true);
-        const [name, ext] = data.logo.name.split('.');
-        const fileName = `${name}${new Date().toISOString()}.${ext}`;
-
-        const uploadResponse = await uploadFile(data.logo, fileName, false);
-        setUploadedFileName(uploadResponse.message);
-
-        setImage(data.logo);
-        setIsLoading(false);
-      }
-
-      handleNext(data);
-      if (step === languages.length - 1) {
-        const finalData = {
-          ...productData,
-          translations: [
-            ...productData.translations.filter(
-              (trans) => trans.languageCode !== languages[step].code
-            ),
+      if (step === 0) {
+        setProductData((prevData) => ({
+          ...prevData,
+          title: data.title,
+          image: data.image,
+        }));
+      } else {
+        setProductData((prevData) => ({
+          ...prevData,
+          translation: [
+            ...prevData.translation.filter((trans) => trans.language !== languages[step].code),
             {
+              language: languages[step].code,
               title: data.title,
-              languageCode: languages[step].code,
             },
           ],
-          logo: uploadedFileName,
-        };
-        console.log(finalData);
+        }));
+      }
 
-        const response = !productData.id
-          ? await useCreateCompany(finalData)
-          : await updateCompany(productData.id || '', finalData);
-
-        if (response.data) {
-          toast.success('Redaktə olundu');
-
-          // setTimeout(() => {
-          //   router.push(paths.dashboard.companies.root);
-          //   router.refresh();
-          // }, 800);
-        }
+      if (step === languages.length - 1) {
+        console.log('Final Product Data:', productData);
+        setProductData({
+          title: '',
+          translation: [],
+          image: null,
+        });
+        reset(defaultValues);
+        toast.success('Başlıq əlavə olundu');
       } else {
         setStep((prev) => prev + 1);
+        reset({
+          title: '',
+        });
       }
     } catch (error) {
       console.error(error);
@@ -197,64 +128,54 @@ export default function Amotransport({ post, file }: { post: IPostItem; file?: F
 
   return (
     <>
-      <div className="flex mx-auto">
+      <div className="flex w-full mx-auto">
         <Card className="w-full" sx={{ my: 3 }}>
           <Typography variant="h6" className="!text-sm" sx={{ p: 3 }}>
-            Zəhmət olmasa aşağıdakı məlumatları {languages[step].name} dilində daxil edin.
+            Zəhmət olmasa aşağıdakı məlumatları {languages[step].name} dilində daxil edin.
           </Typography>
-          <Form methods={methods} onSubmit={onSubmit}>
-            <Stack spacing={3} sx={{ p: 3 }}>
-              <Box
-                rowGap={3}
-                columnGap={2}
-                display="grid"
-                gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(1, 1fr)' }}
-              >
-                <Field.Text
-                  className="!w-full"
-                  name="title"
-                  label="Başlıq"
-                  error={!!errors.title}
-                  helperText={errors.title?.message}
-                />
-
-                <Field.Upload
-                  disabled={step !== 0}
-                  name="logo"
-                  onDelete={() => setValue('logo', new File([], ''))} // Clear the file field
-                />
-
-                <div className={`flex ${step === 0 ? 'justify-end' : 'justify-between'} mt-3`}>
-                  {step > 0 && (
-                    <Button
-                      type="button"
-                      className="!bg-[#1C252E] !w-max !px-4 !py-3 gap-2 !text-white !rounded-xl"
-                      onClick={handleBack}
-                    >
-                      Geriyə
-                    </Button>
-                  )}
+          <Divider />
+          <Form methods={methods} className="!w-full" onSubmit={onSubmit}>
+            <Stack spacing={3} className="w-full" sx={{ p: 3 }}>
+              <Field.Text
+                className="!w-full"
+                name="title"
+                label="Başlıq"
+                error={!!errors.title}
+                helperText={errors.title?.message}
+              />
+              <Field.Upload
+                disabled={step !== 0}
+                name="image"
+                multiple={false}
+                onDelete={() => setProductData((prev) => ({ ...prev, image: null }))}
+                error={!!errors.image}
+              />
+              <div className={`flex ${step === 0 ? 'justify-end' : 'justify-between'} mt-3`}>
+                {step > 0 && (
                   <Button
-                    type="submit"
-                    disabled={isLoading}
-                    className="!bg-[#1C252E] !w-max !px-4 !py-3 gap-2 !text-white !rounded-xl disabled:!bg-gray-300"
-                    variant="contained"
+                    type="button"
+                    className="!bg-[#1C252E] !w-max !px-4 !py-3 gap-2 !text-white !rounded-xl"
+                    onClick={() => {
+                      setStep((prev) => prev - 1);
+                      reset();
+                    }}
                   >
-                    {step === languages.length - 1
-                      ? 'Yadda saxla'
-                      : isLoading
-                        ? 'Şəkil yüklənir'
-                        : 'İrəli'}
+                    Geri
                   </Button>
-                </div>
-              </Box>
+                )}
+                <Button
+                  type="submit"
+                  className="!bg-[#1C252E] !w-max !px-4 !py-3 gap-2 !text-white !rounded-xl"
+                >
+                  {step === languages.length - 1 ? 'Yadda saxla' : 'Davam et'}
+                </Button>
+              </div>
             </Stack>
           </Form>
         </Card>
-        <Box className="mx-3 h-[630px] flex items-center">
-          <CustomTimeline step={step} />
-        </Box>
+        <CustomTimeline step={step} />
       </div>
+
       <AmoTransportCards />
     </>
   );

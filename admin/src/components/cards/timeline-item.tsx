@@ -1,5 +1,4 @@
-import type { Value } from 'src/utils/types';
-
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import MenuList from '@mui/material/MenuList';
@@ -8,12 +7,12 @@ import IconButton from '@mui/material/IconButton';
 
 import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
-import { Typography } from '@mui/material';
+import type { ITimeLine } from './timeline-card-list';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  item: Value;
+  item: ITimeLine;
   onEdit: () => void;
   onDelete: () => void;
 };
@@ -29,14 +28,14 @@ export function TimeLineItem({ item, onEdit, onDelete }: Props) {
         </IconButton>
 
         <Stack sx={{ p: 3, pb: 1 }}>
-          <span className="font-bold">{item?.title}</span>
+          <span className="font-bold">{item.title}</span>
         </Stack>
 
-        <Typography
-          variant="subtitle2"
-          sx={{ px: 3, py: 2 }}
-          dangerouslySetInnerHTML={{ __html: item?.description }}
-        />
+        <Box sx={{ p: 3, pt: 0 }}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius voluptatibus consequuntur
+          alias molestiae dolores! Minus facilis non quae distinctio fugit? Veritatis adipisci
+          eveniet perspiciatis laborum quas cum soluta accusamus inventore.
+        </Box>
       </Card>
 
       <CustomPopover

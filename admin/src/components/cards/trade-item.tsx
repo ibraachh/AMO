@@ -1,5 +1,4 @@
-import type { CompanyCard } from 'src/utils/types';
-
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import MenuList from '@mui/material/MenuList';
@@ -8,16 +7,17 @@ import IconButton from '@mui/material/IconButton';
 
 import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
+import type { ICard } from './transport-card-list';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  item: CompanyCard;
+  item: ICard;
   onEdit: () => void;
-  // onDelete: () => void;
+  onDelete: () => void;
 };
 
-export function TradeItem({ item, onEdit }: Props) {
+export function TradeItem({ item, onEdit, onDelete }: Props) {
   const popover = usePopover();
 
   return (
@@ -27,9 +27,15 @@ export function TradeItem({ item, onEdit }: Props) {
           <Iconify icon="eva:more-vertical-fill" />
         </IconButton>
 
-        <Stack sx={{ p: 3 }}>
+        <Stack sx={{ p: 3, pb: 1 }}>
           <span className="font-bold">{item.title}</span>
         </Stack>
+
+        <Box sx={{ p: 3, pt: 0 }}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius voluptatibus consequuntur
+          alias molestiae dolores! Minus facilis non quae distinctio fugit? Veritatis adipisci
+          eveniet perspiciatis laborum quas cum soluta accusamus inventore.
+        </Box>
       </Card>
 
       <CustomPopover
@@ -49,7 +55,7 @@ export function TradeItem({ item, onEdit }: Props) {
             Edit
           </MenuItem>
 
-          {/* <MenuItem
+          <MenuItem
             onClick={() => {
               popover.onClose();
               onDelete();
@@ -58,7 +64,7 @@ export function TradeItem({ item, onEdit }: Props) {
           >
             <Iconify icon="solar:trash-bin-trash-bold" />
             Delete
-          </MenuItem> */}
+          </MenuItem>
         </MenuList>
       </CustomPopover>
     </>

@@ -100,7 +100,7 @@ export function Upload({
         <input {...getInputProps()} />
 
         {/* Single file */}
-        {hasFile ? <SingleFilePreview file={value as File} /> : <UploadPlaceholder title='Upload' />}
+        {hasFile ? <SingleFilePreview file={value as File} /> : <UploadPlaceholder />}
       </Box>
 
       {/* Single file */}
@@ -112,6 +112,7 @@ export function Upload({
         </FormHelperText>
       )}
 
+      <RejectionFiles files={fileRejections} />
 
       {/* Multi files */}
       {renderMultiPreview}

@@ -26,7 +26,6 @@ module.exports = {
    */
   rules: {
     // general
-    'jsx-a11y/media-has-caption': 0,
     'no-alert': 0,
     camelcase: 0,
     'no-console': 0,
@@ -57,11 +56,6 @@ module.exports = {
     // jsx-a11y
     'jsx-a11y/anchor-is-valid': 0,
     'jsx-a11y/control-has-associated-label': 0,
-    //
-    'react-hooks/rules-of-hooks': 'off',
-    'react/no-danger': 'off',
-    'react/jsx-no-bind': 'off',
-    '@typescript-eslint/no-shadow': 'off',
     // unused imports
     'unused-imports/no-unused-imports': 1,
     'unused-imports/no-unused-vars': [

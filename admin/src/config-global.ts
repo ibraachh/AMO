@@ -11,7 +11,6 @@ export type ConfigValue = {
     assetURL: string;
     basePath: string;
     version: string;
-    api_key: string;
   };
   auth: {
     method: 'jwt' | 'amplify' | 'firebase' | 'supabase' | 'auth0';
@@ -43,7 +42,6 @@ export const CONFIG: ConfigValue = {
     serverUrl: import.meta.env.VITE_SERVER_URL ?? '',
     assetURL: import.meta.env.VITE_ASSET_URL ?? '',
     basePath: import.meta.env.VITE_BASE_PATH ?? '',
-    api_key: import.meta.env.VITE_API_KEY ?? '',
     version: packageJson.version,
   },
   /**

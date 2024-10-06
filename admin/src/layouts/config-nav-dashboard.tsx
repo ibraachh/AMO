@@ -59,12 +59,7 @@ export const navData = [
   {
     subheader: 'Saytın idarə etməsi',
     items: [
-      {
-        title: 'Ana səhifə',
-        path: paths.dashboard.home.root,
-        icon: ICONS.home,
-        children: [{ title: 'Slayder videoları', path: paths.dashboard.home.list, index: true }],
-      },
+      { title: 'Ana səhifə', path: paths.dashboard.home, icon: ICONS.home },
       {
         title: 'Haqqımızda',
         path: paths.dashboard.about.root,

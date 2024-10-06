@@ -3,17 +3,15 @@ import { useForm } from 'react-hook-form';
 import { useMemo, useState, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Card, Stack, Button, Typography } from '@mui/material';
+import { Card, Stack, Button, Typography, Divider } from '@mui/material';
 
 import { Form, Field } from 'src/components/hook-form';
 
 import { toast } from 'sonner';
 import CustomTimeline from 'src/components/timeline/CustomTimeline';
 import { getLanguages } from 'src/utils/data';
-import type { Translation } from 'src/utils/types';
 import { DashboardContent } from 'src/layouts/dashboard';
-import { useCreateChronology } from 'src/api/backendServies';
-import { useRouter } from 'src/routes/hooks';
+import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 import { paths } from 'src/routes/paths';
 
 export type NewProductSchemaType = zod.infer<typeof NewProductSchema>;
@@ -23,9 +21,18 @@ export const NewProductSchema = zod.object({
   description: zod.string().min(1, { message: 'Açıqlama tələb olunur!' }),
 });
 
-interface ProductData {
-  translations: Translation[];
+interface Translation {
+  language: string;
+  title: string;
+  description: string;
 }
+
+interface ProductData {
+  title: string;
+  description: string;
+  translation: Translation[];
+}
+
 export interface Language {
   id: string;
   name: string;
@@ -33,10 +40,11 @@ export interface Language {
 }
 
 export default function TimeLineCardCreateView() {
-  const router = useRouter();
   const [step, setStep] = useState(0);
   const [productData, setProductData] = useState<ProductData>({
-    translations: [],
+    title: '',
+    description: '',
+    translation: [],
   });
 
   const languages: Language[] = getLanguages;
@@ -58,61 +66,89 @@ export default function TimeLineCardCreateView() {
   const {
     reset,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = methods;
 
   useEffect(() => {
-    reset(defaultValues);
-  }, [reset, defaultValues]);
-
-  const onSubmit = handleSubmit(async (data) => {
-    const newTranslation = {
-      languageCode: languages[step].code,
-      title: data.title,
-      description: data.description,
-    };
-    const updatedProductData: ProductData = {
-      translations: [
-        ...productData.translations.filter((t) => t.languageCode !== languages[step].code),
-        newTranslation,
-      ],
-    };
-
-    setProductData(updatedProductData);
-
-    if (step < languages.length - 1) {
-      setStep((prev) => prev + 1);
+    if (step === 0) {
       reset({
-        title: '',
-        description: '',
+        title: productData.title,
+        description: productData.description,
       });
     } else {
-      const res = await useCreateChronology(updatedProductData);
+      const currentTranslation = productData.translation.find(
+        (trans) => trans.language === languages[step].code
+      );
 
-      if (!res) {
-        toast.error('Xəta baş verdi!');
-        return;
+      if (currentTranslation) {
+        reset({
+          title: currentTranslation.title,
+          description: currentTranslation.description,
+        });
+      }
+    }
+  }, [step, productData, languages, reset]);
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      if (step === 0) {
+        setProductData((prevData) => ({
+          ...prevData,
+          title: data.title,
+          description: data.description,
+        }));
+      } else {
+        setProductData((prevData) => ({
+          ...prevData,
+          translation: [
+            ...prevData.translation.filter((trans) => trans.language !== languages[step].code),
+            {
+              language: languages[step].code,
+              title: data.title,
+              description: data.description,
+            },
+          ],
+        }));
       }
 
-      toast.success('Vakansiya ugurla əlavə olundu!');
-      setTimeout(() => {
-        router.push(paths.dashboard.about.history);
-        router.refresh();
-      }, 800);
-      setProductData({ translations: [] });
-      setStep(0);
-      reset(defaultValues);
+      if (step === languages.length - 1) {
+        console.log('Final Product Data:', productData);
+        setProductData({
+          title: '',
+          description: '',
+          translation: [],
+        });
+        reset(defaultValues);
+        toast.success('Başlıq əlavə olundu');
+      } else {
+        setStep((prev) => prev + 1);
+        reset({
+          title: '',
+          description: '',
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
   });
 
   return (
     <DashboardContent maxWidth="xl">
+      <CustomBreadcrumbs
+        heading="Tarixçə"
+        links={[
+          { name: 'Saytın aktivliyi', href: paths.dashboard.root },
+          { name: 'Tarixçə', href: paths.dashboard.about.history },
+          { name: 'Kart əlavə et' },
+        ]}
+      />
+
       <div className="flex w-full mx-auto">
         <Card className="w-full" sx={{ my: 3 }}>
           <Typography variant="h6" className="!text-sm" sx={{ p: 3 }}>
-            Zəhmət olmasa aşağıdakı məlumatları {languages[step].name} dilində daxil edin.
+            Zəhmət olmasa aşağıdakı məlumatları {languages[step].name} dilində daxil edin.
           </Typography>
+          <Divider />
           <Form methods={methods} className="!w-full" onSubmit={onSubmit}>
             <Stack spacing={3} className="w-full" sx={{ p: 3 }}>
               <Field.Text
@@ -123,32 +159,20 @@ export default function TimeLineCardCreateView() {
                 helperText={errors.title?.message}
               />
               <Field.Text
-                key={languages[step].code}
-                placeholder="Açıqlama"
+                className="!w-full"
                 name="description"
-                error={!!errors.description}
-                helperText={errors.description?.message}
+                label="Açıqlama"
+                error={!!errors.title}
+                helperText={errors.title?.message}
               />
-
               <div className={`flex ${step === 0 ? 'justify-end' : 'justify-between'} mt-3`}>
                 {step > 0 && (
                   <Button
                     type="button"
                     className="!bg-[#1C252E] !w-max !px-4 !py-3 gap-2 !text-white !rounded-xl"
                     onClick={() => {
-                      const previousLanguageCode = languages[step - 1].code;
-                      const previousTranslation = productData.translations.find(
-                        (t) => t.languageCode === previousLanguageCode
-                      );
-
-                      if (previousTranslation) {
-                        setValue('title', previousTranslation.title);
-                        setValue('description', previousTranslation?.description || '');
-                      } else {
-                        reset(defaultValues);
-                      }
-
                       setStep((prev) => prev - 1);
+                      reset();
                     }}
                   >
                     Geri

@@ -1,5 +1,3 @@
-import type { Value } from 'src/utils/types';
-
 import { useCallback } from 'react';
 
 import Box from '@mui/material/Box';
@@ -18,7 +16,7 @@ export type ICard = {
   icon: string;
 };
 
-export function SecondCardList({ data }: { data: Value[] }) {
+export function SecondCardList({ data }: { data: ICard[] }) {
   const router = useRouter();
 
   const handleEdit = useCallback(
@@ -28,6 +26,10 @@ export function SecondCardList({ data }: { data: Value[] }) {
     [router]
   );
 
+  const handleDelete = useCallback((id: string) => {
+    console.info('DELETE', id);
+  }, []);
+
   return (
     <>
       <Box
@@ -35,13 +37,12 @@ export function SecondCardList({ data }: { data: Value[] }) {
         display="grid"
         gridTemplateColumns={{ xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
       >
-        {data.map((item, index) => (
+        {data.map((item) => (
           <CardItem
-            type="section"
-            index={index}
             key={item.id}
             item={item}
-            onEdit={() => handleEdit(item.id || '')}
+            onEdit={() => handleEdit(item.id)}
+            onDelete={() => handleDelete(item.id)}
           />
         ))}
       </Box>

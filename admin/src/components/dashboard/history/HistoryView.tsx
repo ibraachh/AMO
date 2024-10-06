@@ -1,14 +1,12 @@
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { paths } from 'src/routes/paths';
-import { useGetAllHistory } from 'src/api/backendServies';
 import { Divider } from '@mui/material';
-import TimeLineCards from './TimeLineCards';
 import HeadingSection from './HeadingSection';
+import TimeLineCards from './TimeLineCards';
+import HistoryMeta from './HistoryMeta';
 
 export default function HistoryView() {
-  const { history, historyLoading, mutate } = useGetAllHistory();
-
   return (
     <DashboardContent maxWidth="xl">
       <CustomBreadcrumbs
@@ -16,12 +14,13 @@ export default function HistoryView() {
         links={[{ name: 'Saytın aktivliyi', href: paths.dashboard.root }, { name: 'Tarixçə' }]}
       />
 
-      {!historyLoading && <HeadingSection mutate={mutate} initialData={history[0]} />}
+      <HeadingSection />
 
       <Divider className="!my-6" />
 
       <TimeLineCards />
-      
+
+      <HistoryMeta />
     </DashboardContent>
   );
 }

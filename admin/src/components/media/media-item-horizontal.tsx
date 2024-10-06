@@ -1,3 +1,5 @@
+import type { IPostItem } from 'src/types/blog';
+
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -5,79 +7,91 @@ import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+
+import { paths } from 'src/routes/paths';
+import { useRouter } from 'src/routes/hooks';
+
+import { fDate } from 'src/utils/format-time';
+import { fShortenNumber } from 'src/utils/format-number';
+
+import { maxLine } from 'src/theme/styles';
+
 
 import { Image } from 'src/components/image';
 import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
-import type { Media } from 'src/utils/types';
-import { BASE_URL } from 'src/utils/axios';
-import { deleteMediaById } from 'src/api/backendServies';
-import { toast } from 'sonner';
-import { useRouter } from 'src/routes/hooks';
-import { paths } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  post: Media;
-  mutate?: () => void;
+  post: IPostItem;
 };
 
-export function MediaItemHorizontal({ post, mutate }: Props) {
+export function MediaItemHorizontal({ post }: Props) {
   const theme = useTheme();
 
   const popover = usePopover();
 
   const router = useRouter();
 
-  const { image, translations } = post;
-
-  const handleDelete = async () => {
-    popover.onClose();
-    const res = await deleteMediaById(post?.id ?? '');
-    if (res && mutate) {
-      toast.success('Media deleted successfully');
-      mutate();
-    }
-  };
-
-  const handleEdit = () => {
-    popover.onClose();
-    router.push(paths.dashboard.mediaCenter.edit(post?.id ?? ''));
-  };
+  const { title, coverUrl, createdAt, totalViews, totalShares, description } = post;
 
   return (
     <>
-      <Card sx={{ display: 'flex', flexDirection: 'column-reverse' }}>
+      <Card sx={{ display: 'flex' }}>
         <Stack spacing={1} sx={{ p: theme.spacing(3, 3, 2, 3) }}>
-          <Stack spacing={1} flexGrow={1}>
-            {translations[0].title}
+          <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+            <Box component="span" sx={{ typography: 'caption', color: 'text.disabled' }}>
+              {fDate(createdAt)}
+            </Box>
+          </Box>
 
-            <span dangerouslySetInnerHTML={{ __html: translations[0].description }} />
+          <Stack spacing={1} flexGrow={1}>
+            {title}
+
+            <Typography variant="body2" sx={{ ...maxLine({ line: 2 }), color: 'text.secondary' }}>
+              {description}
+            </Typography>
           </Stack>
 
           <Box display="flex" alignItems="center">
             <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
               <Iconify icon="eva:more-horizontal-fill" />
             </IconButton>
+
+            <Box
+              gap={1.5}
+              flexGrow={1}
+              display="flex"
+              flexWrap="wrap"
+              justifyContent="flex-end"
+              sx={{ typography: 'caption', color: 'text.disabled' }}
+            >
+              <Box display="flex" alignItems="center" gap={0.5}>
+                <Iconify icon="solar:eye-bold" width={16} />
+                {fShortenNumber(totalViews)}
+              </Box>
+
+              <Box display="flex" alignItems="center" gap={0.5}>
+                <Iconify icon="solar:share-bold" width={16} />
+                {fShortenNumber(totalShares)}
+              </Box>
+            </Box>
           </Box>
         </Stack>
+
         <Box
           sx={{
             p: 1,
-            width: '100%',
-            height: 340,
+            width: '50%',
+            height: 240,
             flexShrink: 0,
             position: 'relative',
             display: { xs: 'none', sm: 'block' },
           }}
         >
-          <Image
-            // alt={title}
-            className="w-full"
-            src={`${BASE_URL}api/file/getFile/${image}`}
-            sx={{ height: 1, borderRadius: 1.5 }}
-          />
+          <Image alt={title} src={coverUrl} sx={{ height: 1, borderRadius: 1.5 }} />
         </Box>
       </Card>
 
@@ -88,11 +102,22 @@ export function MediaItemHorizontal({ post, mutate }: Props) {
         slotProps={{ arrow: { placement: 'bottom-center' } }}
       >
         <MenuList>
-          <MenuItem onClick={handleEdit}>
-            <Iconify icon="eva:edit-fill" />
+          <MenuItem
+            onClick={() => {
+              popover.onClose();
+              router.push(paths.dashboard.mediaCenter.edit(title));
+            }}
+          >
+            <Iconify icon="solar:pen-bold" />
             Edit
           </MenuItem>
-          <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
+
+          <MenuItem
+            onClick={() => {
+              popover.onClose();
+            }}
+            sx={{ color: 'error.main' }}
+          >
             <Iconify icon="solar:trash-bin-trash-bold" />
             Delete
           </MenuItem>

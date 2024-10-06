@@ -17,8 +17,6 @@ export function RHFEditor({ name, helperText, ...other }: Props) {
   } = useFormContext();
 
   return (
-   
-   <>
     <Controller
       name={name}
       control={control}
@@ -32,7 +30,5 @@ export function RHFEditor({ name, helperText, ...other }: Props) {
         />
       )}
     />
-   </>
-
   );
 }
