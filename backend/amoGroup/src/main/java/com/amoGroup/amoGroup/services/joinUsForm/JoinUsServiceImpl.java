@@ -45,17 +45,43 @@ public class JoinUsServiceImpl implements JoinUsService {
             Path path = Paths.get(uploadDir.toString(), joinUsForm.getFile());
             paths.add(path.toString());
 
-            String emailContent = joinUsForm.getName() + " " + joinUsForm.getLastName() +
-                    " yeni təlim müraciəti göndərib. " +
-                    "Əlaqə nömrəsi: " + joinUsForm.getPhoneNumber() +
-                    " Email: " + joinUsForm.getEmail();
+            String subject = "Yeni iş müraciəti var";
+
+            String emailContent = "<html>" +
+                    "<head>" +
+                    "<style>" +
+                    "body { font-family: Arial, sans-serif; color: #333; }" +
+                    ".container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }" +
+                    ".header { background-color: #f4f4f4; padding: 10px; text-align: center; }" +
+                    ".content { margin: 20px 0; }" +
+                    ".footer { font-size: 0.9em; color: #777; text-align: center; }" +
+                    "</style>" +
+                    "</head>" +
+                    "<body>" +
+                    "<div class='container'>" +
+                    "<div class='header'>" +
+                    "<h2>Yeni İş Müraciəti</h2>" +
+                    "</div>" +
+                    "<div class='content'>" +
+                    "<p><strong>Ad:</strong> " + joinUsForm.getName() + " " + joinUsForm.getLastName() + "</p>" +
+                    "<p><strong>Əlaqə nömrəsi:</strong> " + joinUsForm.getPhoneNumber() + "</p>" +
+                    "<p><strong>Email:</strong> " + joinUsForm.getEmail() + "</p>" +
+                    "</div>" +
+                    "<div class='footer'>" +
+                    "<p>Bu bir avtomatik mesajdır. Zəhmət olmasa, cavab verməyin.</p>" +
+                    "</div>" +
+                    "</div>" +
+                    "</body>" +
+                    "</html>";
+
             emailService.sendMailWithAttachment(
                     from,
                     from,
-                    "Yeni təlim müraciəti var",
+                    subject,
                     emailContent,
                     paths
             );
+
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -73,7 +99,7 @@ public class JoinUsServiceImpl implements JoinUsService {
         try {
             JoinUsForm joinUsForm = joinUsFormRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("JoinUsForm with this id does not exists"));
-            if(joinUsForm.getFile() != null){
+            if (joinUsForm.getFile() != null) {
                 storageService.deleteExistingImages(joinUsForm.getFile());
             }
             joinUsFormRepository.delete(joinUsForm);
