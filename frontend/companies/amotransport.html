@@ -21,17 +21,17 @@
       .custom-border-image-1 {
         border-width: 20px;
         border-style: solid;
-        border-image: url(../assets/images/frame-1.png) 100 fill;
+        border-image: url(../assets/images/frame-4.png) 100 fill;
       }
       .custom-border-image-2 {
         border-width: 20px;
         border-style: solid;
-        border-image: url(../assets/images/frame-2.png) 100 fill;
+        border-image: url(../assets/images/frame-5.png) 100 fill;
       }
       .custom-border-image-3 {
         border-width: 20px;
         border-style: solid;
-        border-image: url(../assets/images/frame-3.png) 100 fill;
+        border-image: url(../assets/images/frame-6.png) 100 fill;
       }
     </style>
   </head>
@@ -418,36 +418,35 @@
       <section class="container">
         <div class="my-12 md:mt-16">
           <h4
-            class="max-md:before:!w-[180px] capitalize text-[46px] before:w-[300px] before:h-[2px] before:bg-[#fff] before:absolute relative before:left-[110%] before:top-1/2 w-max !text-white !font-semibold max-sm:!text-[30px] max-sm:before:!w-[45px] max-sm:before:left-[105%]"
+            class="max-md:before:!w-[180px] capitalize text-[46px] before:w-[300px] before:h-[2px] before:bg-[#fff] before:absolute relative before:left-[110%] before:top-1/2 w-max !text-white !font-semibold max-sm:!text-[30px] max-sm:before:!w-[45px] max-sm:before:left-[105%] headingTitle"
           >
             amotransport
           </h4>
         </div>
         <div class="w-full flex items-center my-20 justify-center">
           <img
-            src="../assets/images/amo-transport.png"
             alt="amo-transport"
-            class="w-[50%] h-[280px] object-contain"
+            class="w-[50%] h-[280px] object-contain transportLogo"
           />
         </div>
         <div
           class="flex items-center justify-between max-md:gap-6 flex-wrap my-8 w-full"
         >
-          <div class="md:w-[30%]">
-            <img src="../assets/images/frame-4.png" alt="" />
-          </div>
+          <div
+            class="md:w-[30%] min-h-[240px] custom-border-image-1 flex items-center justify-center card-1 text-white"
+          ></div>
           <div
             class="w-[16px] h-[16px] mt-4 bg-white rounded-full max-md:hidden"
           ></div>
-          <div class="md:w-[30%]">
-            <img src="../assets/images/frame-5.png" alt="" />
-          </div>
+          <div
+            class="md:w-[30%] min-h-[240px] custom-border-image-2 card-2 flex items-center justify-center text-white"
+          ></div>
           <div
             class="w-[16px] h-[16px] mt-4 bg-white rounded-full max-md:hidden"
           ></div>
-          <div class="md:w-[30%]">
-            <img src="../assets/images/frame-6.png" alt="" />
-          </div>
+          <div
+            class="md:w-[30%] custom-border-image-3 min-h-[240px] card-3 flex items-center justify-center text-white"
+          ></div>
         </div>
       </section>
       <!-- Content End -->
@@ -493,5 +492,20 @@
 
     <!-- App Js file -->
     <script src="../assets/js/app.js"></script>
+    <script>
+      function changeLanguage(event) {
+        localStorage.setItem("language", event.target.value);
+        window.location.reload();
+      }
+
+      window.onload = function () {
+        const savedLanguage = localStorage.getItem("language");
+        if (savedLanguage) {
+          document.getElementById("language").value = savedLanguage;
+        }
+      };
+    </script>
+
+    <script src="../assets/js/amotransport.js" type="module"></script>
   </body>
 </html>

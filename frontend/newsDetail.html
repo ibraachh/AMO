@@ -442,33 +442,13 @@
             Media Center
           </h4>
         </div>
-        <div class="flex items-center justify-between max-lg:flex-col">
+        <div class="flex justify-between max-lg:flex-col mt-8">
           <div class="lg:w-[40%] max-lg:mt-8">
-            <img
-              src="./assets/images/media.png"
-              class="w-full h-full object-cover lg:translate-y-[50px]"
-              alt=""
-            />
+            <img class="w-full h-full object-cover news-image" alt="" />
           </div>
           <div class="lg:w-[58%] text-white">
-            <h3 class="text-[46px] max-sm:text-[30px]">Text messaging</h3>
-            <p class="text-[16px]">
-              Text messaging, or texting, is the act of composing and sending
-              electronic messages, typically consisting of alphabetic and
-              numeric characters, between two or more users of mobile
-              phones, desktops/laptops, or another type of compatible computer.
-              Text messages may be sent over a cellular network or may also be
-              sent via satellite or Internet connection. The term originally
-              referred to messages sent using the Short Message Service (SMS) on
-              mobile devices. It has grown beyond alphanumeric text to include
-              multimedia messages using the Multimedia Messaging Service (MMS)
-              and Rich Communication Services (RCS), which can contain digital
-              images, videos, and sound content, as well as ideograms known
-              as emoji (happy faces, sad faces, and other icons), and on
-              various instant messaging apps. Text messaging has been an
-              extremely popular medium of communication since the turn of the
-              century and has also influenced changes in society.[1][2][3][4]
-            </p>
+            <h3 class="text-[46px] max-sm:text-[30px] news-title"></h3>
+            <p class="text-[16px] news-description"></p>
           </div>
         </div>
 
@@ -476,52 +456,7 @@
           <h1>Other news</h1>
 
           <div class="swiper mySwiper">
-            <div class="swiper-wrapper">
-              <div class="swiper-slide">
-                <div>
-                  <div>
-                    <img src="./assets/images/media-2.png" alt="" />
-                  </div>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
-                    aliquam
-                  </p>
-                </div>
-              </div>
-              <div class="swiper-slide">
-                <div>
-                  <div>
-                    <img src="./assets/images/media-2.png" alt="" />
-                  </div>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
-                    aliquam
-                  </p>
-                </div>
-              </div>
-              <div class="swiper-slide">
-                <div>
-                  <div>
-                    <img src="./assets/images/media-2.png" alt="" />
-                  </div>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
-                    aliquam
-                  </p>
-                </div>
-              </div>
-              <div class="swiper-slide">
-                <div>
-                  <div>
-                    <img src="./assets/images/media-2.png" alt="" />
-                  </div>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
-                    aliquam
-                  </p>
-                </div>
-              </div>
-            </div>
+            <div class="swiper-wrapper"></div>
             <div class="swiper-pagination"></div>
           </div>
         </div>
@@ -600,5 +535,19 @@
         },
       });
     </script>
+    <script>
+      function changeLanguage(event) {
+        localStorage.setItem("language", event.target.value);
+        window.location.reload();
+      }
+
+      window.onload = function () {
+        const savedLanguage = localStorage.getItem("language");
+        if (savedLanguage) {
+          document.getElementById("language").value = savedLanguage;
+        }
+      };
+    </script>
+    <script src="assets/js/newsDetail.js" type="module"></script>
   </body>
 </html>
