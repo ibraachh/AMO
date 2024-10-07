@@ -28,7 +28,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setFrom(from);
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(text);
+            helper.setText(text, true);
 
             javaMailSender.send(message);
         } catch (Exception e) {
@@ -46,12 +46,21 @@ public class EmailServiceImpl implements EmailService {
             helper.setFrom(from);
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(text);
+            helper.setText(text, true);
 
             for (String ticketFile : ticketFiles) {
-                FileSystemResource file = new FileSystemResource(new File(ticketFile));
-                helper.addAttachment(new File(ticketFile).getName(), file);
+                try {
+                    FileSystemResource file = new FileSystemResource(new File(ticketFile));
+                    if (file.exists()) { // Check if the file exists before adding
+                        helper.addAttachment(file.getFilename(), file);
+                    } else {
+                        log.warn("File not found: " + ticketFile);
+                    }
+                } catch (Exception e) {
+                    log.error("Error attaching file: " + ticketFile + ". Error: " + e.getMessage());
+                }
             }
+
             javaMailSender.send(message);
         } catch (Exception e) {
             log.error(e.getMessage());

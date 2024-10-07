@@ -27,15 +27,40 @@ public class ContactFormServiceImpl implements ContactFormService {
 
     @Override
     public ContactForm save(ContactForm contactForm) {
+        String message = "<html>" +
+                "<head>" +
+                "<style>" +
+                "body { font-family: Arial, sans-serif; color: #333; }" +
+                ".container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }" +
+                ".header { background-color: #f4f4f4; padding: 10px; text-align: center; }" +
+                ".content { margin: 20px 0; }" +
+                ".footer { font-size: 0.9em; color: #777; text-align: center; }" +
+                "</style>" +
+                "</head>" +
+                "<body>" +
+                "<div class='container'>" +
+                "<div class='header'>" +
+                "<h2>Yeni Müraciət</h2>" +
+                "</div>" +
+                "<div class='content'>" +
+                "<p><strong>Ad:</strong> " + contactForm.getName() + " " + contactForm.getLastName() + "</p>" +
+                "<p><strong>Əlaqə nömrəsi:</strong> " + contactForm.getPhoneNumber() + "</p>" +
+                "<p><strong>Email:</strong> " + contactForm.getEmail() + "</p>" +
+                "<p><strong>Mesaj:</strong></p>" +
+                "<p>" + contactForm.getMessage() + "</p>" +
+                "</div>" +
+                "<div class='footer'>" +
+                "<p>Bu bir avtomatik mesajdır. Zəhmət olmasa, cavab verməyin.</p>" +
+                "</div>" +
+                "</div>" +
+                "</body>" +
+                "</html>";
+
         emailService.sendEmail(
                 from,
                 from,
                 "Yeni müraciəti var",
-                contactForm.getName() + " " + contactForm.getLastName() +
-                        " yeni müraciəti göndərib. " +
-                        "Əlaqə nömrəsi: " + contactForm.getPhoneNumber() +
-                        " Email: " + contactForm.getEmail() +
-                        " Message: " + contactForm.getMessage()
+                message
         );
         contactForm.setDate(new Date());
         return contactFormRepository.save(contactForm);
