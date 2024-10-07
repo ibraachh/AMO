@@ -187,7 +187,7 @@
           </div>
           <div class="h-right">
             <select
-              name="langage"
+              name="language"
               class="!appearance-none !border-0 outline-none p-1 cursor-pointer !opacity-100 !text-[#fff]"
               id="lamguage"
             >
@@ -401,79 +401,10 @@
         <div class="container">
           <div class="row !w-full mt-12 md:mt-16">
             <h5
-              class="max-md:before:!w-[180px] text-[56px] before:w-[300px] before:h-[2px] before:bg-[#fff] before:absolute relative before:left-[110%] before:top-1/2 w-max !text-white !font-semibold max-sm:!text-[30px] max-sm:before:!w-[100px]"
-            >
-              Career
-            </h5>
+              class="max-md:before:!w-[180px] careerrr text-[56px] before:w-[300px] before:h-[2px] before:bg-[#fff] before:absolute relative before:left-[110%] before:top-1/2 w-max !text-white !font-semibold max-sm:!text-[30px] max-sm:before:!w-[100px]"
+            ></h5>
 
-            <div class="w-full mt-14 flex flex-col gap-8">
-              <a
-                class="block pb-8 text-white border-b-2 border-b-[#FFFFFF80]"
-                href="careerDetail.html"
-              >
-                <div class="carrer-item flex justify-between">
-                  <div class="left">
-                    <span class="text-[32px] max-sm:text-[22px]">
-                      Lorem ipsum dolor
-                    </span>
-                    <p class="max-sm:text-[14px]">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
-                      aliquam.....
-                    </p>
-                  </div>
-                  <div class="flex flex-col gap-4 items-end max-sm:gap-1">
-                    <span class="current-time"> 14/10/2022 </span>
-                    <span class="past-time text-[12px] opacity-50">
-                      14/10/2022
-                    </span>
-                  </div>
-                </div>
-              </a>
-              <a
-                class="block pb-8 text-white border-b-2 border-b-[#FFFFFF80]"
-                href="careerDetail.html"
-              >
-                <div class="carrer-item flex justify-between">
-                  <div class="left">
-                    <span class="text-[32px] max-sm:text-[22px]">
-                      Lorem ipsum dolor
-                    </span>
-                    <p class="max-sm:text-[14px]">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
-                      aliquam.....
-                    </p>
-                  </div>
-                  <div class="flex flex-col gap-4 items-end max-sm:gap-1">
-                    <span class="current-time"> 14/10/2022 </span>
-                    <span class="past-time text-[12px] opacity-50">
-                      14/10/2022
-                    </span>
-                  </div>
-                </div>
-              </a>
-              <a
-                class="block pb-8 text-white border-b-2 border-b-[#FFFFFF80]"
-                href="careerDetail.html"
-              >
-                <div class="carrer-item flex justify-between">
-                  <div class="left">
-                    <span class="text-[32px] max-sm:text-[22px]">
-                      Lorem ipsum dolor
-                    </span>
-                    <p class="max-sm:text-[14px]">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
-                      aliquam.....
-                    </p>
-                  </div>
-                  <div class="flex flex-col gap-4 items-end max-sm:gap-1">
-                    <span class="current-time"> 14/10/2022 </span>
-                    <span class="past-time text-[12px] opacity-50">
-                      14/10/2022
-                    </span>
-                  </div>
-                </div>
-              </a>
-            </div>
+            <div class="loremmm w-full mt-14 flex flex-col gap-8"></div>
           </div>
         </div>
       </section>
@@ -519,6 +450,104 @@
     <!-- Footer End -->
 
     <!-- App js file -->
-    <script src="./assets/js/app.js"></script>
   </body>
+  <script src="./assets/js/app.js"></script>
+  <script>
+    // need translation for .careerrr classnamed element
+
+    function changeCareerText() {
+      const language = localStorage.getItem("language") || "az";
+      const careerText = document.querySelector(".careerrr");
+
+      if (language === "az") {
+        careerText.textContent = "Karyera";
+      } else if (language === "ru") {
+        careerText.textContent = "Карьера";
+      } else {
+        careerText.textContent = "Career";
+      }
+    }
+
+    changeCareerText();
+
+    function changeLanguage(event) {
+      localStorage.setItem("language", event.target.value);
+      window.location.reload();
+    }
+
+    window.onload = function () {
+      const savedLanguage = localStorage.getItem("language");
+      if (savedLanguage) {
+        document.getElementById("language").value = savedLanguage;
+      }
+    };
+  </script>
+  <script>
+    async function fetchAboutList() {
+      const language = localStorage.getItem("language") || "en";
+      const headers = {
+        "x-api-key": "aebddf40-4255-4a9a-8bdb-3eea84c28bb9",
+        "accept-language": language,
+      };
+
+      fetch("https://api.studentall.az:9851/api/career/list", { headers })
+        .then((response) => response.json())
+        .then((data) => {
+          const container = document.querySelector(
+            ".w-full.mt-14.flex.flex-col.gap-8"
+          );
+          container.innerHTML = "";
+
+          data.forEach((item) => {
+            const a = document.createElement("a");
+            a.className =
+              "block pb-8 text-white border-b-2 border-b-[#FFFFFF80]";
+            a.href = `./careerDetail.html?id=${item.id}`;
+
+            const div = document.createElement("div");
+            div.className = "carrer-item flex justify-between";
+
+            const left = document.createElement("div");
+            left.className = "left";
+
+            const title = document.createElement("span");
+            title.className = "text-[32px] max-sm:text-[22px]";
+            title.innerHTML = item.title;
+
+            const description = document.createElement("p");
+            description.className = "max-sm:text-[14px]";
+            description.innerHTML = item.description;
+
+            left.appendChild(title);
+            left.appendChild(description);
+
+            const right = document.createElement("div");
+            right.className = "flex flex-col gap-4 items-end max-sm:gap-1";
+
+            const currentTime = document.createElement("span");
+            currentTime.className = "current-time";
+            currentTime.innerHTML = new Date(item.date).toLocaleDateString();
+
+            const pastTime = document.createElement("span");
+            pastTime.className = "past-time text-[12px] opacity-50";
+            pastTime.innerHTML = new Date(item.date).toLocaleDateString();
+
+            right.appendChild(currentTime);
+            right.appendChild(pastTime);
+
+            div.appendChild(left);
+            div.appendChild(right);
+
+            a.appendChild(div);
+
+            container.appendChild(a);
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
+    fetchAboutList();
+  </script>
 </html>

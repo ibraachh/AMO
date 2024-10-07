@@ -191,7 +191,7 @@
           </div>
           <div class="h-right">
             <select
-              name="langage"
+              name="language"
               class="!appearance-none !border-0 outline-none p-1 cursor-pointer !opacity-100 !text-[#fff]"
               id="lamguage"
             >
@@ -404,75 +404,13 @@
       <section class="container">
         <div class="mt-12 md:mt-16">
           <h4
-            class="max-md:before:!w-[180px] text-[46px] before:w-[300px] before:h-[2px] before:bg-[#fff] before:absolute relative before:left-[110%] before:top-1/2 w-max !text-white !font-semibold max-sm:!text-[30px] max-sm:before:!w-[45px] max-sm:before:left-[105%]"
-          >
-            History
-          </h4>
-          <p class="text-white mt-6 text-[16px]">
-            <span class="font-bold">"AMO CORPORATE GROUP"</span> is a group of
-            corporate companies operating since 1995 in the fields of production
-            of agricultural products, their import and export, delivery through
-            the Horeca system and international transport.
-          </p>
+            class="max-md:before:!w-[180px] titleee text-[46px] before:w-[300px] before:h-[2px] before:bg-[#fff] before:absolute relative before:left-[110%] before:top-1/2 w-max !text-white !font-semibold max-sm:!text-[30px] max-sm:before:!w-[45px] max-sm:before:left-[105%]"
+          ></h4>
+          <p class="text-white desccc mt-6 text-[16px]"></p>
         </div>
 
         <section class="timeline">
-          <ol class="translate-x-[-67px] max-sm:!pt-[140px]">
-            <li class="first">
-              <div>1990</div>
-              <div
-                class="!text-white !text-[24px] w-[240px] !left-0 translate-y-[50%]"
-              >
-                We, as company founders, entered the fruits and vegetables
-                trading sector.
-              </div>
-            </li>
-            <li>
-              <div
-                class="w-[58px] h-[58px] rounded-full bg-[#fff] flex items-center font-bold justify-center border-2 border-[#FFFFFF33] -translate-y-[160%] text-[13px]"
-              >
-                1995
-              </div>
-              <div class="w-[240px] !text-[#FFFFFF80]">
-                Our fruits and vegetables trading company was founded with the
-                name of AMO LLC.
-              </div>
-            </li>
-            <li>
-              <div
-                class="w-[58px] h-[58px] rounded-full bg-[#fff] flex items-center font-bold justify-center border-2 translate-y-[55%] border-[#FFFFFF33] text-[13px]"
-              >
-                2000
-              </div>
-              <div class="w-[240px] translate-y-[60%] !text-[#FFFFFF80]">
-                We started our international logistics, importing and exporting
-                fruits and vegetables, with our own transportation company,
-                AMOTRANS, and with the trucks that we own as a company.
-              </div>
-            </li>
-            <li>
-              <div
-                class="w-[58px] h-[58px] rounded-full bg-[#fff] flex items-center font-bold justify-center border-2 border-[#FFFFFF33] -translate-y-[160%] text-[13px]"
-              >
-                2009
-              </div>
-              <div class="w-[240px] !text-[#FFFFFF80]">
-                We took our first step to manufacturing and agriculture sector
-                by creating AMOGRO.
-              </div>
-            </li>
-            <li>
-              <div
-                class="w-[58px] h-[58px] rounded-full bg-[#fff] flex items-center font-bold justify-center border-2 translate-y-[55%] border-[#FFFFFF33] text-[13px]"
-              >
-                2022
-              </div>
-              <div class="w-[240px] translate-y-[100%] !text-[#FFFFFF80]">
-                We started to deliver the fruits and vegetables within the
-                country with thename of our new company; AMODO.
-              </div>
-            </li>
-          </ol>
+          <ol class="translate-x-[-67px] max-sm:!pt-[140px]"></ol>
         </section>
       </section>
       <!-- Content End -->
@@ -523,5 +461,83 @@
       AOS.init();
     </script> -->
     <script src="./assets/js/timeline.js"></script>
+    <script>
+      async function fetchAboutList() {
+        const language = localStorage.getItem("language") || "en";
+        const headers = {
+          "x-api-key": "aebddf40-4255-4a9a-8bdb-3eea84c28bb9",
+          "accept-language": language,
+        };
+
+        fetch("https://api.studentall.az:9851/api/history/list", { headers })
+          .then((response) => response.json())
+          .then((data) => {
+            const abouttitle = document.querySelector(".titleee");
+            const abouttext = document.querySelector(".desccc");
+
+            if (data.length > 0) {
+              const item = data[0];
+
+              abouttitle.innerHTML = item.title;
+              abouttext.innerHTML = item.description;
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      fetchAboutList();
+
+      async function fetchChronologyList() {
+        const language = localStorage.getItem("language") || "en";
+        const headers = {
+          "x-api-key": "aebddf40-4255-4a9a-8bdb-3eea84c28bb9",
+          "accept-language": language,
+        };
+
+        fetch("https://api.studentall.az:9851/api/chronology/list", { headers })
+          .then((response) => response.json())
+          .then((data) => {
+            const timeline = document.querySelector(".timeline ol");
+            timeline.innerHTML = ""; // clear existing li elements
+
+            data.forEach((item, index) => {
+              const li = document.createElement("li");
+              li.innerHTML = `
+          <div class="w-[58px] year h-[58px] rounded-full bg-[#fff] flex items-center font-bold justify-center border-2 border-[#FFFFFF33] text-[13px]">
+            ${item.title}
+          </div>
+          <div class="w-[240px] story ${
+            index === 0
+              ? "!text-white !text-[24px] !left-0 translate-y-[50%]"
+              : "!text-[#FFFFFF80]"
+          }">
+            ${item.description}
+          </div>
+        `;
+              timeline.appendChild(li);
+            });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      fetchChronologyList();
+    </script>
+    <script>
+      function changeLanguage(event) {
+        localStorage.setItem("language", event.target.value);
+        window.location.reload();
+      }
+
+      window.onload = function () {
+        const savedLanguage = localStorage.getItem("language");
+        if (savedLanguage) {
+          document.getElementById("language").value = savedLanguage;
+        }
+      };
+    </script>
   </body>
 </html>
