@@ -417,26 +417,17 @@
       <section class="container">
         <div class="mt-12 md:mt-16">
           <h4
-            class="max-md:before:!w-[180px] text-[46px] before:w-[300px] before:h-[2px] before:bg-[#fff] before:absolute relative before:left-[110%] before:top-1/2 w-max !text-white !font-semibold max-sm:!text-[30px] max-sm:before:!w-[45px] max-sm:before:left-[105%]"
+            class="max-md:before:!w-[180px] text-[46px] before:w-[300px] before:h-[2px] before:bg-[#fff] before:absolute relative before:left-[110%] before:top-1/2 w-max !text-white !font-semibold max-sm:!text-[30px] max-sm:before:!w-[45px] max-sm:before:left-[105%] headingTitle"
           >
             Companies
           </h4>
-          <p class="text-white mt-6 text-[16px]">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type.
-          </p>
+          <p class="text-white mt-6 text-[16px] description-part1"></p>
         </div>
         <div
           class="w-full flex items-center justify-center flex-col gap-4 text-center my-16"
         >
-          <img
-            src="../assets/images/amo-logo1.png"
-            alt="logo"
-            class="w-[30%] max-md:w-[60%]"
-          />
-          <p class="text-white">
+          <img alt="logo" class="w-[30%] max-md:w-[60%] amoDoLogo" />
+          <p class="text-white description-part2">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
@@ -465,34 +456,25 @@
           class="grid grid-cols-3 max-sm:grid-cols-1 max-lg:grid-cols-2 gap-4 my-20"
         >
           <div
-            class="flex items-center justify-center z-0 h-[300px] text-white relative custom-border-image-1"
+            class="flex items-center justify-center z-0 h-[300px] text-white relative custom-border-image-1 card-1"
           >
-            <p class="text-[14px] leading-6 max-md:leading-6 max-sm:leading-4">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type.
-            </p>
+            <p
+              class="text-[14px] leading-6 max-md:leading-6 max-sm:leading-4"
+            ></p>
           </div>
           <div
-            class="flex items-center justify-center z-0 h-[300px] text-white relative custom-border-image-2"
+            class="flex items-center justify-center z-0 h-[300px] text-white relative custom-border-image-2 card-2"
           >
-            <p class="text-[14px] leading-6 max-md:leading-6 max-sm:leading-4">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type.
-            </p>
+            <p
+              class="text-[14px] leading-6 max-md:leading-6 max-sm:leading-4"
+            ></p>
           </div>
           <div
-            class="flex items-center justify-center z-0 h-[300px] text-white relative custom-border-image-3"
+            class="flex items-center justify-center z-0 h-[300px] text-white relative custom-border-image-3 card-3"
           >
-            <p class="text-[14px] leading-6 max-md:leading-6 max-sm:leading-4">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type.
-            </p>
+            <p
+              class="text-[14px] leading-6 max-md:leading-6 max-sm:leading-4"
+            ></p>
           </div>
         </div>
       </section>
@@ -539,5 +521,20 @@
 
     <!-- App Js file -->
     <script src="../assets/js/app.js"></script>
+    <script>
+      function changeLanguage(event) {
+        localStorage.setItem("language", event.target.value);
+        window.location.reload();
+      }
+
+      window.onload = function () {
+        const savedLanguage = localStorage.getItem("language");
+        if (savedLanguage) {
+          document.getElementById("language").value = savedLanguage;
+        }
+      };
+    </script>
+
+    <script src="../assets/js/amogrow.js" type="module"></script>
   </body>
 </html>

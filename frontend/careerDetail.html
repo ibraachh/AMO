@@ -172,6 +172,7 @@
                     href="./career.html"
                     class="!text-[#fff] hover:!font-bold shrink-0 block !min-w-max hover:mx-1 duration-200"
                   >
+                    Career
                   </a>
                 </li>
                 <li>
@@ -186,13 +187,14 @@
           </div>
           <div class="h-right">
             <select
+              onchange="changeLanguage(event)"
               name="language"
               class="!appearance-none !border-0 outline-none p-1 cursor-pointer !opacity-100 !text-[#fff]"
-              id="lamguage"
+              id="language"
             >
               <option value="en">EN</option>
-              <option value="en">RU</option>
-              <option value="en">AZ</option>
+              <option value="ru">RU</option>
+              <option value="az">AZ</option>
             </select>
             <svg
               class="search"
@@ -719,12 +721,12 @@
       }
 
       changeCareerText();
+      const language = localStorage.getItem("language") || "az";
 
-      async function fetchJob() {
+      async function fetchJob(language) {
         const urlParams = new URLSearchParams(window.location.search);
         const id = urlParams.get("id");
 
-        const language = localStorage.getItem("language") || "en";
         const headers = {
           "x-api-key": "aebddf40-4255-4a9a-8bdb-3eea84c28bb9",
           "accept-language": language,
@@ -752,7 +754,7 @@
           });
       }
 
-      fetchJob();
+      fetchJob(language);
 
       const applyBtn = document.getElementById("apply");
       const modal = document.querySelector(".modal");
@@ -767,6 +769,19 @@
       }
       // closeModal.addEventListener("click", hideModal);
       // applyBtn.addEventListener("click", showModal);
+      function changeLanguage(event) {
+        localStorage.setItem("language", event.target.value);
+        window.location.reload();
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        const language = localStorage.getItem("language");
+        const languageSelect = document.getElementById("language");
+
+        if (language && languageSelect) {
+          languageSelect.value = language;
+        }
+      });
     </script>
   </body>
 </html>

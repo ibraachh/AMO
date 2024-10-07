@@ -1,4 +1,3 @@
-import { useTheme } from '@emotion/react';
 import { Button, Grid } from '@mui/material';
 import { _appFeatured } from 'src/_mock';
 import SeoIllustration from 'src/assets/illustrations/seo-illustration';
@@ -10,7 +9,6 @@ import { AppWelcome } from 'src/sections/dashboard/app-welcome';
 import { AppWidgetSummary } from 'src/sections/dashboard/app-widget-summary';
 
 export default function StatisticView() {
-  const theme = useTheme();
   return (
     <DashboardContent maxWidth="xl">
       <Grid className="p-3 !mt-4" container spacing={3}>
@@ -51,7 +49,7 @@ export default function StatisticView() {
               percent={0.2}
               total={4876}
               chart={{
-                colors: [theme.vars.palette.info.main],
+                // colors: [theme.vars.palette.info.main],
                 categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
                 series: [20, 41, 63, 33, 28, 35, 50, 46],
               }}
@@ -63,7 +61,7 @@ export default function StatisticView() {
               percent={-0.1}
               total={678}
               chart={{
-                colors: [theme.vars.palette.error.main],
+                // colors: [theme.vars.palette.error.main],
                 categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
                 series: [18, 19, 31, 8, 16, 37, 12, 33],
               }}

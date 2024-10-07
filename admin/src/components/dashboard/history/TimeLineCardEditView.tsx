@@ -1,195 +1,174 @@
-import { z as zod } from 'zod';
-import { useForm } from 'react-hook-form';
-import { useMemo, useState, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z as zod } from 'zod';
 
-import { Card, Stack, Button, Typography, Divider } from '@mui/material';
+import { Button, Card, Stack, Typography } from '@mui/material';
 
-import { Form, Field } from 'src/components/hook-form';
+import { Field, Form } from 'src/components/hook-form';
 
-import { toast } from 'sonner';
 import CustomTimeline from 'src/components/timeline/CustomTimeline';
+import type { Info } from 'src/utils/types';
 import { getLanguages } from 'src/utils/data';
-import { DashboardContent } from 'src/layouts/dashboard';
-import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
+import { updateChronology } from 'src/api/backendServies';
+import { toast } from 'sonner';
+import { useRouter } from 'src/routes/hooks';
 import { paths } from 'src/routes/paths';
 
 export type NewProductSchemaType = zod.infer<typeof NewProductSchema>;
 
 export const NewProductSchema = zod.object({
-  title: zod.string().min(1, { message: 'Başlıq tələb olunur!' }),
-  description: zod.string().min(1, { message: 'Açıqlama tələb olunur!' }),
+  title: zod.string().optional(),
+  description: zod.string().optional(),
 });
 
-interface Translation {
-  language: string;
-  title: string;
-  description: string;
-}
+type Props = {
+  initialData: Info;
+};
 
-interface ProductData {
-  title: string;
-  description: string;
-  translation: Translation[];
-}
-
-export interface Language {
-  id: string;
-  name: string;
-  code: string;
-}
-
-export default function TimeLineCardEditView() {
-  const [step, setStep] = useState(0);
-  const [productData, setProductData] = useState<ProductData>({
-    title: '',
-    description: '',
-    translation: [],
-  });
-
-  const languages: Language[] = getLanguages;
-
-  const defaultValues = useMemo(
-    () => ({
-      title: '',
-      description: '',
-    }),
-    []
+export default function TimeLineCardEditView({ initialData }: Props) {
+  if (!initialData) return null;
+  const [currentStep, setCurrentStep] = useState(0);
+  const [currectDescription, setCurrectDescription] = useState(
+    initialData?.translations[currentStep].description || ''
   );
+  const [currentTitle, setCurrentTitle] = useState(
+    initialData?.translations[currentStep].title || ''
+  );
+  const [translations, setTranslations] = useState(initialData?.translations || []);
 
+  const languages = getLanguages; // Fetch language data
+
+  const router = useRouter();
   const methods = useForm<NewProductSchemaType>({
     resolver: zodResolver(NewProductSchema),
-    defaultValues,
-    mode: 'onTouched',
   });
 
   const {
-    reset,
     handleSubmit,
     formState: { errors },
   } = methods;
 
-  useEffect(() => {
-    if (step === 0) {
-      reset({
-        title: productData.title,
-        description: productData.description,
-      });
-    } else {
-      const currentTranslation = productData.translation.find(
-        (trans) => trans.language === languages[step].code
-      );
+  const handleEditorChange = (value: string) => {
+    // console.log('Editor value changing to:', value);
+    setCurrectDescription(value);
+    const updatedTranslations = [...translations];
+    updatedTranslations[currentStep] = {
+      ...updatedTranslations[currentStep],
+      description: value,
+      languageCode: languages[currentStep].code,
+    };
+    setTranslations(updatedTranslations);
+  };
 
-      if (currentTranslation) {
-        reset({
-          title: currentTranslation.title,
-          description: currentTranslation.description,
-        });
-      }
+  const handleTitleChange = (value: string) => {
+    setCurrentTitle(value);
+    const updatedTranslations = [...translations];
+    updatedTranslations[currentStep] = {
+      ...updatedTranslations[currentStep],
+      title: value,
+      languageCode: languages[currentStep].code,
+    };
+    setTranslations(updatedTranslations);
+  };
+
+  const handleNext = () => {
+    setCurrentStep((prevStep) => {
+      const nextStep = prevStep + 1;
+      return nextStep;
+    });
+  };
+
+  const handleBack = () => {
+    if (currentStep > 0) {
+      setCurrentStep((prevStep) => prevStep - 1);
     }
-  }, [step, productData, languages, reset]);
+  };
 
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      if (step === 0) {
-        setProductData((prevData) => ({
-          ...prevData,
-          title: data.title,
-          description: data.description,
-        }));
-      } else {
-        setProductData((prevData) => ({
-          ...prevData,
-          translation: [
-            ...prevData.translation.filter((trans) => trans.language !== languages[step].code),
-            {
-              language: languages[step].code,
-              title: data.title,
-              description: data.description,
-            },
-          ],
-        }));
-      }
+  const onSubmit = handleSubmit(async () => {
+    if (currentStep === languages.length - 1) {
+      try {
+        const finalData: Info = {
+          translations,
+        };
 
-      if (step === languages.length - 1) {
-        console.log('Final Product Data:', productData);
-        setProductData({
-          title: '',
-          description: '',
-          translation: [],
-        });
-        reset(defaultValues);
-        toast.success('Başlıq əlavə olundu');
-      } else {
-        setStep((prev) => prev + 1);
-        reset({
-          title: '',
-          description: '',
-        });
+        const response = await updateChronology(initialData?.id || '', finalData);
+
+        if (response.data) {
+          toast.success('Əlavə olundu');
+          setCurrentStep(0);
+          setTimeout(() => {
+            router.push(paths.dashboard.about.history);
+            router.refresh();
+          }, 800);
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
+    } else {
+      handleNext();
     }
   });
 
-  return (
-    <DashboardContent maxWidth="xl">
-      <CustomBreadcrumbs
-        heading="Tarixçə"
-        links={[
-          { name: 'Saytın aktivliyi', href: paths.dashboard.root },
-          { name: 'Tarixçə', href: paths.dashboard.about.history },
-          { name: 'Kart redaktə et' },
-        ]}
-      />
+  const getCurrentDescription = () => {
+    if (currentStep === 0) {
+      return currectDescription || '';
+    }
+    return translations[currentStep]?.description || '';
+  };
 
-      <div className="flex w-full mx-auto">
-        <Card className="w-full" sx={{ my: 3 }}>
-          <Typography variant="h6" className="!text-sm" sx={{ p: 3 }}>
-            Zəhmət olmasa aşağıdakı məlumatları {languages[step].name} dilində daxil edin.
-          </Typography>
-          <Divider />
-          <Form methods={methods} className="!w-full" onSubmit={onSubmit}>
-            <Stack spacing={3} className="w-full" sx={{ p: 3 }}>
-              <Field.Text
-                className="!w-full"
-                name="title"
-                label="Başlıq"
-                error={!!errors.title}
-                helperText={errors.title?.message}
-              />
-              <Field.Text
-                className="!w-full"
-                name="description"
-                label="Açıqlama"
-                error={!!errors.title}
-                helperText={errors.title?.message}
-              />
-              <div className={`flex ${step === 0 ? 'justify-end' : 'justify-between'} mt-3`}>
-                {step > 0 && (
-                  <Button
-                    type="button"
-                    className="!bg-[#1C252E] !w-max !px-4 !py-3 gap-2 !text-white !rounded-xl"
-                    onClick={() => {
-                      setStep((prev) => prev - 1);
-                      reset();
-                    }}
-                  >
-                    Geri
-                  </Button>
-                )}
+  const getCurrentTitle = () => {
+    if (currentStep === 0) {
+      return currentTitle || '';
+    }
+    return translations[currentStep]?.title || '';
+  };
+
+  return (
+    <div className="flex w-full mx-auto">
+      <Card className="w-full" sx={{ my: 3 }}>
+        <Typography variant="h6" className="!text-sm" sx={{ p: 3 }}>
+          Zəhmət olmasa aşağıdakı məlumatları {languages[currentStep].name} dilində daxil edin.
+        </Typography>
+        <Form methods={methods} className="!w-full" onSubmit={onSubmit}>
+          <Stack spacing={3} className="w-full" sx={{ p: 3 }}>
+            <Field.Text
+              className="!w-full"
+              name="title"
+              value={getCurrentTitle()}
+              onChange={(e) => handleTitleChange(e.target.value)}
+              error={!!errors.title}
+              helperText={errors.title?.message}
+            />
+            <Field.Text
+              key={languages[currentStep].code} // Force re-render on step change
+              value={getCurrentDescription()}
+              name="description"
+              onChange={(e) => handleEditorChange(e.target.value)}
+              error={!!errors.description}
+              helperText={errors.description?.message}
+            />
+            <div className={`flex ${currentStep === 0 ? 'justify-end' : 'justify-between'} mt-3`}>
+              {currentStep > 0 && (
                 <Button
-                  type="submit"
+                  type="button"
                   className="!bg-[#1C252E] !w-max !px-4 !py-3 gap-2 !text-white !rounded-xl"
+                  onClick={handleBack}
                 >
-                  {step === languages.length - 1 ? 'Yadda saxla' : 'Davam et'}
+                  Geri
                 </Button>
-              </div>
-            </Stack>
-          </Form>
-        </Card>
-        <CustomTimeline step={step} />
-      </div>
-    </DashboardContent>
+              )}
+              <Button
+                type="submit"
+                className="!bg-[#1C252E] !w-max !px-4 !py-3 gap-2 !text-white !rounded-xl"
+              >
+                {currentStep === languages.length - 1 ? 'Yadda saxla' : 'Davam et'}
+              </Button>
+            </div>
+          </Stack>
+        </Form>
+      </Card>
+      <CustomTimeline step={currentStep} />
+    </div>
   );
 }

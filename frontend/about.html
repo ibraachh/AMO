@@ -187,12 +187,13 @@
           <div class="h-right">
             <select
               name="language"
+              onchange="changeLanguage(event)"
               class="!appearance-none !border-0 outline-none p-1 cursor-pointer !opacity-100 !text-[#fff]"
-              id="lamguage"
+              id="language"
             >
               <option value="en">EN</option>
-              <option value="en">RU</option>
-              <option value="en">AZ</option>
+              <option value="ru">RU</option>
+              <option value="az">AZ</option>
             </select>
             <svg
               class="search"
@@ -483,9 +484,8 @@
             class="grid grid-cols-2 max-md:grid-cols-1 gap-8 text-white mt-12"
           >
             <div>
-              <h3 class="uppercase misss text-[28px] tracking-widest mb-4">
-              </h3>
-              <div class="flex gap-4">
+              <h3 class="uppercase misss text-[28px] tracking-widest mb-4"></h3>
+              <div class="flex gap-4 mission-cards">
                 <div>
                   <img
                     src="./assets/images/card-icon5.png"
@@ -493,17 +493,14 @@
                     class="max-w-[100px] max-sm:max-w-[70px] max-md:max-w-[80px]"
                   />
                 </div>
-                <div class="max-md:text-[14px] misst">
-                  With our many years of experience in the sector we
-                  manufacture, import,export and deliver the most qualified and
-                  delicious fruits and vegetableswithin and outside of the
-                  country with the values of innovation andintegrity.
-                </div>
+                <div class="max-md:text-[14px] misst"></div>
               </div>
             </div>
             <div>
-              <h3 class="uppercase visss text-[28px] tracking-widest mb-4">vision</h3>
-              <div class="flex gap-4">
+              <h3 class="uppercase visss text-[28px] tracking-widest mb-4">
+                vision
+              </h3>
+              <div class="flex gap-4 mission-cards">
                 <div>
                   <img
                     src="./assets/images/card-icon6.png"
@@ -511,11 +508,7 @@
                     class="max-w-[110px] max-sm:max-w-[80px] max-md:max-w-[90px]"
                   />
                 </div>
-                <div class="max-md:text-[14px] visst">
-                  The whole lot we create from manufacturing to delivery to
-                  documentation has been carefully and thoughtfully built to the
-                  very maximum standards.
-                </div>
+                <div class="max-md:text-[14px] misst"></div>
               </div>
             </div>
           </div>
@@ -618,8 +611,9 @@
       }
     </script>
     <script>
-      async function fetchAboutList() {
-        const language = localStorage.getItem("language") || "en";
+      const language = localStorage.getItem("language") || "en";
+
+      async function fetchAboutList(language) {
         const headers = {
           "x-api-key": "aebddf40-4255-4a9a-8bdb-3eea84c28bb9",
           "accept-language": language,
@@ -643,10 +637,9 @@
           });
       }
 
-      fetchAboutList();
+      fetchAboutList(language);
 
-      async function fetchValueList() {
-        const language = localStorage.getItem("language") || "en";
+      async function fetchValueList(language) {
         const headers = {
           "x-api-key": "aebddf40-4255-4a9a-8bdb-3eea84c28bb9",
           "accept-language": language,
@@ -668,24 +661,30 @@
           });
       }
 
-      fetchValueList();
+      fetchValueList(language);
 
-      async function fetchMissVissList() {
-        const language = localStorage.getItem("language") || "en";
+      const missionCards = document.querySelectorAll(".mission-cards");
+
+      async function fetchMissVissList(language) {
         const headers = {
           "x-api-key": "aebddf40-4255-4a9a-8bdb-3eea84c28bb9",
           "accept-language": language,
         };
 
-        fetch("https://api.studentall.az:9851/api/value/list", { headers })
+        fetch("https://api.studentall.az:9851/api/mission/list", { headers })
           .then((response) => response.json())
           .then((data) => {
-            const quaaaElements = document.querySelectorAll(".misst");
-            const titttElements = document.querySelectorAll(".visst");
-
             data.forEach((item, index) => {
-              quaaaElements[index].textContent = item.title;
-              titttElements[index].innerHTML = item.description;
+              const div = document.createElement("div");
+              const h3 = document.createElement("h3");
+              const p = document.createElement("p");
+              div.classList.add("max-md:text-[14px]", "misst");
+
+              h3.textContent = item.title;
+              p.innerHTML = item.description;
+
+              div.append(h3, p);
+              missionCards[index].append(div);
             });
           })
           .catch((error) => {
@@ -693,19 +692,21 @@
           });
       }
 
-      fetchMissVissList();
+      fetchMissVissList(language);
 
       function changeLanguage(event) {
         localStorage.setItem("language", event.target.value);
         window.location.reload();
       }
 
-      window.onload = function () {
-        const savedLanguage = localStorage.getItem("language");
-        if (savedLanguage) {
-          document.getElementById("language").value = savedLanguage;
+      window.addEventListener("DOMContentLoaded", () => {
+        const language = localStorage.getItem("language");
+        const languageSelect = document.getElementById("language");
+
+        if (language && languageSelect) {
+          languageSelect.value = language;
         }
-      };
+      });
     </script>
   </body>
 </html>

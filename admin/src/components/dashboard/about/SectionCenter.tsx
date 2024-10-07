@@ -110,7 +110,6 @@ export default function SectionCenter() {
       }
 
       if (step === languages.length - 1) {
-        console.log('Final Product Data:', productData);
         setProductData({
           title: '',
           description: '',
@@ -183,7 +182,7 @@ export default function SectionCenter() {
         <CustomTimeline step={step} />
       </div>
 
-      <ValueCards />
+      <ValueCards values={[]} />
     </>
   );
 }

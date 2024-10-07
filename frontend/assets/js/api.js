@@ -1,7 +1,4 @@
-const headers = {
-  "x-api-key": "aebddf40-4255-4a9a-8bdb-3eea84c28bb9",
-};
-export const useFetch = async (url) => {
+export const useFetch = async (url, headers) => {
   try {
     const response = await fetch(url, { headers });
     const data = await response.json();
