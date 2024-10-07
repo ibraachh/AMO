@@ -168,8 +168,7 @@ export function HeaderBase({
               {/* {settings && <SettingsButton data-slot="settings" />} */}
 
               {/* -- Account drawer -- */}
-              {/* {account && <AccountDrawer data-slot="account" data={data?.account} />} */}
-              <SignOutButton />
+              {account ? <SignOutButton /> : ''}
 
               {/* -- Sign in button -- */}
               {signIn && <SignInButton />}
