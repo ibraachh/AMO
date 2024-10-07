@@ -721,9 +721,6 @@
 
       changeCareerText();
 
-      // now fetch the data due to id from the url. url is like; http://127.0.0.1:5500/frontend/careerDetail.html?id=66f51effabfed80c31bd94ba
-
-      // fetch the data from the server
       async function fetchJob() {
         const urlParams = new URLSearchParams(window.location.search);
         const id = urlParams.get("id");
