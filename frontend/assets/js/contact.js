@@ -1,7 +1,13 @@
 import { endpoints, useFetch, usePost } from "./api.js";
 
+const language = localStorage.getItem("language") || "az";
+
 const getList = async () => {
-  const res = await useFetch(endpoints.contact.list);
+  const headers = {
+    "x-api-key": "aebddf40-4255-4a9a-8bdb-3eea84c28bb9",
+    "accept-language": language,
+  };
+  const res = await useFetch(endpoints.contact.list, headers);
   return res;
 };
 

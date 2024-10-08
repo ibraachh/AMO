@@ -103,7 +103,6 @@ export default function AmoTradeEditView() {
       }
 
       if (step === languages.length - 1) {
-        console.log('Final Product Data:', productData);
         setProductData({
           description: '',
           translation: [],

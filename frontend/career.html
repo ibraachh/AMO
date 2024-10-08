@@ -187,15 +187,15 @@
           </div>
           <div class="h-right">
             <select
-            name="language"
-            class="  cursor-pointer !opacity-100 !text-[#fff]"
-            id="language"
-            onchange="changeLanguage(event)"
-          >
-            <option value="en">EN</option>
-            <option value="ru">RU</option>
-            <option value="az">AZ</option>
-          </select>
+              onchange="changeLanguage(event)"
+              name="language"
+              class="!appearance-none !border-0 outline-none p-1 cursor-pointer !opacity-100 !text-[#fff]"
+              id="language"
+            >
+              <option value="en">EN</option>
+              <option value="ru">RU</option>
+              <option value="az">AZ</option>
+            </select>
             <svg
               class="search"
               xmlns="http://www.w3.org/2000/svg"
@@ -484,8 +484,8 @@
     };
   </script>
   <script>
-    async function fetchAboutList() {
-      const language = localStorage.getItem("language") || "en";
+    const language = localStorage.getItem("language") || "az";
+    async function fetchAboutList(language) {
       const headers = {
         "x-api-key": "aebddf40-4255-4a9a-8bdb-3eea84c28bb9",
         "accept-language": language,
@@ -549,6 +549,20 @@
         });
     }
 
-    fetchAboutList();
+    fetchAboutList(language);
+
+    function changeLanguage(event) {
+      localStorage.setItem("language", event.target.value);
+      window.location.reload();
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const language = localStorage.getItem("language");
+      const languageSelect = document.getElementById("language");
+
+      if (language && languageSelect) {
+        languageSelect.value = language;
+      }
+    });
   </script>
 </html>

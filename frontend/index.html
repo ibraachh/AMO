@@ -187,15 +187,15 @@
           </div>
           <div class="h-right">
             <select
-            name="language"
-            class="  cursor-pointer !opacity-100 !text-[#fff]"
-            id="language"
-            onchange="changeLanguage(event)"
-          >
-            <option value="en">EN</option>
-            <option value="ru">RU</option>
-            <option value="az">AZ</option>
-          </select>
+              onchange="changeLanguage(event)"
+              name="language"
+              class="!appearance-none !border-0 outline-none p-1 cursor-pointer !opacity-100 !text-[#fff]"
+              id="language"
+            >
+              <option value="az">AZ</option>
+              <option value="en">EN</option>
+              <option value="ru">RU</option>
+            </select>
             <svg
               class="search"
               xmlns="http://www.w3.org/2000/svg"
@@ -407,20 +407,6 @@
               <!-- <img src="./assets/images/hero-bg.png" alt="" /> -->
             </div>
           </div>
-          <!-- <div class="swiper-slide">
-            <div class="slide-img">
-              <video
-                class="slide-video !select-none"
-                autoplay
-                muted
-                loop
-                playsinline
-              >
-                <source src="./assets/video/videSlide.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div> -->
-          </div>
         </div>
 
         <div
@@ -578,7 +564,6 @@
         fetch("https://api.studentall.az:9851/api/about/list", { headers })
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
             const abouttitle = document.querySelector(".titleee");
             const abouttext = document.querySelector(".desccc");
 
@@ -594,10 +579,11 @@
           });
       }
 
-      fetchAboutList("az");
-      fetchAboutList("ru");
-      fetchAboutList("en");
+      const language = localStorage.getItem("language") || "az";
 
+      fetchAboutList(language);
+
+   
       async function fetchVideoUrls() {
         const headers = {
           "x-api-key": "aebddf40-4255-4a9a-8bdb-3eea84c28bb9",
@@ -652,8 +638,7 @@
         }
       }
 
-      window.onload = function () { 
-        
+      window.onload = function () {
         fetchVideoUrls();
       };
     </script>
@@ -663,14 +648,13 @@
         window.location.reload();
       }
 
-      window.onload = function () {
-        const language = localStorage.getItem("language");
+      window.addEventListener("DOMContentLoaded", () => {
         const languageSelect = document.getElementById("language");
 
         if (language && languageSelect) {
           languageSelect.value = language;
         }
-      };
+      });
     </script>
   </body>
 </html>

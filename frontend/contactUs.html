@@ -184,10 +184,10 @@
           </div>
           <div class="h-right">
             <select
-              name="language"
-              class="cursor-pointer !opacity-100 !text-[#fff]"
-              id="language"
               onchange="changeLanguage(event)"
+              name="language"
+              class="!appearance-none !border-0 outline-none p-1 cursor-pointer !opacity-100 !text-[#fff]"
+              id="language"
             >
               <option value="en">EN</option>
               <option value="ru">RU</option>
@@ -652,8 +652,8 @@
         modal.classList.remove("active");
       }
 
-      contactBtn.addEventListener("click", showModal);
-      closeModal.addEventListener("click", hideModal);
+      // contactBtn.addEventListener("click", showModal);
+      // closeModal.addEventListener("click", hideModal);
     </script>
     <script>
       function changeLanguage(event) {
@@ -661,12 +661,14 @@
         window.location.reload();
       }
 
-      window.onload = function () {
-        const savedLanguage = localStorage.getItem("language");
-        if (savedLanguage) {
-          document.getElementById("language").value = savedLanguage;
+      window.addEventListener("DOMContentLoaded", () => {
+        const language = localStorage.getItem("language");
+        const languageSelect = document.getElementById("language");
+
+        if (language && languageSelect) {
+          languageSelect.value = language;
         }
-      };
+      });
     </script>
 
     <script src="./assets/js/contact.js" type="module"></script>

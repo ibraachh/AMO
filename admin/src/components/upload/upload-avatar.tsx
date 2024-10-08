@@ -8,14 +8,13 @@ import { varAlpha } from 'src/theme/styles';
 
 import { Image } from '../image';
 import { Iconify } from '../iconify';
-import { RejectionFiles } from './components/rejection-files';
 
 import type { UploadProps } from './types';
 
 // ----------------------------------------------------------------------
 
 export function UploadAvatar({ sx, error, value, disabled, helperText, ...other }: UploadProps) {
-  const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
     multiple: false,
     disabled,
     accept: { 'image/*': [] },
@@ -125,8 +124,6 @@ export function UploadAvatar({ sx, error, value, disabled, helperText, ...other 
       </Box>
 
       {helperText && helperText}
-
-      <RejectionFiles files={fileRejections} />
     </>
   );
 }

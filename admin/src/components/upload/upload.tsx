@@ -9,7 +9,6 @@ import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from '../iconify';
 import { UploadPlaceholder } from './components/placeholder';
-import { RejectionFiles } from './components/rejection-files';
 import { MultiFilePreview } from './components/preview-multi-file';
 import { DeleteButton, SingleFilePreview } from './components/preview-single-file';
 
@@ -31,7 +30,7 @@ export function Upload({
   multiple = false,
   ...other
 }: UploadProps) {
-  const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
     multiple,
     disabled,
     ...other,
@@ -100,7 +99,11 @@ export function Upload({
         <input {...getInputProps()} />
 
         {/* Single file */}
-        {hasFile ? <SingleFilePreview file={value as File} /> : <UploadPlaceholder />}
+        {hasFile ? (
+          <SingleFilePreview file={value as File} />
+        ) : (
+          <UploadPlaceholder title="Upload" />
+        )}
       </Box>
 
       {/* Single file */}
@@ -111,8 +114,6 @@ export function Upload({
           {helperText}
         </FormHelperText>
       )}
-
-      <RejectionFiles files={fileRejections} />
 
       {/* Multi files */}
       {renderMultiPreview}

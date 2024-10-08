@@ -191,15 +191,15 @@
           </div>
           <div class="h-right">
             <select
-            name="language"
-            class="  cursor-pointer !opacity-100 !text-[#fff]"
-            id="language"
-            onchange="changeLanguage(event)"
-          >
-            <option value="en">EN</option>
-            <option value="ru">RU</option>
-            <option value="az">AZ</option>
-          </select>
+              onchange="changeLanguage(event)"
+              name="language"
+              class="!appearance-none !border-0 outline-none p-1 cursor-pointer !opacity-100 !text-[#fff]"
+              id="language"
+            >
+              <option value="en">EN</option>
+              <option value="ru">RU</option>
+              <option value="az">AZ</option>
+            </select>
             <svg
               class="search"
               xmlns="http://www.w3.org/2000/svg"
@@ -411,7 +411,7 @@
         </div>
 
         <section class="timeline">
-          <ol class="translate-x-[-67px] max-sm:!pt-[140px]"></ol>
+          <ol class="!translate-x-[100px] max-sm:!pt-[140px]"></ol>
         </section>
       </section>
       <!-- Content End -->
@@ -501,22 +501,43 @@
           .then((response) => response.json())
           .then((data) => {
             const timeline = document.querySelector(".timeline ol");
-            timeline.innerHTML = ""; 
+            timeline.innerHTML = "";
 
             data.forEach((item, index) => {
               const li = document.createElement("li");
-              li.innerHTML = `
-          <div class="w-[58px] year h-[58px] rounded-full bg-[#fff] flex items-center font-bold justify-center border-2 border-[#FFFFFF33] text-[13px]">
-            ${item.title}
-          </div>
-          <div class="w-[240px] story ${
-            index === 0
-              ? "!text-white !text-[24px] !left-0 translate-y-[50%]"
-              : "!text-[#FFFFFF80]"
-          }">
-            ${item.description}
-          </div>
-        `;
+              if (index === 0) {
+                li.innerHTML = `<li class="first !translate-x-[-90px] ">
+              <div class="  !translate-y-[-30px] !translate-x-[-10px]">${item.title}</div>
+              <div
+                class="!text-white !text-[24px] w-[240px] !left-0 translate-y-[50%]"
+              >
+                ${item.description}
+              </div>
+            </li>`;
+              } else if (index % 2 !== 0) {
+                li.innerHTML = `<li>
+              <div
+                class="w-[58px] h-[58px] rounded-full bg-[#fff] flex items-center font-bold justify-center border-2 border-[#FFFFFF33] !translate-x-[220px] !translate-y-[-135%]  text-[13px]"
+              >
+                ${item.title}
+              </div>
+              <div class="w-[240px] !text-[#FFFFFF80]">
+                ${item.description}
+              </div>
+            </li>`;
+              } else {
+                li.innerHTML = ` <li>
+              <div
+                class="w-[58px] h-[58px] rounded-full bg-[#fff] flex items-center font-bold justify-center border-2 translate-y-[55%] !translate-x-[200px]   border-[#FFFFFF33] text-[13px]"
+              >
+                ${item.title}
+              </div>
+              <div class="w-[240px] translate-y-[230%] translate-x-[20%] !text-[#FFFFFF80]">
+                ${item.description}
+              </div>
+            </li>`;
+              }
+
               timeline.appendChild(li);
             });
           })
@@ -533,12 +554,14 @@
         window.location.reload();
       }
 
-      window.onload = function () {
-        const savedLanguage = localStorage.getItem("language");
-        if (savedLanguage) {
-          document.getElementById("language").value = savedLanguage;
+      window.addEventListener("DOMContentLoaded", () => {
+        const language = localStorage.getItem("language");
+        const languageSelect = document.getElementById("language");
+
+        if (language && languageSelect) {
+          languageSelect.value = language;
         }
-      };
+      });
     </script>
   </body>
 </html>

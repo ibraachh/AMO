@@ -1,6 +1,3 @@
-import type { IJobItem } from 'src/types/job';
-
-import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
@@ -10,10 +7,8 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ListItemText from '@mui/material/ListItemText';
 
-import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
-
 import { fDate } from 'src/utils/format-time';
+import type { Career } from 'src/utils/types';
 
 import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
@@ -21,7 +16,7 @@ import { usePopover, CustomPopover } from 'src/components/custom-popover';
 // ----------------------------------------------------------------------
 
 type Props = {
-  job: IJobItem;
+  job: Career;
   onEdit: () => void;
   onDelete: () => void;
 };
@@ -39,12 +34,8 @@ export function CareerItem({ job, onEdit, onDelete }: Props) {
         <Stack sx={{ p: 3, pb: 2 }}>
           <ListItemText
             sx={{ mb: 1 }}
-            primary={
-              <Link component={RouterLink} href={paths.dashboard.root} color="inherit">
-                {job.title}
-              </Link>
-            }
-            secondary={`Posted date: ${fDate(job.createdAt)}`}
+            primary={job.title}
+            secondary={`Bitmə tarixi: ${fDate(job.date)}`}
             primaryTypographyProps={{ typography: 'subtitle1' }}
             secondaryTypographyProps={{
               mt: 1,
@@ -54,11 +45,7 @@ export function CareerItem({ job, onEdit, onDelete }: Props) {
             }}
           />
 
-          <Typography>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil doloremque asperiores
-            non, nemo commodi perferendis sed fugit mollitia consequatur dolores quae! Voluptatum
-            laborum sunt fugiat quidem est temporibus? Aliquam, ratione!
-          </Typography>
+          <Typography dangerouslySetInnerHTML={{ __html: job.description }} />
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
