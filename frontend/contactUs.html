@@ -184,15 +184,15 @@
           </div>
           <div class="h-right">
             <select
-            name="language"
-            class="  cursor-pointer !opacity-100 !text-[#fff]"
-            id="language"
-            onchange="changeLanguage(event)"
-          >
-            <option value="en">EN</option>
-            <option value="ru">RU</option>
-            <option value="az">AZ</option>
-          </select>
+              name="language"
+              class="cursor-pointer !opacity-100 !text-[#fff]"
+              id="language"
+              onchange="changeLanguage(event)"
+            >
+              <option value="en">EN</option>
+              <option value="ru">RU</option>
+              <option value="az">AZ</option>
+            </select>
             <svg
               class="search"
               xmlns="http://www.w3.org/2000/svg"
@@ -572,6 +572,73 @@
 
     <!-- App js file -->
     <script src="./assets/js/app.js"></script>
+    <script src="https://unpkg.com/i18next@19.9.2/i18next.min.js"></script>
+    <script>
+      i18next.init(
+        {
+          lng: localStorage.getItem("language") || "en",
+          resources: {
+            en: {
+              translation: {
+                "First Name": "First Name",
+                "Last Name": "Last Name",
+                Email: "Email",
+                "Phone Number": "Phone Number",
+                Message: "Message",
+                "Upload your CV": "Upload your CV",
+                "Send Message": "Send Message",
+                "Write your message..": "Write your message..",
+              },
+            },
+            az: {
+              translation: {
+                "First Name": "Ad",
+                "Last Name": "Soyad",
+                Email: "E-poçt",
+                "Phone Number": "Telefon nömrəsi",
+                Message: "Mesaj",
+                "Upload your CV": "CV-nizi yükləyin",
+                "Send Message": "Mesaj göndər",
+                "Write your message..": "Mesajınızı yazın..",
+              },
+            },
+            ru: {
+              translation: {
+                "First Name": "Имя",
+                "Last Name": "Фамилия",
+                Email: "Эл. адрес",
+                "Phone Number": "Номер телефона",
+                Message: "Сообщение",
+                "Upload your CV": "Загрузите ваше резюме",
+                "Send Message": "Отправить сообщение",
+                "Write your message..": "Напишите ваше сообщение..",
+              },
+            },
+          },
+        },
+        function (err, t) {
+          // initialized and ready to go!
+          updateForm();
+        }
+      );
+
+      function updateForm() {
+        document.querySelector('label[for="name"]').textContent =
+          i18next.t("First Name");
+        document.querySelector('label[for="lastname"]').textContent =
+          i18next.t("Last Name");
+        document.querySelector('label[for="email"]').textContent =
+          i18next.t("Email");
+        document.querySelector('label[for="phonenumber"]').textContent =
+          i18next.t("Phone Number");
+        document.querySelector('label[for="message"]').textContent =
+          i18next.t("Message");
+        document.querySelector(".submitButton").textContent =
+          i18next.t("Send Message");
+        document.getElementById("#message").placeholder =
+          i18next.t("Write your message..");
+      }
+    </script>
     <script>
       const contactBtn = document.getElementById("touch");
       const modal = document.querySelector(".modal");
