@@ -5,6 +5,7 @@ import { Button, Card } from '@mui/material';
 import { RouterLink } from 'src/routes/components';
 import { Iconify } from 'src/components/iconify';
 import { useGetVideos } from 'src/api/backendServies';
+import { EmptyContent } from 'src/components/empty-content';
 import { SliderList } from './slider/slider-list';
 
 export default function HomeView() {
@@ -27,7 +28,7 @@ export default function HomeView() {
       />
       <div className="flex w-full mx-auto">
         <Card className="p-6 mt-4 w-full">
-          <SliderList mutate={mutate} data={videos} />
+          {videos.length ? <SliderList mutate={mutate} data={videos} /> : <EmptyContent />}
         </Card>
       </div>
     </DashboardContent>

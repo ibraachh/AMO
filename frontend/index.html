@@ -407,20 +407,6 @@
               <!-- <img src="./assets/images/hero-bg.png" alt="" /> -->
             </div>
           </div>
-          <div class="swiper-slide">
-            <div class="slide-img">
-              <video
-                class="slide-video !select-none"
-                autoplay
-                muted
-                loop
-                playsinline
-              >
-                <source src="./assets/video/videSlide.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          </div>
         </div>
 
         <div
@@ -597,6 +583,7 @@
 
       fetchAboutList(language);
 
+   
       async function fetchVideoUrls() {
         const headers = {
           "x-api-key": "aebddf40-4255-4a9a-8bdb-3eea84c28bb9",
@@ -662,7 +649,6 @@
       }
 
       window.addEventListener("DOMContentLoaded", () => {
-        const language = localStorage.getItem("language");
         const languageSelect = document.getElementById("language");
 
         if (language && languageSelect) {

@@ -412,54 +412,10 @@
           <div>
             <div class="text-white jobbb my-8 flex flex-col gap-1 md:pl-2">
               <h3 class="font-semibold">Responsibilities:</h3>
-              <ul class="pl-5 md:max-w-[680px]">
-                <li class="list-disc">
-                  Oversee and coordinate all aspects of project delivery.
-                </li>
-                <li class="list-disc">
-                  Supervise engineering division ensuring project completion
-                  within budget and schedule constaraints.
-                </li>
-                <li class="list-disc">
-                  Liase with other departments and stakeholders to achieve
-                  project objectives effectively and efficiently.
-                </li>
-                <li class="list-disc">
-                  Liase with other departments and stakeholders to achieve
-                  project objectives effectively and efficiently.
-                </li>
-                <li class="list-disc">
-                  Coordinating with other departments (Business Development,
-                  Finance, Asset Management, Legal, etc.) for project alignment.
-                </li>
-                <li class="list-disc">
-                  Coordinating with other departments (Business Development,
-                  Finance, Asset Management, Legal, etc.) for project alignment.
-                </li>
-                <li class="list-disc">
-                  Coordinating with other departments (Business Development,
-                  Finance, Asset Management, Legal, etc.) for project alignment.
-                </li>
-              </ul>
+              <ul class="pl-5 md:max-w-[680px]"></ul>
 
               <h3 class="font-semibold mt-8">Requirements::</h3>
-              <ul class="pl-5 md:max-w-[680px]">
-                <li class="list-disc">
-                  Oversee and coordinate all aspects of project delivery.
-                </li>
-                <li class="list-disc">
-                  Supervise engineering division ensuring project completion
-                  within budget and schedule constaraints.
-                </li>
-                <li class="list-disc">
-                  Liase with other departments and stakeholders to achieve
-                  project objectives effectively and efficiently.
-                </li>
-                <li class="list-disc">
-                  Liase with other departments and stakeholders to achieve
-                  project objectives effectively and efficiently.
-                </li>
-              </ul>
+              <ul class="pl-5 md:max-w-[680px]"></ul>
             </div>
           </div>
           <div class="w-full mt-[90px]">
@@ -472,8 +428,10 @@
 
             <div class="my-8">
               <form
-                class="p-16 bg-[#dcdcdc66] rounded-xl max-md:p-12 max-sm:p-10 flex-col gap-10 w-2/3 max-lg:w-full"
+                class="p-16 apply-form bg-[#dcdcdc66] rounded-xl max-md:p-12 max-sm:p-10 flex-col gap-10 w-2/3 max-lg:w-full"
                 action=""
+                method="post"
+                enctype="multipart/form-data"
               >
                 <div class="inputRow max-md:flex-col w-full gap-10 flex">
                   <div class="flex w-1/2 max-md:w-full h-max flex-col gap-3">
@@ -481,6 +439,7 @@
                       First Name
                     </label>
                     <input
+                      name="name"
                       class="border-0 outline-none bg-transparent text-[#fff] !border-b-2 !border-b-[#fff] placeholder:text-white py-2"
                       type="text"
                       placeholder="John"
@@ -492,6 +451,7 @@
                       Last Name
                     </label>
                     <input
+                      name="lastName"
                       class="border-0 outline-none bg-transparent text-[#fff] !border-b-2 !border-b-[#fff] placeholder:text-white py-2"
                       type="text"
                       placeholder="Doe"
@@ -505,6 +465,7 @@
                       Email
                     </label>
                     <input
+                      name="email"
                       class="border-0 outline-none bg-transparent text-[#fff] !border-b-2 !border-b-[#fff] placeholder:text-white py-2"
                       type="text"
                       placeholder="John@example.com"
@@ -516,6 +477,7 @@
                       Phone Number
                     </label>
                     <input
+                      name="phoneNumber"
                       class="border-0 outline-none bg-transparent text-[#fff] !border-b-2 !border-b-[#fff] placeholder:text-white py-2"
                       type="text"
                       placeholder="+1 012 3456 789"
@@ -538,6 +500,7 @@
                       <i class="fa-solid fa-paperclip"></i>
                     </label>
                     <input
+                      name="file"
                       class="border-0 hidden outline-none bg-transparent text-[#fff] !border-b-2 !border-b-[#fff] placeholder:text-white py-2"
                       type="file"
                       placeholder="+1 012 3456 789"
@@ -545,6 +508,8 @@
                     />
                   </div>
                 </div>
+                <div class="alert mt-4"></div>
+
                 <div class="flex justify-end mt-8">
                   <button
                     type="submit"
@@ -564,16 +529,16 @@
       <div class="modal">
         <form action="">
           <label for="name">Name</label>
-          <input required type="text" id="name" />
+          <input required type="text" id="name" name="name" />
 
           <label for="surname">Surname</label>
-          <input required type="text" id="surname" />
+          <input required type="text" id="surname" name="surnam" />
 
           <label for="number">Phone number</label>
-          <input required type="text" id="numberField" />
+          <input required type="text" id="numberField" name="phoneNumber" />
 
           <label for="email">Email</label>
-          <input required type="email" id="email" />
+          <input required type="email" id="email" name="email" />
 
           <label for="email">Cv</label>
           <input required type="file" id="cv" name="cv" />
@@ -693,6 +658,86 @@
       }
     </script>
     <script>
+      const applyForm = document.querySelector(".apply-form");
+      const alertBox = document.querySelector(".alert");
+
+      applyForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(applyForm);
+        const data = {};
+
+        for (const [key, value] of formData.entries()) {
+          data[key] = value;
+        }
+
+        if (
+          !formData.get("name") ||
+          !formData.get("lastName") ||
+          !formData.get("email") ||
+          !formData.get("phoneNumber") ||
+          !formData.get("file")
+        ) {
+          alertBox.classList.add("text-red-500");
+          alertBox.textContent = "Zəhmət olmasa bütün xanaları doldurun";
+          return;
+        }
+
+        alertBox.classList.remove("text-red-500");
+
+        try {
+          const headers = {
+            "x-api-key": "aebddf40-4255-4a9a-8bdb-3eea84c28bb9",
+          };
+
+          const image = new FormData();
+          image.append("file", formData.get("file"));
+          image.append("fileName", formData.get("file").name);
+
+          const response = await fetch(
+            "https://api.studentall.az:9851/api/file/uploadFile",
+            {
+              method: "POST",
+              headers: headers,
+              body: image,
+            }
+          );
+
+          const uploadedFileName = await response.json();
+
+          if (uploadedFileName && uploadedFileName.message) {
+            const applyResponse = await fetch(
+              "https://api.studentall.az:9851/api/join-us/create",
+              {
+                method: "POST",
+                headers: {
+                  ...headers,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  name: formData.get("name"),
+                  lastName: formData.get("lastName"),
+                  email: formData.get("email"),
+                  phoneNumber: formData.get("phoneNumber"),
+                  file: uploadedFileName.message,
+                }),
+              }
+            );
+
+            const apply = await applyResponse.json();
+            if (apply) {
+              alertBox.classList.add("text-green-500");
+              alertBox.textContent = "Mesajınız uğurla gönderildi!";
+              formData.reset();
+            }
+          }
+        } catch (error) {
+          alertBox.classList.add("text-red-500");
+          alertBox.textContent = "Xəta baş verdi";
+          console.error("Hata:", error);
+        }
+      });
+
       function changeCareerText() {
         const language = localStorage.getItem("language") || "az";
         const careerText = document.querySelector(".careerrr");
