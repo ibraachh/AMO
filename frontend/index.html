@@ -602,7 +602,6 @@
           }
 
           const data = await response.json();
-          console.log("response", data);
 
           Object.entries(data[0].socials).forEach(([key, value]) => {
             const socialIcon = document.createElement("li");
@@ -615,8 +614,6 @@
       }
 
       fetchSocialMedia();
-    </script>
-    <script>
       function changeLanguage(event) {
         localStorage.setItem("language", event.target.value);
         window.location.reload();
