@@ -405,12 +405,12 @@
       <section class="container">
         <div class="mt-12 md:mt-16">
           <h4
-            class="max-md:before:!w-[180px] titleee text-[46px] before:w-[300px] before:h-[2px] before:bg-[#fff] before:absolute relative before:left-[110%] before:top-1/2 w-max !text-white !font-semibold max-sm:!text-[30px] max-sm:before:!w-[45px] max-sm:before:left-[105%]"
+            class="titleee text-[46px] relative w-max !text-white !font-semibold"
           ></h4>
           <p class="text-white desccc mt-6 text-[16px]"></p>
         </div>
 
-        <section class="timeline">
+        <section class="timeline overflow-hidden">
           <ol class="!translate-x-[100px] max-sm:!pt-[140px]"></ol>
         </section>
       </section>
@@ -494,7 +494,7 @@
               const li = document.createElement("li");
               if (index === 0) {
                 li.innerHTML = `<li class="first !translate-x-[-90px] ">
-              <div class="  !translate-y-[-30px] !translate-x-[-10px]">${item.title}</div>
+              <div class="!translate-y-[-30px] !translate-x-[-10px]">${item.title}</div>
               <div
                 class="!text-white !text-[24px] w-[240px] !left-0 translate-y-[50%]"
               >
@@ -504,7 +504,7 @@
               } else if (index % 2 !== 0) {
                 li.innerHTML = `<li>
               <div
-                class="w-[58px] h-[58px] rounded-full bg-[#fff] flex items-center font-bold justify-center border-2 border-[#FFFFFF33] !translate-x-[220px] !translate-y-[-135%]  text-[13px]"
+                class="!w-[78px] !h-[78px] rounded-full bg-[#fff] flex items-center font-bold justify-center border-2 border-[#FFFFFF33] !translate-x-[288px] !translate-y-[-140%] text-[13px]"
               >
                 ${item.title}
               </div>
@@ -515,12 +515,16 @@
               } else {
                 li.innerHTML = ` <li>
               <div
-                class="w-[58px] h-[58px] rounded-full bg-[#fff] flex items-center font-bold justify-center border-2 translate-y-[55%] !translate-x-[200px]   border-[#FFFFFF33] text-[13px]"
+                class="!w-[78px] !h-[78px] rounded-full bg-[#fff] flex items-center font-bold justify-center border-2 translate-y-[55%] !translate-x-[288px] border-[#FFFFFF33] text-[13px]"
               >
                 ${item.title}
               </div>
-              <div class="w-[240px] translate-y-[230%] translate-x-[20%] !text-[#FFFFFF80]">
-                ${item.description}
+              <div class="w-[240px] ${
+                item.description.trim().length > 100
+                  ? "translate-y-[110%]"
+                  : "translate-y-[180%]"
+              }  translate-x-[20%] !text-[#FFFFFF80]">
+                ${item.description.trim()}
               </div>
             </li>`;
               }
@@ -570,7 +574,11 @@
 
           Object.entries(data[0].socials).forEach(([key, value]) => {
             const socialIcon = document.createElement("li");
-            socialIcon.innerHTML = `<a href="${value}" target="_blank"><i class="fa-brands fa-${key.toLocaleLowerCase()} text-[20px] hover:text-red-300 duration-200 "></i></a>`;
+            socialIcon.innerHTML = (
+              <a href="${value}" target="_blank">
+                <i class="fa-brands fa-${key.toLocaleLowerCase()} text-[20px] hover:text-red-300 duration-200 "></i>
+              </a>
+            );
             socialIcons.append(socialIcon);
           });
         } catch (error) {

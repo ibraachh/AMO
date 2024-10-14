@@ -1033,15 +1033,7 @@ main #contact .container h5 {
   position: relative;
   display: inline-block;
 }
-main #contact .container h5::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 110%;
-  width: 320px;
-  height: 2px;
-  background-color: #fff;
-}
+
 /* contactForm */
 #contact .contactForm {
   display: flex;
@@ -2062,9 +2054,12 @@ main .news-detail .container .slide-flex .slide-txt p {
   position: relative;
   display: inline-block;
   list-style-type: none;
-  width: 260px;
+  width: 320px;
   height: 3px;
   background: #fff;
+}
+.timeline ol > li:nth-of-type(1) {
+  width: 20px !important;
 }
 .timeline ol li:nth-of-type(1) {
   position: relative;
@@ -2079,6 +2074,9 @@ main .news-detail .container .slide-flex .slide-txt p {
 
 .timeline ol li:last-child {
   width: 280px;
+}
+.timeline ol > li:last-child li > div:nth-of-type(1) {
+  transform: translate(248px, -140%) !important;
 }
 
 .timeline ol li:not(:first-child) {
@@ -2127,6 +2125,7 @@ main .news-detail .container .slide-flex .slide-txt p {
   font-weight: 900;
   color: #033641;
 }
+
 .timeline ol li:nth-child(odd) div {
   top: -16px;
   /* transform: translateY(-100%); */
