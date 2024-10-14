@@ -27,7 +27,6 @@ getOthersSecond.addEventListener("click", () => {
   iconArrowSecond.classList.toggle("active");
 });
 
-
 const close_btn_for_mobile = document.querySelector(".close-btn-for-mobile");
 const mobil_menu_icon = document.querySelector(".mobil-menu-icon");
 const mobil_menu = document.querySelector(".mobil-menu");
@@ -67,4 +66,18 @@ yearElement.textContent = new Date().getFullYear();
 
 document.addEventListener("DOMContentLoaded", () => {
   document.body.classList.add("loaded");
+});
+
+function changeLanguage(event) {
+  localStorage.setItem("language", event.target.value);
+  window.location.reload();
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const languageSelect = document.getElementById("language");
+
+  if (language && languageSelect) {
+    const lang = localStorage.getItem("language");
+    languageSelect.value = lang;
+  }
 });
