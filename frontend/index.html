@@ -614,18 +614,6 @@
       }
 
       fetchSocialMedia();
-      function changeLanguage(event) {
-        localStorage.setItem("language", event.target.value);
-        window.location.reload();
-      }
-
-      window.addEventListener("DOMContentLoaded", () => {
-        const languageSelect = document.getElementById("language");
-
-        if (language && languageSelect) {
-          languageSelect.value = language;
-        }
-      });
     </script>
   </body>
 </html>
