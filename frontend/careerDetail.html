@@ -403,7 +403,7 @@
           <div class="w-full mt-12 md:mt-16">
             <h4
               <h5
-              class="careerrr text-[49px] relative w-max !text-white !font-semibold max-sm:!text-[30px]"
+              class="careerrr text-[49px] relative w-max !text-white !font-semibold max-sm:!text-[30px] career"
             >
               CAREER
             </h4>
@@ -814,6 +814,16 @@
           languageSelect.value = language;
         }
       });
+
+      const careerText = document.querySelector(".career");
+
+      if (language === "az") {
+        careerText.textContent = "Karyera";
+      } else if (language === "ru") {
+        careerText.textContent = "Карьера";
+      } else {
+        careerText.textContent = "Career";
+      }
 
       const socialIcons = document.querySelector(".sosial-links");
       async function fetchSocialMedia() {

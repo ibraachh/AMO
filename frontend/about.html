@@ -194,8 +194,6 @@
               <option value="en">EN</option>
               <option value="ru">RU</option>
               <option value="az">AZ</option>
-              <option value="ru">RU</option>
-              <option value="az">AZ</option>
             </select>
             <svg
               class="search"
@@ -407,10 +405,6 @@
         </div>
 
         <div class="mt-12">
-          <h4
-            class="appp text-[46px] relative w-max !text-white !font-semibold"
-          ></h4>
-
           <div
             class="rounded-3xl bg-[#ffffffa8] p-6 px-8 max-md:p-4 max-md:px-6 mt-6 w-full"
           >
@@ -422,7 +416,7 @@
               <div class="flex gap-4 max-md:gap-3 items-center max-w-[450px]">
                 <div class="">
                   <img
-                    class="w-[100px] aspect-auto object-cover"
+                    class="w-[80px] aspect-auto object-cover"
                     src="./assets/images/icon1.png"
                     alt=""
                   />
@@ -437,8 +431,8 @@
               <div class="flex gap-4 max-md:gap-3 items-center max-w-[450px]">
                 <div class="">
                   <img
-                    class="w-[100px] object-cover"
-                    src="./assets/images/icon2.png"
+                    class="w-[80px] object-cover"
+                    src="./assets/images/icon3.png"
                     alt=""
                   />
                 </div>
@@ -452,8 +446,8 @@
               <div class="flex gap-4 max-md:gap-3 items-center max-w-[450px]">
                 <div class="">
                   <img
-                    class="w-[100px] object-cover"
-                    src="./assets/images/icon3.png"
+                    class="w-[80px] object-cover"
+                    src="./assets/images/icon2.png"
                     alt=""
                   />
                 </div>
@@ -467,7 +461,7 @@
               <div class="flex gap-4 max-md:gap-3 items-center max-w-[450px]">
                 <div>
                   <img
-                    class="w-[100px] object-cover"
+                    class="w-[80px] object-cover"
                     src="./assets/images/icon4.png"
                     alt=""
                   />
@@ -486,20 +480,20 @@
             class="grid grid-cols-2 max-md:grid-cols-1 gap-8 text-white mt-12"
           >
             <div>
-              <h3 class="uppercase misss text-[28px] tracking-widest mb-4"></h3>
+              <h3 class="uppercase misss text-[24px] tracking-widest mb-4"></h3>
               <div class="flex gap-4 mission-cards">
                 <div>
                   <img
                     src="./assets/images/card-icon5.png"
                     alt=""
-                    class="max-w-[100px] max-sm:max-w-[70px] max-md:max-w-[80px]"
+                    class="max-w-[88px] max-sm:max-w-[70px] max-md:max-w-[80px]"
                   />
                 </div>
                 <div class="max-md:text-[14px] misst"></div>
               </div>
             </div>
             <div>
-              <h3 class="uppercase visss text-[28px] tracking-widest mb-4">
+              <h3 class="uppercase visss text-[24px] tracking-widest mb-4">
                 vision
               </h3>
               <div class="flex gap-4 mission-cards">
@@ -507,7 +501,7 @@
                   <img
                     src="./assets/images/card-icon6.png"
                     alt=""
-                    class="max-w-[110px] max-sm:max-w-[80px] max-md:max-w-[90px]"
+                    class="max-w-[88px] max-sm:max-w-[80px] max-md:max-w-[90px]"
                   />
                 </div>
                 <div class="max-md:text-[14px] misst"></div>
@@ -550,7 +544,6 @@
           resources: {
             en: {
               translation: {
-                appp: "Our Approach",
                 valll: "Our Values",
                 misss: "Mission",
                 visss: "Vision",
@@ -558,7 +551,6 @@
             },
             az: {
               translation: {
-                appp: "Yanaşmamız",
                 valll: "Dəyərlərimiz",
                 misss: "Missiya",
                 visss: "Vizyon",
@@ -566,7 +558,6 @@
             },
             ru: {
               translation: {
-                appp: "Наш подход",
                 valll: "Наши ценности",
                 misss: "Миссия",
                 visss: "Видение",
@@ -580,14 +571,10 @@
       );
 
       function updateElements() {
-        const apppElements = document.querySelectorAll(".appp");
         const valllElements = document.querySelectorAll(".valll");
         const misssElements = document.querySelectorAll(".misss");
         const visssElements = document.querySelectorAll(".visss");
 
-        apppElements.forEach((element) => {
-          element.textContent = i18next.t("appp");
-        });
         valllElements.forEach((element) => {
           element.textContent = i18next.t("valll");
         });

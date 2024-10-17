@@ -402,7 +402,7 @@
         <div class="container max-sm:!p-0">
           <div class="mt-12 md:mt-16">
             <h5
-              class="text-[56px] relative w-max !text-white !font-semibold max-sm:!text-[24px]"
+              class="text-[56px] relative w-max !text-white !font-semibold max-sm:!text-[24px] media"
             >
               Media Center
             </h5>
@@ -448,14 +448,23 @@
         window.location.reload();
       }
 
+      const language = localStorage.getItem("language");
       window.addEventListener("DOMContentLoaded", () => {
-        const language = localStorage.getItem("language");
         const languageSelect = document.getElementById("language");
 
         if (language && languageSelect) {
           languageSelect.value = language;
         }
       });
+      const mediaText = document.querySelector(".media");
+
+      if (language === "az") {
+        mediaText.textContent = "Media mərkəzi";
+      } else if (language === "ru") {
+        mediaText.textContent = "Медиа-центр";
+      } else {
+        mediaText.textContent = "Media Center";
+      }
     </script>
 
     <script src="./assets/js/news.js" type="module"></script>

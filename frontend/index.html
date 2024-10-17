@@ -426,7 +426,7 @@
                 <div
                   class="link mt-8 flex relative before:w-[43%] before:absolute before:left-0 before:top-1/2 before:h-[2px] before:bg-white items-center justify-center max-sm:before:w-[30%]"
                 >
-                  <a href="./amoGroup.html"> Learn more </a>
+                  <a href="./amoGroup.html" class="learn"> Learn more </a>
                 </div>
               </div>
             </div>
@@ -614,6 +614,16 @@
       }
 
       fetchSocialMedia();
+
+      const learnMore = document.querySelector(".learn");
+
+      if (language === "az") {
+        learnMore.innerHTML = "Davamını oxu";
+      } else if (language === "ru") {
+        learnMore.innerHTML = "Подробнее";
+      } else if (language === "en") {
+        learnMore.innerHTML = "Learn more";
+      }
     </script>
   </body>
 </html>
