@@ -2413,8 +2413,8 @@ main .news-detail .container .slide-flex .slide-txt p {
   display: none;
 }
 
-.timeline > ol {
-  animation: timeline 3s 1s forwards;
+.anim {
+  animation: timeline 3s 1s forwards !important;
 }
 
 @keyframes timeline {
