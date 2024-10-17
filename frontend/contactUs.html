@@ -397,7 +397,7 @@
       <section id="contact">
         <div class="container">
           <div class="mt-12 md:mt-16">
-            <h5 class="">Contact us</h5>
+            <h5 class="contact">Contact us</h5>
           </div>
 
           <div
@@ -647,14 +647,24 @@
         window.location.reload();
       }
 
+      const language = localStorage.getItem("language");
       window.addEventListener("DOMContentLoaded", () => {
-        const language = localStorage.getItem("language");
         const languageSelect = document.getElementById("language");
 
         if (language && languageSelect) {
           languageSelect.value = language;
         }
       });
+
+      const contactText = document.querySelector(".contact");
+
+      if (language === "az") {
+        contactText.textContent = "Bizimlə Əlaqə Saxlayın";
+      } else if (language === "ru") {
+        contactText.textContent = "Связаться с нами";
+      } else {
+        contactText.textContent = "Contact us";
+      }
     </script>
 
     <script src="./assets/js/contact.js" type="module"></script>
