@@ -148,9 +148,12 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Optional<CompanyResponse> getCompanyByName(String name, String language) {
-        return companyRepository.findByName(name)
-                .flatMap(company -> getTranslation(language, company));
+    public CompanyResponse getCompanyByName(String name, String language) {
+        Company company = companyRepository.findByName(name)
+                .orElseThrow(() -> new RuntimeException("Company not found with given name"));
+
+        return getTranslation(language, company)
+                .orElseThrow(() -> new RuntimeException("Translation not found with given language"));
     }
 
     private void validateTranslations(Company request) {

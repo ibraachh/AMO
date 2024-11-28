@@ -30,5 +30,5 @@ public interface CompanyService {
 
     Optional<Company> getCompanyByName(String name);
 
-    Optional<CompanyResponse> getCompanyByName(String name, String language);
+    CompanyResponse getCompanyByName(String name, String language);
 }

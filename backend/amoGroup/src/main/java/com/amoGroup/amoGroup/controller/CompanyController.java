@@ -143,8 +143,7 @@ public class CompanyController {
     @GetMapping("/getByName/{name}")
     public ResponseEntity<CompanyResponse> getCompanyByName(@RequestHeader(value = "Accept-Language", defaultValue = "az") String language, @PathVariable String name) {
         try {
-            CompanyResponse company = companyService.getCompanyByName(name, language)
-                    .orElseThrow(() -> new RuntimeException("Company not found with given name"));
+            CompanyResponse company = companyService.getCompanyByName(name, language);
             return ResponseEntity.ok(company);
         } catch (Exception e) {
             return ResponseEntity
