@@ -47,18 +47,18 @@ public class CompanyCardServiceImpl implements CompanyCardService {
         if (!companyCardRepository.existsById(companyCard.getId())) {
             throw new RuntimeException("CompanyCard with this id does not exist");
         }
-        Company company = companyRepository.findById(companyCard.getCompanyId())
-                .orElseThrow(() -> new RuntimeException("Company with this id does not exist"));
+//        Company company = companyRepository.findById(companyCard.getCompanyId())
+//                .orElseThrow(() -> new RuntimeException("Company with this id does not exist"));
 
-        if (company.getCompanyCards() == null) {
-            company.setCompanyCards(new ArrayList<>());
-        }
-        company.getCompanyCards().removeIf(card -> card.getId().equals(companyCard.getId()));
-        company.getCompanyCards().add(companyCard);
+//        if (company.getCompanyCards() == null) {
+//            company.setCompanyCards(new ArrayList<>());
+//        }
+//        company.getCompanyCards().removeIf(card -> card.getId().equals(companyCard.getId()));
+//        company.getCompanyCards().add(companyCard);
 
         validateTranslations(companyCard);
         companyCardRepository.save(companyCard);
-        companyRepository.save(company);
+//        companyRepository.save(company);
         return companyCard;
     }
 
