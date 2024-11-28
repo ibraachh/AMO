@@ -15,8 +15,6 @@ const getList = async () => {
     endpoints.company.getAllByName + "amotrade",
     headers
   );
-
-  console.log("aysellll", res)
   return res;
 };
 
