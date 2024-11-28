@@ -47,8 +47,8 @@ export function CenteredSignInView() {
 
   const router = useRouter();
   const defaultValues = {
-    username: 'admin',
-    password: '123456',
+    username: '',
+    password: '',
   };
 
   const methods = useForm<SignInSchemaType>({
