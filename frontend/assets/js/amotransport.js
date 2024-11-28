@@ -40,7 +40,6 @@ async function fetchSocialMedia() {
     }
 
     const data = await response.json();
-    console.log("response", data);
 
     Object.entries(data[0].socials).forEach(([key, value]) => {
       const socialIcon = document.createElement("li");
