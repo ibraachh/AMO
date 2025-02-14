@@ -96,10 +96,11 @@ export default function HeadingSection({ initialData, mutate }: Props) {
 
         if (response.data && mutate) {
           toast.success('Data successfully saved');
-          setCurrentStep(0);
           mutate();
-          setCurrectDescription(initialData?.translations[0].description || '');
-          setCurrentTitle(initialData?.translations[0].title || '');
+          setCurrectDescription(translations[0]?.description || '');
+          setCurrentTitle(translations[0]?.title || '');
+          setTranslations([...translations]); // Make sure translations are properly updated
+          setCurrentStep(0);
         }
       } catch (error) {
         console.error(error);

@@ -731,7 +731,7 @@ export async function updateMessage(id: string, data:{
   translations: Translation[];
 }) {
   try {
-    const url = endpoints.about.founderMessage.update.concat(id);
+    const url = endpoints.about.history.update.concat(id);
     const response = await axiosPatch.patch(url, data);
     return response;
   } catch (error) {
@@ -742,7 +742,7 @@ export async function updateMessage(id: string, data:{
 
 export const useCreateMessage = async (data: Info) => {
   try {
-    const url = endpoints.about.founderMessage.create;
+    const url = endpoints.about.history.create;
     const response = await axiosInstance.post(url, data);
     return response;
   } catch (error) {
