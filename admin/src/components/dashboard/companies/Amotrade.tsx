@@ -2,7 +2,7 @@ import type { CompanyCard, Language } from 'src/utils/types';
 
 import { z as zod } from 'zod';
 import { useForm } from 'react-hook-form';
-import { useMemo, useState, useEffect, useLayoutEffect } from 'react';
+import { useMemo, useState, useLayoutEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Box, Card, Stack, Button, Typography, Divider } from '@mui/material';

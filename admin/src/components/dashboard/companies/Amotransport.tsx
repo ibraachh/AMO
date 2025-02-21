@@ -13,9 +13,9 @@ import { getLanguages } from 'src/utils/data';
 import CustomTimeline from 'src/components/timeline/CustomTimeline';
 import { blobToFile, updateCompany, uploadFile, useCreateCompany } from 'src/api/backendServies';
 import { toast } from 'sonner';
-import AmoTransportCards from './AmoTransportCards';
 import { useRouter } from 'src/routes/hooks';
 import { paths } from 'src/routes/paths';
+import AmoTransportCards from './AmoTransportCards';
 
 export type ITranslation = {
   title: string;
