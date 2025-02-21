@@ -10,6 +10,7 @@ import { usePopover, CustomPopover } from 'src/components/custom-popover';
 import type { SliderVideo } from 'src/utils/types';
 import { BASE_URL } from 'src/utils/axios';
 import { endpoints } from 'src/utils/endpoints';
+import { useState } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -20,12 +21,15 @@ type Props = {
 
 export function SliderItem({ tour, onDelete }: Props) {
   const popover = usePopover();
-
+  const [isLoading, setIsLoading] = useState(true);
 
   const renderImages = (
     <Box gap={0.5} display="flex" sx={{ p: 1 }}>
       <Box flexGrow={1} sx={{ position: 'relative' }}>
+        {isLoading && <Box sx={{ width: 1, height: 164, borderRadius: 1, bgcolor: 'grey.500' }} />}
         <video
+          className={`${isLoading ? 'hidden' : ''}`}
+          onCanPlay={() => setIsLoading(false)}
           // alt={tour.videoUrl}
           src={`${BASE_URL}${endpoints.getFile.getByFileName}${tour.videoUrl}`}
           // sx={{ width: 1, height: 164, borderRadius: 1 }}

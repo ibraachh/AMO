@@ -2,7 +2,7 @@ import type { CompanyCard, Language } from 'src/utils/types';
 
 import { z as zod } from 'zod';
 import { useForm } from 'react-hook-form';
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, useLayoutEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Box, Card, Stack, Button, Typography, Divider } from '@mui/material';
@@ -88,7 +88,7 @@ export default function Amotrade({ post, file }: { post: IPostItem; file: File }
     formState: { errors },
   } = methods;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const currentTranslation = productData.translations.find(
       (trans) => trans.languageCode === languages[step]?.code
     );
@@ -128,6 +128,8 @@ export default function Amotrade({ post, file }: { post: IPostItem; file: File }
       ...prevData,
       translations: updatedTranslations,
     }));
+
+    console.log(productData);
   };
 
   const handleBack = () => {
@@ -163,8 +165,10 @@ export default function Amotrade({ post, file }: { post: IPostItem; file: File }
   };
 
   const onSubmit = handleSubmit(async (data) => {
+    // console.log(data.image);
+
     try {
-      if (step === 0 && data.image) {
+      if (step === 0 && data.image && data.image.name) {
         setIsLoading(true);
         const [name, ext] = data.image.name.split('.');
         const fileName = `${name}${new Date().toISOString()}.${ext}`;
@@ -191,7 +195,10 @@ export default function Amotrade({ post, file }: { post: IPostItem; file: File }
             },
           ],
           coverImage: uploadedFileName,
+          logo: uploadedFileName,
         };
+
+        console.log(finalData);
 
         const response = !productData.id
           ? await useCreateCompany(finalData)
@@ -246,7 +253,7 @@ export default function Amotrade({ post, file }: { post: IPostItem; file: File }
                 <Field.Upload
                   disabled={step !== 0}
                   name="image"
-                  onDelete={() => setValue('image', new File([], ''))} // Clear the file field
+                  onDelete={() => setValue('image', new File([], ''))}
                 />
 
                 <div className={`flex ${step === 0 ? 'justify-end' : 'justify-between'} mt-3`}>

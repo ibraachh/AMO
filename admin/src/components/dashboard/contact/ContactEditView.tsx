@@ -29,6 +29,8 @@ import { CustomBreadcrumbs } from '../../custom-breadcrumbs';
 export const ContactSchema = zod.object({
   phoneNumber: zod.string().min(1, { message: 'Telefon tələb olunur!' }),
   email: zod.string().min(1, { message: 'Email tələb olunur!' }),
+  fax: zod.string().min(1, { message: 'Fax tələb olunur!' }),
+  city: zod.string().min(1, { message: 'Şəhər tələb olunur!' }),
   socials: zod.record(zod.string().nullable()), // socials as an object with key-value pairs
   location: zod.string().min(1, { message: 'Lokasiya tələb olunur!' }),
 });
@@ -37,6 +39,8 @@ export interface IContactInfo {
   id?: string;
   phoneNumber?: string;
   email?: string;
+  fax?: string;
+  city?: string;
   socials?: Record<string, string | null | undefined>;
   location?: string;
 }
@@ -75,7 +79,7 @@ export default function ContactEditView() {
           ? await createContact(changedValues)
           : await updateContact(contacts.id, changedValues);
       if (response.data) {
-        toast.success('Kontakt info dəyişdirildi');
+        toast.success('Əlaqə məlumatları dəyişdirildi');
 
         setTimeout(() => {
           router.push(paths.dashboard.contact.root);
@@ -154,6 +158,19 @@ export default function ContactEditView() {
               label="Email"
               value={methods.watch('email')}
               onChange={(e) => handleFieldChange('email', e.target.value)}
+            />
+            <Field.Text
+              name="fax"
+              label="Fax"
+              value={methods.watch('fax')}
+              onChange={(e) => handleFieldChange('fax', e.target.value)}
+            />
+
+            <Field.Text
+              name="city"
+              label="Şəhər"
+              value={methods.watch('city')}
+              onChange={(e) => handleFieldChange('city', e.target.value)}
             />
             <Field.Text
               name="location"

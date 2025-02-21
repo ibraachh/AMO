@@ -14,6 +14,8 @@ import CustomTimeline from 'src/components/timeline/CustomTimeline';
 import { blobToFile, updateCompany, uploadFile, useCreateCompany } from 'src/api/backendServies';
 import { toast } from 'sonner';
 import AmoTransportCards from './AmoTransportCards';
+import { useRouter } from 'src/routes/hooks';
+import { paths } from 'src/routes/paths';
 
 export type ITranslation = {
   title: string;
@@ -41,6 +43,8 @@ export default function Amotransport({ post, file }: { post: IPostItem; file?: F
     (file as Blob) || new Blob([], { type: 'image/jpeg' }),
     'image.jpeg'
   );
+
+  const router = useRouter();
 
   const [image, setImage] = useState<File>(imageFile);
   const [uploadedFileName, setUploadedFileName] = useState('');
@@ -172,6 +176,7 @@ export default function Amotransport({ post, file }: { post: IPostItem; file?: F
             },
           ],
           logo: uploadedFileName,
+          coverImage: uploadedFileName,
         };
 
         const response = !productData.id
@@ -181,10 +186,10 @@ export default function Amotransport({ post, file }: { post: IPostItem; file?: F
         if (response.data) {
           toast.success('Redaktə olundu');
 
-          // setTimeout(() => {
-          //   router.push(paths.dashboard.companies.root);
-          //   router.refresh();
-          // }, 800);
+          setTimeout(() => {
+            router.push(paths.dashboard.companies.root);
+            router.refresh();
+          }, 800);
         }
       } else {
         setStep((prev) => prev + 1);

@@ -51,7 +51,7 @@ export default function CompaniesView() {
           <Amogrow file={amogrowFile} post={amogrow} />
         )}
         {activeTab === 3 && !amodoLoading && amodoFile && <Amodo file={amodoFile} post={amodo} />}
-        {activeTab === 4 && !companyLoading && <Amotransport file={file} post={company} />}
+        {activeTab === 4 && !companyLoading && file && <Amotransport file={file} post={company} />}
       </Card>
     </DashboardContent>
   );

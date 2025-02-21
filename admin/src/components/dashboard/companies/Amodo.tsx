@@ -191,6 +191,7 @@ export default function Amodo({ post, file }: { post: IPostItem; file: File }) {
             },
           ],
           coverImage: uploadedFileName,
+          logo: uploadedFileName,
         };
 
         const response = !productData.id
