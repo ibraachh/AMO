@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+  --font-open-sans: "Open-Sans", sans-serif;
+}
+
+* {
+  list-style: none;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}

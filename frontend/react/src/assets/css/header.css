@@ -1,0 +1,61 @@
+.header::after {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  content: "";
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  z-index: 100;
+}
+.dropdown-link:hover .icon {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(4px);
+  transition: 0.3s all;
+}
+.dropdown-link .icon {
+  transition: 0.5s all;
+}
+.title {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 27px;
+  letter-spacing: -0.017em;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  position: relative;
+}
+
+select {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 33px;
+  letter-spacing: -0.017em;
+  color: rgb(255, 255, 255);
+  opacity: 0.7;
+  background: transparent;
+}
+
+select option {
+  color: rgb(255, 255, 255);
+  background: rgb(3, 54, 65);
+}
+
+.burger-menu {
+  display: none;
+}
+
+@media (max-width: 1150px) {
+  .burger-menu {
+    display: flex;
+  }
+  .h-average {
+    display: none;
+  }
+}

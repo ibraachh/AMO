@@ -1,0 +1,228 @@
+main #carrer .container .row .carrer-top {
+  padding-top: 90px;
+  display: flex;
+  align-items: center;
+}
+main #carrer .container .row .carrer-top h4 {
+  margin-right: 52px;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 50px;
+  line-height: 68px;
+  letter-spacing: -0.017em;
+  color: #033641;
+}
+main #carrer .container .row .carrer-top .links a {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 41px;
+  letter-spacing: -0.017em;
+  color: #033641;
+}
+main #carrer .container .row .carrer-top .links a.active {
+  border-bottom: 2px solid #033641;
+}
+main #carrer .container .row .carrer-top .links a:first-child {
+  margin-right: 81px;
+}
+main #carrer .container .row .carrer-top .links .color-change {
+  color: #033641;
+  opacity: 0.6;
+}
+main #carrer .container .row .carrer-area {
+  margin-left: 300px;
+  margin-top: 44px;
+}
+main #carrer .container .row .carrer-area .carrer-item {
+  display: flex;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  margin: 15px 0;
+  padding-left: 41px;
+  padding-right: 70px;
+  padding-bottom: 21px;
+  padding-top: 11px;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 790px;
+  margin-left: -50px;
+}
+main #carrer .container .row .carrer-area .carrer-item .right {
+  display: flex;
+  flex-direction: column;
+}
+main #carrer .container .row .carrer-area .carrer-item .right .current-time {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 33px;
+  letter-spacing: -0.017em;
+  color: #000;
+  margin-bottom: 16px;
+}
+main #carrer .container .row .carrer-area .carrer-item .right .past-time {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 33px;
+  letter-spacing: -0.017em;
+  color: #8e8e8e;
+}
+main #carrer .container .row .carrer-area .carrer-item .left {
+  margin-right: 52px;
+}
+main #carrer .container .row .carrer-area .carrer-item .left span {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 54px;
+  letter-spacing: -0.017em;
+  color: #000;
+}
+main #carrer .container .row .carrer-area .carrer-item .left p {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 35px;
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.017em;
+  color: #8e8e8e;
+}
+main #carrer .container .row .carrer-area .carrer-item.carrer-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 790px;
+  margin-left: -50px;
+  padding: 70px 30px;
+}
+main #carrer .container .row .carrer-area .carrer-item.carrer-detail h5 {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 54px;
+  letter-spacing: -0.017em;
+  color: #000;
+}
+main #carrer .container .row .carrer-area .carrer-item.carrer-detail h6 {
+  margin-top: 40px;
+  margin-bottom: 30px;
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 54px;
+  letter-spacing: -0.017em;
+  color: #000;
+}
+main #carrer .container .row .carrer-area .carrer-item.carrer-detail p {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 35px;
+  display: flex;
+  align-items: center;
+  color: #000;
+}
+main #carrer .container .row .carrer-area .carrer-item.carrer-detail span {
+  margin: 30px 0;
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 54px;
+  letter-spacing: -0.017em;
+  color: #000;
+}
+main #carrer .container .row .carrer-area .carrer-faq {
+  display: flex;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  margin: 15px 0;
+  padding-left: 35px;
+  padding-right: 14px;
+  max-width: 790px;
+  flex-direction: column;
+  margin-left: -50px;
+}
+main #carrer .container .row .carrer-area .carrer-faq .carrer-top-faq {
+  padding: 14px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+main #carrer .container .row .carrer-area .carrer-faq .carrer-top-faq svg {
+  transition: 300ms linear;
+  display: flex;
+  flex-shrink: 0;
+}
+main
+  #carrer
+  .container
+  .row
+  .carrer-area
+  .carrer-faq
+  .carrer-top-faq
+  svg.active {
+  transform: rotate(180deg);
+}
+main #carrer .container .row .carrer-area .carrer-faq .carrer-top-faq p {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.017em;
+  color: #000;
+}
+main #carrer .container .row .carrer-area .carrer-faq .carrer-top {
+  padding-top: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+main #carrer .container .row .carrer-area .carrer-faq .carrer-top p {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.017em;
+  color: #000;
+}
+main #carrer .container .row .carrer-area .carrer-faq .faq-text {
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden !important;
+  max-height: 0;
+  transition: 600ms ease;
+}
+main #carrer .container .row .carrer-area .carrer-faq .faq-text.active {
+  max-height: 200px;
+  overflow: auto;
+  visibility: visible;
+  opacity: 1;
+}
+main #carrer .container .row .carrer-area .carrer-faq .faq-text p {
+  padding-bottom: 21px;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 19px;
+  letter-spacing: -0.017em;
+  color: #000;
+}

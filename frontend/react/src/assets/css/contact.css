@@ -1,0 +1,64 @@
+main #contact .container {
+  /* max-width: 1000px; */
+  margin: 0 auto;
+  min-height: 70vh;
+}
+
+/* contactForm */
+#contact .contactForm {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+}
+#contact .contactForm form {
+  background-color: #dcdcdc66;
+  border-radius: 27px;
+  display: flex;
+}
+
+main #contact .container .content-title {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 35px;
+  line-height: 37px;
+  text-align: center;
+  letter-spacing: -0.017em;
+  color: #000;
+  padding-top: 71px;
+}
+main #contact .container ul {
+  padding-top: 71px;
+}
+main #contact .container ul li {
+  display: flex;
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 41px;
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.017em;
+  margin-bottom: 10px;
+}
+main #contact .container ul li:last-child {
+  margin-bottom: 0;
+}
+main #contact .container ul li span {
+  font-weight: bold;
+  padding-right: 10px;
+  color: #000;
+}
+main #contact .container ul li p {
+  font-weight: 300;
+  color: #000;
+}
+main #contact .container ul li address {
+  color: #000;
+}
+main #contact .container ul li address a {
+  font-style: initial;
+  color: #000;
+  border-bottom: 1px solid #000;
+  font-weight: 300;
+}
