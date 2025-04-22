@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { AboutDataType } from "../pages/Home";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 
 interface ContentType {
   content: AboutDataType[];
