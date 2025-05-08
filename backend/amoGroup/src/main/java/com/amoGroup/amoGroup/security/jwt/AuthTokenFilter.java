@@ -49,13 +49,13 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        if (!checkApiKey(request)) {
-            if (!response.isCommitted()) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Wrong API key or secret");
-            }
-            log.error("Wrong API key or secret");
-            return;
-        }
+        //if (!checkApiKey(request)) {
+        //    if (!response.isCommitted()) {
+        //        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Wrong API key or secret");
+        //    }
+        //    log.error("Wrong API key or secret");
+        //    return;
+        //}
 
         if (request.getRequestURI().equals("/api/auth")
                 || request.getRequestURI().equals("/api/auth/login")
