@@ -15,7 +15,7 @@ COPY backend/amoGroup ./amoGroup
 RUN mvn -f amoGroup/pom.xml clean package -DskipTests
 
 # Этап запуска
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
 
